@@ -62,7 +62,7 @@
 
 ## 9. Persisting & presenting
 - Files are always saved to the relevant workspace (general convention).
-- Delivery uses present_files to present in the dialog, ensuring the user can preview / download directly.
+- Delivery uses file preview/display to present in the dialog, ensuring the user can preview / download directly.
 
 ## 10. Motion transfer (Workflow B): generates a new video, not 1:1 copy
 - Workflow B uses `@Video1` (reference video motion) + `@Image1` (target photo identity) to delegate `seedance-video-gen` to generate a new video.

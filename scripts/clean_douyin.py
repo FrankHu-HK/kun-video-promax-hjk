@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-抖音videoremove watermark（扩展版）：逐frame OCR 定位抖音相关文字，仅对该文字像素 inpaint 去除。
-与 clean_ai_label.py 区别：覆盖抖音号/作者昵称/AI角标等全部抖音相关文字，不限于"AI/generate"。
+videoremove watermark（）：frame OCR ， inpaint 。
+ clean_ai_label.py ：//AI，"AI/generate"。
 dependency: opencv-python, numpy, rapidocr-onnxruntime
 """
 import cv2, numpy as np, argparse, time
 from rapidocr_onnxruntime import RapidOCR
 
-# 抖音相关水印关键词（OCR 对 @ 常detect为 Q，已含宽松变体）
-KEYWORDS = ("抖音", "CallmeSJ", "SJ思杰", "Call me", "AI", "generate", "A1", "A I", "A.I", "A｜", "AIgenerate")
+# （OCR  @ detect Q，）
+KEYWORDS = ("", "CallmeSJ", "SJ", "Call me", "AI", "generate", "A1", "A I", "A.I", "A｜", "AIgenerate")
 
 
 def hit(text):
@@ -21,7 +21,7 @@ def main():
     ap.add_argument("--input", required=True)
     ap.add_argument("--output", default="swapped_clean.mp4")
     ap.add_argument("--radius", type=int, default=8)
-    ap.add_argument("--scale", type=int, default=2, help="OCR 前放大倍数(提升小字召回)")
+    ap.add_argument("--scale", type=int, default=2, help="OCR ()")
     args = ap.parse_args()
 
     ocr = RapidOCR()
@@ -58,9 +58,9 @@ def main():
             repaired += 1
         vw.write(frame)
         if (i + 1) % 50 == 0:
-            print(f"[{i+1}/{total}] {time.time()-t0:.0f}s 已修复{repaired}", flush=True)
+            print(f"[{i+1}/{total}] {time.time()-t0:.0f}s {repaired}", flush=True)
     cap.release(); vw.release()
-    print(f"DONE {args.output} 修复frame={repaired} 用时{time.time()-t0:.0f}s", flush=True)
+    print(f"DONE {args.output} frame={repaired} {time.time()-t0:.0f}s", flush=True)
 
 
 if __name__ == "__main__":

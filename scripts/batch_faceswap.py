@@ -1,27 +1,27 @@
 # -*- coding: utf-8 -*-
 """
-batch_faceswap.py (v2.4.2) - Workflow E：batchface swap（高级版）
+batch_faceswap.py (v2.4.2) - Workflow E：batchface swap（）
 ==========================================================
-一个target/goal照片 × N 个video → 一次性跑完所有face swap，output：
+target/goal × N video → face swap，output：
   output_dir/
     video1_faceswapped.mp4
     video2_faceswapped.mp4
     ...
-    batch_state.json     # 精准断点续跑status（每video一行status）
-    batch_report.json    # 汇总报告
+    batch_state.json     # status（videostatus）
+    batch_report.json    # 
 
-高级capability（v2.4.2 从底层重做）：
-  --workers N           并行process N 个video（默认 1 串行，stable省资源；多核机器设 2-4 提速）
-  --preset xxx          parameter预设(便捷调参)，透传给 Pro 版：auto/speed/quality/sideface/occlusion
-  --resume              精准断点续跑：read batch_state.json，只跑未done的task（不重跑已success的）
-  --continue-on-error   某个failed不interrupt，continue其余
-  --retry N             单videofailedretry次数(默认 1)
-  实时progress + ETA show/display（已用/预计剩余秒数）
+capability（v2.4.2 ）：
+  --workers N           process N video（ 1 ，stable； 2-4 ）
+  --preset xxx          parameter()， Pro ：auto/speed/quality/sideface/occlusion
+  --resume              ：read batch_state.json，donetask（success）
+  --continue-on-error   failedinterrupt，continue
+  --retry N             videofailedretry( 1)
+  progress + ETA show/display（/）
 
-用法：
+：
   python scripts/batch_faceswap.py --photo target/goal.jpg --videos "v1.mp4;v2.mp4" --out-dir batchoutput
-  python scripts/batch_faceswap.py --photo target/goal.jpg --videos-dir videofile夹 --out-dir batchoutput --workers 4 --preset quality
-  python scripts/batch_faceswap.py ... --resume          # interrupt后接着跑
+  python scripts/batch_faceswap.py --photo target/goal.jpg --videos-dir videofile --out-dir batchoutput --workers 4 --preset quality
+  python scripts/batch_faceswap.py ... --resume          # interrupt
 """
 import os
 import sys
@@ -33,9 +33,9 @@ import time
 from pathlib import Path
 
 ERROR_CODES = {
-    "E400": "未指定video（用 --videos 或 --videos-dir）",
+    "E400": "video（ --videos  --videos-dir）",
     "E401": "videofiledoes not exist",
-    "E402": "batchface swap中途failed（已generate部分file）",
+    "E402": "batchface swapfailed（generatefile）",
 }
 
 
@@ -45,7 +45,7 @@ def setup_logging(debug=False):
 
 
 def get_videos_from_dir(dir_path):
-    """从directory中获取所有videofile（mp4/mov/mkv）"""
+    """directoryvideofile（mp4/mov/mkv）"""
     exts = {".mp4", ".mov", ".mkv", ".avi", ".webm"}
     p = Path(dir_path)
     if not p.exists():
@@ -54,25 +54,25 @@ def get_videos_from_dir(dir_path):
 
 
 def parse_videos_arg(v):
-    """解析 --videos parameter（分号或逗号分隔）"""
+    """ --videos parameter（）"""
     if not v:
         return []
-    # 支持 ; , ， 三种分隔符
+    #  ; , ， 
     parts = v.replace(",", ";").replace("，", ";").split(";")
     return [p.strip() for p in parts if p.strip()]
 
 
 def run_faceswap_for_one(photo, video, output, use_pro=True, resume=False, preset="auto"):
-    """调用 faceswap.py 或 faceswap_pro.py process单个video。
+    """ faceswap.py  faceswap_pro.py processvideo。
 
-    use_pro=True 时透传 --preset（便捷调参），并在 resume 时透传 --resume 让
-    Pro 版从自身分段status续跑，实现「batchinterrupt → 单video内部也从断点continue」的双层续跑。
+    use_pro=True  --preset（）， resume  --resume 
+    Pro status，「batchinterrupt → videocontinue」。
     """
     script_dir = os.path.dirname(os.path.abspath(__file__))
     script = "faceswap_pro.py" if use_pro else "faceswap.py"
     script_path = os.path.join(script_dir, script)
     if not os.path.exists(script_path):
-        raise SystemExit(f"未找到脚本: {script_path}")
+        raise SystemExit(f": {script_path}")
     cmd = ["python", script_path, "--video", video, "--photo", photo, "--out", output]
     if use_pro and preset and preset != "auto":
         cmd += ["--preset", preset]
@@ -83,34 +83,34 @@ def run_faceswap_for_one(photo, video, output, use_pro=True, resume=False, prese
 
 
 def main():
-    ap = argparse.ArgumentParser(description="batchface swap（一个照片 × N 个video）· 高级版 v2.4.2")
-    ap.add_argument("--photo", required=True, help="target/goal人脸照")
-    ap.add_argument("--videos", help="video列表（分号/逗号分隔）")
-    ap.add_argument("--videos-dir", help="videofile夹")
+    ap = argparse.ArgumentParser(description="batchface swap（ × N video）·  v2.4.2")
+    ap.add_argument("--photo", required=True, help="target/goal")
+    ap.add_argument("--videos", help="video（/）")
+    ap.add_argument("--videos-dir", help="videofile")
     ap.add_argument("--out-dir", default="batch_output", help="outputdirectory")
-    ap.add_argument("--basic", action="store_true", help="使用基础版（默认 Pro 版）")
-    ap.add_argument("--continue-on-error", action="store_true", help="failed时continueprocess其他video")
+    ap.add_argument("--basic", action="store_true", help="（ Pro ）")
+    ap.add_argument("--continue-on-error", action="store_true", help="failedcontinueprocessvideo")
     ap.add_argument("--resume", action="store_true",
-                    help="断点续跑：read batch_state.json，skip已donevideo，只跑未done的")
-    ap.add_argument("--retry", type=int, default=1, help="单videofailedretry次数(默认1)")
+                    help="：read batch_state.json，skipdonevideo，done")
+    ap.add_argument("--retry", type=int, default=1, help="videofailedretry(1)")
     ap.add_argument("--workers", type=int, default=1,
-                    help="并行process的video数(高级版，默认1串行；CPU多核可设2-4提速)")
+                    help="processvideo(，1；CPU2-4)")
     ap.add_argument("--preset", default="auto",
                     choices=["auto", "speed", "quality", "sideface", "occlusion"],
-                    help="parameter预设(便捷调参)，透传给 Pro 版")
+                    help="parameter()， Pro ")
     ap.add_argument("--debug", action="store_true", help="Debug log")
     args = ap.parse_args()
     setup_logging(args.debug)
 
     if not os.path.exists(args.photo):
-        raise SystemExit(f"E100: target/goal照片does not exist: {args.photo}")
+        raise SystemExit(f"E100: target/goaldoes not exist: {args.photo}")
 
-    # 收集video列表
+    # video
     videos = parse_videos_arg(args.videos)
     if args.videos_dir:
         videos.extend(get_videos_from_dir(args.videos_dir))
     if not videos:
-        raise SystemExit("E400: 未指定video（用 --videos 或 --videos-dir）")
+        raise SystemExit("E400: video（ --videos  --videos-dir）")
 
     # checkvideo
     for v in videos:
@@ -133,7 +133,7 @@ def main():
         "results": [],
     }
 
-    # 精准断点续跑status（每videostatus落盘，支持interrupt后接着跑）
+    # status（videostatus，interrupt）
     state_path = os.path.join(args.out_dir, "batch_state.json")
     state = {}
     if os.path.exists(state_path):
@@ -154,10 +154,10 @@ def main():
             if ok:
                 return True, ""
             last_err = err
-            logging.warning("  [%s] 第 %d 次failed: %s", os.path.basename(v), attempt + 1, err[:160])
+            logging.warning("  [%s]  %d failed: %s", os.path.basename(v), attempt + 1, err[:160])
         return False, last_err
 
-    # 组织task（断点续跑：已success且产物存在则skip）
+    # task（：successskip）
     tasks = []
     for i, v in enumerate(videos, 1):
         v = v.strip()
@@ -170,7 +170,7 @@ def main():
         if args.resume and state.get(v) == "success" and os.path.exists(output) and os.path.getsize(output) > 0:
             report["skipped"] += 1
             report["results"].append({"video": v, "output": output, "status": "skipped", "reason": "resume: already done"})
-            logging.info("[%d/%d] ✅ already exists，skip(断点续跑): %s", i, len(videos), output)
+            logging.info("[%d/%d] ✅ already exists，skip(): %s", i, len(videos), output)
             continue
         tasks.append((i, v, output))
 
@@ -178,7 +178,7 @@ def main():
     done_cnt = 0
     t0_all = time.time()
     logging.info("=" * 60)
-    logging.info("🔁 batchface swap高级版（%s）待process %d 个，并行度=%d，预设=%s",
+    logging.info("🔁 batchface swap（%s）process %d ，=%d，=%s",
                  "Pro" if use_pro else "Basic", total_tasks, max(1, args.workers), args.preset)
     logging.info("=" * 60)
 
@@ -212,7 +212,7 @@ def main():
             el = time.time() - t0_all
             rate = done_cnt / el if el > 0 else 0
             eta = (total_tasks - done_cnt) / rate if rate > 0 else 0
-            logging.info("  progress %d/%d (%.0f%%) · 已用%.0fs · 预计剩余%.0fs",
+            logging.info("  progress %d/%d (%.0f%%) · %.0fs · %.0fs",
                          done_cnt, total_tasks, done_cnt * 100.0 / total_tasks, el, eta)
             try:
                 with open(state_path, "w", encoding="utf-8") as f:
@@ -226,7 +226,7 @@ def main():
         json.dump(report, f, ensure_ascii=False, indent=2)
     logging.info("=" * 60)
     logging.info("DONE: success=%d failed=%d skip=%d", report["succeeded"], report["failed"], report["skipped"])
-    logging.info("汇总: %s", report_path)
+    logging.info(": %s", report_path)
 
 
 if __name__ == "__main__":

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-逐frame OCR 定位含 AI/generate 的文字框 -> 仅对该文字像素 inpaint 去除（background零误伤）。
-用法见 SKILL.md stage 2。dependency: opencv-python, numpy, rapidocr-onnxruntime
+frame OCR  AI/generate  ->  inpaint （background）。
+ SKILL.md stage 2。dependency: opencv-python, numpy, rapidocr-onnxruntime
 """
 import cv2, numpy as np, argparse, time
 from rapidocr_onnxruntime import RapidOCR
 
-# 需清除的关键词（抖音 AI 内容角标常见形态）
+# （ AI ）
 KEYWORDS = ("AI", "generate", "A1", "A I", "A.I", "A｜", "AIgenerate")
 
 
@@ -19,7 +19,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--input", required=True)
     ap.add_argument("--output", default="swapped_clean.mp4")
-    # 限定搜索区可提速: --region y0 y1 x0 x1 (原frame坐标)
+    # : --region y0 y1 x0 x1 (frame)
     ap.add_argument("--region", nargs=4, type=int, default=None,
                     metavar=("Y0", "Y1", "X0", "X1"))
     ap.add_argument("--radius", type=int, default=6)
@@ -33,7 +33,7 @@ def main():
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     vw = cv2.VideoWriter(args.output, cv2.VideoWriter_fourcc(*"mp4v"), fps, (W, H))
 
-    # 搜索区(原frame坐标)；默认全frame
+    # (frame)；frame
     if args.region:
         sy0, sy1, sx0, sx1 = args.region
     else:
@@ -47,7 +47,7 @@ def main():
             break
         roi = frame[sy0:sy1, sx0:sx1].copy()
         rh, rw = roi.shape[:2]
-        # resize 2x 提升小字 OCR 召回
+        # resize 2x  OCR 
         small = cv2.resize(roi, (rw * 2, rh * 2))
         res, _ = ocr(small)
         mask = np.zeros((rh, rw), np.uint8)
@@ -67,9 +67,9 @@ def main():
             repaired += 1
         vw.write(frame)
         if (i + 1) % 300 == 0:
-            print(f"[{i+1}/{total}] {time.time()-t0:.0f}s 已修复{repaired}", flush=True)
+            print(f"[{i+1}/{total}] {time.time()-t0:.0f}s {repaired}", flush=True)
     cap.release(); vw.release()
-    print(f"DONE {args.output} 修复frame={repaired} 用时{time.time()-t0:.0f}s", flush=True)
+    print(f"DONE {args.output} frame={repaired} {time.time()-t0:.0f}s", flush=True)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 ---
-slug: kun-video-promax-hjk
 displayName: "🚀 AI Viral Video Factory Pro | One-click Director Script + Real-Person Voiceover + Real-Person Face Swap + Motion Transfer + 4K HD Enhancement + Seedance Alternative"
 display_name: "🚀 AI Viral Video Factory Pro | One-click Director Script + Real-Person Voiceover + Real-Person Face Swap + Motion Transfer + 4K HD Enhancement + Seedance Alternative"
 version: 2.9.0
