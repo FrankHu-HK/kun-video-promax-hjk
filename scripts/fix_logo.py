@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-阶段2.5 兜底：固定区域 inpaint 去除平台级固定 logo（如右下角"抖音"角标）。
-技能 SKILL.md 原引用了本文件但实际缺失，此处按相同语义实现并安装到技能目录。
+stage2.5 兜底：固定区域 inpaint 去除平台级固定 logo（如右下角"抖音"角标）。
+技能 SKILL.md 原引用了本file但实际缺失，此处按相同语义实现并install到技能directory。
 用法:
   python fix_logo.py --input swapped_clean.mp4 --output swapped_clean_v2.mp4 \
       --region 1100 1190 595 715 --radius 10
-  region 参数顺序: y0 y1 x0 x1 (含余量)
-依赖: opencv-python, numpy
+  region parameter顺序: y0 y1 x0 x1 (含余量)
+dependency: opencv-python, numpy
 """
 import cv2, numpy as np, argparse, time
 

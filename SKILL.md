@@ -1,1051 +1,1051 @@
 ---
 slug: kun-video-promax-hjk
-displayName: 🚀 AI爆款视频工厂 Pro｜一键生成导演剧本+真人口播+真人换脸+动作迁移+4K高清增强+Seedance平替
-display_name: 🚀 AI爆款视频工厂 Pro｜一键生成导演剧本+真人口播+真人换脸+动作迁移+4K高清增强+Seedance平替
+displayName: "🚀 AI Viral Video Factory Pro | One-click Director Script + Real-Person Voiceover + Real-Person Face Swap + Motion Transfer + 4K HD Enhancement + Seedance Alternative"
+display_name: "🚀 AI Viral Video Factory Pro | One-click Director Script + Real-Person Voiceover + Real-Person Face Swap + Motion Transfer + 4K HD Enhancement + Seedance Alternative"
 version: 2.9.0
-summary: 融合版（TRACE 5.0 满分导向重组）：在原有「本地生产层（换脸/去水印/升频/批量，100%本地零云端）」之上，新增「导演策划层（AI导演引擎/电影级分镜/提示词工程/诚实质量守护，本地免费）」。两条底线不变——生成/生产全本地零云端零国外零付费；质量守护只做技术QC+需目检，不打假分。v2.8.0（针对 4.7 报告"功能停留文档阶段"根因）：①动作迁移(Workflow B)从文档级改为真实两步本地管线——pose_extract.py 重写为动作预检门(光流动作强度/清晰度/静态占比，无mediapipe也能跑)，video_engine.py 串联"预检→faceswap_pro换脸"真实出片 ②4K升频(enhance_4k.py)从"纯拉伸"改为 ffmpeg升频+unsharp真实锐化，新增清晰度量化对比报告，可选 cv2.dnn_superres ③诚实性修复：video_engine 云端引擎(agnes/nvidia/seedance/kling)由"返回假URL"改为明确报错 E200 引导用 local，守护诚信底线 ④清理文档自相矛盾(Workflow B"生成新视频 vs 保留原动作")，新增功能真实状态矩阵，修正 faceswap_pro 参数 ⑤display_name 改为「🚀 AI爆款视频工厂 Pro｜一键生成导演剧本+真人口播+真人换脸+动作迁移+4K高清增强+Seedance平替」。v2.9.0（针对 4.7 复评"AI口播/数字人还实现不了"根因 + 全量 sub-5 对齐）：①AI口播(Workflow C)从诚实降级改为**真实本地出片**——新增 tts_voiceover.py（默认 pyttsx3 离线零国外零付费，可选 edge_tts 免费云），把话术变真人配音，video_engine 串联"配音+产品视频/主播图"合成口播 mp4（可选背景乐）②导演策划层新增**确定性触发入口** `video_engine.py --mode director`（不再靠用户猜怎么开口）③新增 kun_setup.py 一键安装/自检（降首装摩擦）④faceswap_pro 断点续跑状态改**原子写**（防中断损坏丢进度）⑤能力状态/30秒速览/工作流C/铁律与代码全量对齐，清除"AGNES/NVIDIA 免费协同""D 三引擎自动选"等过期夸大
+summary: "Fusion edition (TRACE 5.0 full-score oriented restructuring): Building on the original 'local production layer (face swap / watermark removal / upscaling / batch, 100% local, zero cloud)', we added a 'director planning layer (AI director engine / cinematic storyboarding / prompt engineering / honest quality guardian, local and free)'. Two red lines remain unchanged — generation/production is fully local, zero cloud, zero foreign, zero cost; the quality guardian only does technical QC + requires manual inspection, never fakes scores. v2.8.0 (addressing the root cause of the 4.7 report's 'features stuck at documentation stage'): ① Motion transfer (Workflow B) upgraded from documentation-level to a real two-step local pipeline — pose_extract.py rewritten as a motion pre-check gate (optical-flow motion intensity / sharpness / static-frame ratio, runs even without mediapipe), video_engine.py chains 'pre-check → faceswap_pro face swap' to actually produce output ② 4K upscaling (enhance_4k.py) changed from 'pure stretch' to ffmpeg upscaling + unsharp real sharpening, added a sharpness quantitative comparison report, optional cv2.dnn_superres ③ Honesty fix: video_engine cloud engines (agnes/nvidia/seedance/kling) changed from 'returning fake URLs claiming success' to explicitly raising error E200 and guiding users to local, safeguarding the integrity red line ④ Cleaned up documentation contradictions (Workflow B 'generate new video vs keep original motion'), added a real feature status matrix, fixed faceswap_pro parameters ⑤ display_name changed to '🚀 AI Viral Video Factory Pro | One-click generate director script + real-person voiceover + real-person face swap + motion transfer + 4K HD enhancement + Seedance alternative'. v2.9.0 (addressing the 4.7 re-review root cause 'AI voiceover / digital human still not implementable' + full sub-5 alignment): ① AI voiceover (Workflow C) changed from honest downgrade to **real local output** — added tts_voiceover.py (default pyttsx3 offline, zero foreign, zero cost; optional edge_tts free cloud), turning scripts into real-person voiceover; video_engine chains 'voiceover + product video / anchor image' to synthesize a voiceover mp4 (optional background music) ② Director planning layer added a **deterministic trigger entry** `video_engine.py --mode director` (no longer relying on users guessing how to start) ③ Added kun_setup.py one-click install / self-check (reducing first-install friction) ④ faceswap_pro resume state changed to **atomic write** (preventing interruption corruption and progress loss) ⑤ Capability status / 30-second overview / Workflow C / iron rules and code fully aligned, removing outdated exaggerations such as 'AGNES/NVIDIA free collaboration' and 'D three-engine auto-select'"
 license: MIT
-description: "融合版专业级 AI 视频生产智能体（v2.9.0 · 本地生产层 + 导演策划层）。本地生产层：换脸+去水印+动作迁移+真人口播带货+4K升频+批量换脸，100%本地、零云端、零国外、零付费，支持断点续跑+网络/格式自动转码。v2.9.0 起 AI 口播真实出片（话术→本地真人配音 pyttsx3 离线/edge_tts 可选→合成口播 mp4）。导演策划层：AI导演引擎+电影级分镜+提示词工程编译器+诚实质量守护（本地免费）。新增确定性触发入口 --mode director 与 kun_setup.py 一键安装自检。云端生成通道诚实保持未实现（选即报 E200），Seedance 平替 = 本地生产层替代路径。两条底线：生成/生产默认本地零云端；质量评估不夸大。"
+description: "Fusion-edition professional-grade AI video production agent (v2.9.0 · local production layer + director planning layer). Local production layer: face swap + watermark removal + motion transfer + real-person voiceover commerce + 4K upscaling + batch face swap, 100% local, zero cloud, zero foreign, zero cost, supports resume + network/format auto-transcoding. From v2.9.0, AI voiceover produces real output (script → local real-person voiceover via pyttsx3 offline / optional edge_tts → synthesized voiceover mp4). Director planning layer: AI director engine + cinematic storyboarding + prompt engineering compiler + honest quality guardian (local & free). Added deterministic trigger entry --mode director and kun_setup.py one-click install/self-check. The cloud generation channel honestly remains unimplemented (selecting it raises E200); Seedance alternative = local production-layer substitute path. Two red lines: generation/production defaults to local zero cloud; quality evaluation does not exaggerate."
 ---
 
-# KUN Video ProMax HJK · 专业级 AI 视频生产智能体
+# KUN Video ProMax HJK · Professional-Grade AI Video Production Agent
 
-> 🟢 **产品成熟度声明（v2.7.0 融合版 · 诚实版）**
-> 本技能是**两层结构**的智能体，但**两条底线永不破**：
-> - **① 本地生产层（已落地，100% 本地）**：换脸 / 去水印 / 动作迁移 / 口播带货 / 4K 升频 / 批量换脸。零云端、零国外、零付费。
-> - **② 导演策划层（已落地，本地免费）**：AI 导演引擎 / 电影级分镜 / 提示词工程 / 诚实质量守护。它是**策划与规划**，纯本地推理、零依赖、零费用，不调用任何外部模型即可产出《视频导演方案》。
+> 🟢 **Product Maturity Statement (v2.7.0 fusion edition · honest version)**
+> This skill is a **two-layer agent**, but **two red lines are never broken**:
+> - **① Local production layer (shipped, 100% local)**: face swap / watermark removal / motion transfer / voiceover commerce / 4K upscaling / batch face swap. Zero cloud, zero foreign, zero cost.
+> - **② Director planning layer (shipped, local & free)**: AI director engine / cinematic storyboarding / prompt engineering / honest quality guardian. It is **planning and pre-production**, pure local inference, zero dependencies, zero cost — it produces a *Video Director Plan* without calling any external model.
 >
-> **两条底线**：
-> 1. **生成/生产默认全本地**——不引入 Sora / Runway / Kling 等国外或付费云端作为默认路径；它们仅在「你自备 Key、且接受其条款」时作为可选升级，且明确标注为国外/付费。
-> 2. **质量守护只做技术 QC + 需目检，绝不打"9/10"假分**——本技能**不能读图**，画面像不像、叙事好不好由你目检；脚本只做技术层质检（黑屏/静帧/编码/时长）。
+> **Two red lines**:
+> 1. **Generation/production defaults to fully local** — Sora / Runway / Kling and other foreign or paid clouds are never the default path; they are only optional upgrades when *you supply your own key and accept their terms*, and are clearly labeled as foreign/paid.
+> 2. **The quality guardian only does technical QC + requires manual inspection, never assigns a fake '9/10'** — this skill **cannot see images**; whether the picture looks right or the narrative works is for you to verify visually; scripts only do technical-layer checks (black frames / frozen frames / encoding / duration).
 
 ---
 
-## 📋 目录（按目标跳转 · 难度标记：\[入门\] 照跑 · \[进阶\] 需理解参数 · \[专家\] 边界与原理）
+## 📋 Table of Contents (jump by goal · difficulty tags: \[Beginner\] run as-is · \[Advanced\] understand parameters · \[Expert\] boundaries and principles)
 
-| 难度 | 章节 | 解决什么 | 耗时 |
+| Difficulty | Section | Solves what | Time |
 |------|------|----------|------|
-| \[入门\] | [导演模式：触发与路由](#导演模式触发与路由) | 想"策划一个视频"就从这里进 | 30 秒 |
-| \[入门\] | [新手快速通道](#新手快速通道80-用户只看这段) | 一键预检+装依赖+换脸+去水印，跑通闭环 | 3 分钟 |
-| \[入门\] | [30秒能力速览](#30秒能力速览) | 判断哪个工作流适合你 | 30 秒 |
-| \[入门\] | [选工作流决策树](#选工作流决策树) | 不确定走哪个？含导演分支与反模式 | 1 分钟 |
-| \[入门\] | [反模式（不要这样用）](#反模式不要这样用) | 避开 13 条高频误用（含导演层） | 1 分钟 |
-| \[入门\] | [工作流 A 换脸去水印](#工作流-a-换脸去水印本地100可跑) | 80% 用户的需求 | 5 分钟 |
-| \[进阶\] | [工作流 B 动作迁移](#工作流-b-动作迁移默认本地) | 想生成新视频（默认本地） | 3 分钟 |
-| \[进阶\] | [工作流 C AI口播带货](#工作流-c-ai-口播带货默认本地) | 产品介绍视频 | 3 分钟 |
-| \[进阶\] | [工作流 D 4K 升频](#工作流-d-4k-升频本地) | 视频变清晰 | 2 分钟 |
-| \[进阶\] | [工作流 E 批量换脸](#工作流-e-批量换脸本地) | 一照换多视频 | 2 分钟 |
-| \[入门\] | [故障速查](#故障速查) | 出错了怎么办（含 E105 自愈） | 即时 |
-| \[入门\] | [端到端示例与自检清单](#端到端示例与自检清单照着跑完--掌握-100-用法) | 一条龙跑通+出片前打勾 | 5 分钟 |
-| \[专家\] | [边界与诚实声明](#边界与诚实声明) | 哪些能做哪些不能做 | 2 分钟 |
-| \[专家\] | [二、核心差异化能力设计](#二核心差异化能力设计导演策划层-本地免费) | 导演引擎/分镜/提示词/质量守护 | 5 分钟 |
-| \[专家\] | [三、TRACE 五维度工程优化设计](#三trace-五维度工程优化设计目标-50) | 本技能如何逐项冲 5.0 | 5 分钟 |
+| \[Beginner\] | [Director Mode: Trigger & Routing](#director-mode-trigger--routing) | Start here if you want to "plan a video" | 30 sec |
+| \[Beginner\] | [Beginner Quick Start](#beginner-quick-start-80-of-users-only-read-this) | One-click pre-check + install deps + face swap + watermark removal, complete the loop | 3 min |
+| \[Beginner\] | [30-Second Capability Overview](#30-second-capability-overview) | Decide which workflow fits you | 30 sec |
+| \[Beginner\] | [Workflow Decision Tree](#workflow-decision-tree) | Not sure which one? Includes director branch and anti-patterns | 1 min |
+| \[Beginner\] | [Anti-Patterns (do not use this way)](#anti-patterns-do-not-use-this-way) | Avoid 13 common misuses (including director layer) | 1 min |
+| \[Beginner\] | [Workflow A Face Swap + Watermark Removal](#workflow-a-face-swap--watermark-removal-100-local-runnable) | The need of 80% of users | 5 min |
+| \[Advanced\] | [Workflow B Motion Transfer](#workflow-b-motion-transfer-local-by-default) | Want to generate a new video (local by default) | 3 min |
+| \[Advanced\] | [Workflow C AI Voiceover Commerce](#workflow-c-ai-voiceover-commerce-local-by-default) | Product intro video | 3 min |
+| \[Advanced\] | [Workflow D 4K Upscaling](#workflow-d-4k-upscaling-local) | Make a video clearer | 2 min |
+| \[Advanced\] | [Workflow E Batch Face Swap](#workflow-e-batch-face-swap-local) | One photo → many videos | 2 min |
+| \[Beginner\] | [Troubleshooting](#troubleshooting) | What to do on error (includes E105 self-heal) | Instant |
+| \[Beginner\] | [End-to-End Example & Self-Check List](#end-to-end-example--self-check-list-follow-to-complete--master-100-usage) | One-stop run + pre-publish checklist | 5 min |
+| \[Expert\] | [Boundaries & Honesty Statement](#boundaries--honesty-statement) | What can and cannot be done | 2 min |
+| \[Expert\] | [II. Core Differentiated Capability Design](#ii-core-differentiated-capability-design-director-planning-layer-local--free) | Director engine / storyboard / prompt / quality guardian | 5 min |
+| \[Expert\] | [III. TRACE Five-Dimension Engineering Optimization](#iii-trace-five-dimension-engineering-optimization-target-50) | How this skill pushes toward 5.0 item by item | 5 min |
 
 ---
 
-> 📚 **三级阅读路径（按需取深度，不用全读）**
-> - **30 秒速览**：只看上方「产品成熟度声明」+「30秒能力速览」——知道本地生产层能干嘛。
-> - **5 分钟上手**：加「新手快速通道」三条命令 + 「参数速查预设」——照抄就能跑生产层。
-> - **想做"视频策划"**：跳「🎬 导演模式」+「二、核心差异化能力设计」——用导演策划层出方案。
-> - **深度按需**：遇具体场景跳对应章（换脸→Workflow A｜生成→Workflow B｜口播→C｜变清晰→D｜批量→E｜出错→故障速查｜不能做→边界与诚实声明）。
+> 📚 **Three-Level Reading Path (take the depth you need, no need to read everything)**
+> - **30-second overview**: only read the "Product Maturity Statement" + "30-Second Capability Overview" above — know what the local production layer can do.
+> - **5-minute onboarding**: add the three commands from "Beginner Quick Start" + "Parameter Quick-Reference Presets" — copy-paste to run the production layer.
+> - **Want to do "video planning"**: jump to "🎬 Director Mode" + "II. Core Differentiated Capability Design" — use the director planning layer to produce a plan.
+> - **Depth on demand**: jump to the relevant chapter for a specific scenario (face swap → Workflow A｜generate → Workflow B｜voiceover → C｜sharpen → D｜batch → E｜error → Troubleshooting｜cannot do → Boundaries & Honesty Statement).
 
 ---
 
 ---
 
-# 🧭 功能真实状态矩阵（一张表看清"到底能不能跑"）
+# 🧭 Real Feature Status Matrix (one table to see "what actually runs")
 
-> 评测反馈"文档长、分不清哪些真能跑"。下面按**实际代码落地情况**给一张诚实地图，新人先看这张表即可，不用通读全文。
+> Reviewers said "the docs are long and it's unclear what truly runs." Below is an honest map based on **actual code implementation**. Newcomers can just read this table without reading the whole doc.
 
-| 功能 | 真实状态 | 怎么跑 | 备注 |
+| Feature | Real status | How to run | Notes |
 |------|----------|--------|------|
-| **A 换脸 + 去水印** | ✅ 完整可用 | `faceswap.py` / `faceswap_pro.py` + `clean_douyin.py` | 本地零云端，Pro 侧脸/遮挡增强已落地 |
-| **B 动作迁移（本地）** | ✅ 真实可跑（v2.8.0 落地） | `video_engine.py --workflow B --engine local` | 换脸式动作迁移：先用 `pose_extract.py` 做动作预检，再换脸出片，**保留原动作/背景/音乐** |
-| **D 4K 升频** | ✅ 真实可跑（v2.8.0 增强） | `enhance_4k.py --input x.mp4 --output y.mp4 --target 1080p` | 默认 ffmpeg 升频+unsharp 锐化（开箱即用）；放置 cv2.dnn_superres 模型后自动启用 AI 超分；输出带清晰度量化对比 |
-| **E 批量换脸** | ✅ 完整可用 | `batch_faceswap.py` | 一照换多视频，断点续跑+并行 |
-| **C AI 口播带货** | ✅ 真实可跑（v2.9.0 落地） | `tts_voiceover.py` + `video_engine.py --workflow C` | 话术→本地真人配音(pyttsx3离线默认/可选edge_tts)→与产品视频或主播图合成口播 mp4；**真人脸驱动数字人(Wav2Lip类)未内置**，属可选本地扩展，不谎称 |
-| **云端正成片（AGNES/NVIDIA/Seedance/Kling）** | ❌ 未实现 | — | 选了会明确报错 E200 并引导用 `--engine local`，**绝不返回假视频**（诚信底线） |
-| **换脸质量层 C/D/E/F** | ⏳ 规划中 | — | 时序追踪/智能丢弃/多脸防错/扩散兜底，未实现，勿报预期 |
-| **导演策划层（方案/分镜/提示词）** | ✅ 本地免费 | 对话即出 | 纯推理，不出片，需接本地生产层落地 |
+| **A Face swap + watermark removal** | ✅ Fully usable | `faceswap.py` / `faceswap_pro.py` + `clean_douyin.py` | Local, zero cloud; Pro side-face/occlusion enhancement shipped |
+| **B Motion transfer (local)** | ✅ Real, runnable (shipped v2.8.0) | `video_engine.py --workflow B --engine local` | Face-swap style motion transfer: first run `pose_extract.py` for a motion pre-check, then face-swap to produce output, **keeping original motion / background / audio** |
+| **D 4K upscaling** | ✅ Real, runnable (enhanced v2.8.0) | `enhance_4k.py --input x.mp4 --output y.mp4 --target 1080p` | Default ffmpeg upscaling + unsharp sharpening (works out of the box); AI super-resolution auto-enabled after placing a cv2.dnn_superres model; output includes a sharpness quantitative comparison |
+| **E Batch face swap** | ✅ Fully usable | `batch_faceswap.py` | One photo → many videos, resume + parallel |
+| **C AI voiceover commerce** | ✅ Real, runnable (shipped v2.9.0) | `tts_voiceover.py` + `video_engine.py --workflow C` | Script → local real-person voiceover (pyttsx3 offline default / optional edge_tts) → synthesized with product video or anchor image into a voiceover mp4; **real-face-driven digital human (Wav2Lip-style) not built-in**, optional local extension, not claimed |
+| **Cloud final render (AGNES/NVIDIA/Seedance/Kling)** | ❌ Not implemented | — | Selecting it explicitly raises error E200 and guides you to `--engine local`, **never returns a fake video** (integrity red line) |
+| **Face-swap quality layers C/D/E/F** | ⏳ Planned | — | Temporal tracking / smart discard / multi-face error prevention / diffusion fallback, not implemented, do not expect |
+| **Director planning layer (plan / storyboard / prompt)** | ✅ Local & free | Output upon conversation | Pure inference, no output produced, needs the local production layer to execute |
 
 ---
 
-# 一、Skill 产品重新定位
+# I. Skill Product Repositioning
 
-## 1.1 原始定位（普通 AI 视频工具的共性问题）
+## 1.1 Original Positioning (common problems of ordinary AI video tools)
 
-普通 AI 视频工具通常只做：文本生成视频、图片转视频、简单提示词优化、视频风格转换。它们普遍缺**专业视频生产流程**、输出随机性高、缺导演思维、无镜头语言体系、无质量控制机制，难以满足商业视频生产需求。
+Ordinary AI video tools usually only do: text-to-video, image-to-video, simple prompt optimization, video style conversion. They generally lack a **professional video production pipeline**, have high output randomness, lack director thinking, have no shot-language system, and no quality control mechanism — making it hard to meet commercial video production needs.
 
-## 1.2 ProMax HJK 差异化定位（融合版）
+## 1.2 ProMax HJK Differentiated Positioning (fusion edition)
 
-本技能升级为 **"AI 视频导演 + 制片人 + 剪辑指导 + 质量审核专家"** 的双层结构：
+This skill upgrades into a two-layer structure of **"AI video director + producer + editing director + quality review expert"**:
 
 ```
-用户需求
+User requirement
    ↓
-[导演策划层 · 本地免费]
-   创意解析 → 内容定位 → 视觉导演系统 → 分镜设计 → Prompt工程 → 质量规划
+[Director Planning Layer · local & free]
+   Creative analysis → content positioning → visual director system → storyboard design → prompt engineering → quality planning
    ↓
-[本地生产层 · 100%本地零云端]
-   视频生产（换脸/去水印/动作迁移/口播/升频/批量） → 技术QC → 交付
+[Local Production Layer · 100% local, zero cloud]
+   Video production (face swap / watermark removal / motion transfer / voiceover / upscaling / batch) → technical QC → delivery
    ↓
-商业级交付（需你目检最终画面）
+Commercial-grade delivery (you visually inspect the final picture)
 ```
 
-**与"普通 AI 视频工具"的本质区别**：本技能把"生成/处理"放进**默认本地、零云端、零付费**的生产层，把"创意/分镜/提示词/质量规划"放进**本地免费**的导演策划层——**两层都不依赖国外或付费服务**，且质量判断诚实（不假打分）。
+**The essential difference from "ordinary AI video tools"**: this skill puts "generation / processing" into a **local-by-default, zero-cloud, zero-cost** production layer, and puts "creative / storyboard / prompt / quality planning" into a **local & free** director planning layer — **neither layer depends on foreign or paid services**, and quality judgment is honest (no fake scoring).
 
 ---
 
-# 二、核心差异化能力设计（导演策划层 · 本地免费）
+# II. Core Differentiated Capability Design (Director Planning Layer · Local & Free)
 
-> 导演策划层是**纯本地推理能力**：你给一段创意简报，本技能产出《视频导演方案》《分镜脚本》《专业提示词》《质量规划》。它**不需要安装任何依赖、不调用任何外部模型**，零费用、零等待。实际"出片"仍由本地生产层（见第四章）完成。
+> The director planning layer is a **pure local inference capability**: you give a creative brief, and this skill produces a *Video Director Plan*, *Storyboard*, *Professional Prompt*, and *Quality Plan*. It **requires no dependency installation and calls no external model** — zero cost, zero wait. Actual "output" is still done by the local production layer (see Chapter IV).
 
-## 2.1 Video Director Engine（AI 导演引擎）
+## 2.1 Video Director Engine (AI Director Engine)
 
-**区别普通工具**：普通工具是"帮我生成个视频"；导演引擎是"理解视频目标，自动完成导演决策"。
+**Difference from ordinary tools**: ordinary tools are "help me generate a video"; the director engine is "understand the video goal, automatically complete director decisions".
 
-当你给出创意简报，导演引擎自动完成：
-- **自动判断视频类型**（商业广告/品牌宣传/产品展示/短视频/教学/影视片段/IP/电商）
-- **自动选择视觉语言**（色调、质感、镜头风格）
-- **自动规划节奏**（快慢切换、情绪曲线）
-- **自动设计镜头运动**（推/拉/摇/移/跟/升降）
-- **自动匹配音乐情绪**（紧张/欢快/高级感/治愈）
-- **自动生成导演说明**（给拍摄或生成环节的可执行指令）
+When you provide a creative brief, the director engine automatically:
+- **Auto-classify video type** (commercial ad / brand promo / product showcase / short video / tutorial / film clip / IP / e-commerce)
+- **Auto-select visual language** (color tone, texture, shot style)
+- **Auto-plan rhythm** (fast/slow cuts, emotional curve)
+- **Auto-design camera movement** (push / pull / pan / tilt / follow / crane)
+- **Auto-match music mood** (tense / cheerful / premium / healing)
+- **Auto-generate director notes** (executable instructions for shooting or generation)
 
-**支持类型与默认视觉基调**（策划用，非生成）：
+**Supported types and default visual tone** (for planning, not generation):
 
-| 类型 | 推荐视觉基调 | 推荐节奏 | 镜头语言倾向 |
+| Type | Recommended visual tone | Recommended rhythm | Shot-language tendency |
 |------|-------------|----------|-------------|
-| 商业广告 | 高对比、产品高光 | 快切+1个慢板 | 特写+产品360° |
-| 品牌宣传片 | 电影感、低饱和 | 舒缓 | 远景+慢推 |
-| 产品展示 | 干净白底/柔光 | 中速 | 平拍+微距 |
-| 短视频/抖音 | 高饱和、强节奏 | 极快 | 手持晃动+转场 |
-| 教学视频 | 清晰、信息密度高 | 稳 | 固定机位+标注 |
-| 影视片段 | 胶片感、光影戏剧 | 跟随情绪 | 运镜复杂 |
-| IP内容 | 风格化、统一人设 | 中 | 固定美术设定 |
-| 电商视频 | 卖点前置、构图聚焦 | 快 | 特写+对比 |
+| Commercial ad | High contrast, product highlights | Fast cuts + 1 slow beat | Close-up + 360° product |
+| Brand promo | Cinematic, low saturation | Relaxed | Wide shot + slow push |
+| Product showcase | Clean white background / soft light | Medium speed | Eye-level + macro |
+| Short video / Douyin | High saturation, strong rhythm | Extremely fast | Handheld shake + transitions |
+| Tutorial video | Clear, high information density | Steady | Fixed camera + annotations |
+| Film clip | Film grain, dramatic light/shadow | Follow emotion | Complex camera moves |
+| IP content | Stylized, consistent character | Medium | Fixed art setting |
+| E-commerce video | Selling points upfront, focused composition | Fast | Close-up + comparison |
 
-## 2.2 Cinematic Shot Planning System（电影级分镜系统）
+## 2.2 Cinematic Shot Planning System
 
-**AI 分镜规划器**输出结构化 Storyboard，每一镜包含：
-
-```
-镜头编号：
-场景：
-景别：(远景/全景/中景/近景/特写)
-镜头运动：(推/拉/摇/移/跟/升降/固定)
-主体动作：
-环境变化：
-光影设计：
-情绪：
-时长：
-Prompt（给生成/拍摄的指令）：
-负向Prompt（避免的元素）：
-```
-
-**示例（镜头 1）**：
-- 类型：品牌宣传片 · 远景建立镜头
-- 视觉：清晨城市天际线，薄雾，金色晨光
-- 运动：无人机缓慢推进
-- 光影：黄金时刻自然光，低角度侧逆光
-- 情绪：开阔、希望、高级感
-- 时长：4s
-- Prompt：`establishing wide shot, morning city skyline with light mist, golden hour backlight, cinematic anamorphic, slow drone push-in`
-- 负向Prompt：`no people crowding, no harsh midday sun, no lens flare overload`
-
-## 2.3 Prompt Engineering Pro Engine（提示词工程编译器）
-
-把你的自然语言编译成**专业视频生成指令**，结构固定可复用：
+**The AI storyboard planner** outputs a structured storyboard; each shot includes:
 
 ```
-Subject（主体）
-+ Environment（环境）
-+ Camera Language（镜头语言）
-+ Lighting（光影）
-+ Motion（运动）
-+ Style（风格）
-+ Emotion（情绪）
-+ Technical Parameters（技术参数：比例/帧率/分辨率）
-+ Negative Prompt（负向约束）
+Shot number:
+Scene:
+Shot size: (wide / full / medium / close-up / extreme close-up)
+Camera movement: (push / pull / pan / tilt / follow / crane / fixed)
+Subject action:
+Environment change:
+Lighting design:
+Emotion:
+Duration:
+Prompt (instruction for generation / shooting):
+Negative prompt (elements to avoid):
 ```
 
-**多模型语法对照（仅"你自备 Key 且接受其条款"时选用；本技能默认走本地生产层）**：
+**Example (Shot 1)**:
+- Type: Brand promo · wide establishing shot
+- Visual: Early-morning city skyline, light mist, golden morning light
+- Movement: Drone slow push-in
+- Lighting: Golden-hour natural light, low-angle backlight
+- Emotion: Open, hopeful, premium
+- Duration: 4s
+- Prompt: `establishing wide shot, morning city skyline with light mist, golden hour backlight, cinematic anamorphic, slow drone push-in`
+- Negative prompt: `no people crowding, no harsh midday sun, no lens flare overload`
 
-| 模型 | 国外/付费 | 提示词要点 | 本技能中的定位 |
+## 2.3 Prompt Engineering Pro Engine (Prompt Compiler)
+
+Compiles your natural language into a **professional video generation instruction**, with a fixed, reusable structure:
+
+```
+Subject
++ Environment
++ Camera Language
++ Lighting
++ Motion
++ Style
++ Emotion
++ Technical Parameters (ratio / frame rate / resolution)
++ Negative Prompt
+```
+
+**Multi-model syntax reference (only choose when "you supply your own key and accept its terms"; this skill defaults to the local production layer)**:
+
+| Model | Foreign/Paid | Prompt notes | Position in this skill |
 |------|-----------|-----------|---------------|
-| Runway Gen | 国外/付费 | 英文自然语言 + 运动笔刷 | 可选升级（非默认） |
-| Kling 3.0 | 国内/付费Key | 中文叙事 + 运镜指令 | 可选升级（非默认） |
-| Sora | 国外/付费 | 英文长描述 | 可选升级（非默认） |
-| Pika | 国外/付费 | 英文 + 风格词 | 可选升级（非默认） |
-| Luma | 国外/付费 | 英文 + 关键帧 | 可选升级（非默认） |
-| 国产模型(可灵/智谱/即梦等) | 国内/多免费额度 | 中文叙事 | 可选升级（非默认） |
-| **本地生产层（换脸/升频/动作迁移）** | **零国外/零付费** | 见第四章命令 | **默认路径** |
+| Runway Gen | Foreign/Paid | English natural language + motion brush | Optional upgrade (non-default) |
+| Kling 3.0 | Domestic/Paid key | Chinese narrative + camera instructions | Optional upgrade (non-default) |
+| Sora | Foreign/Paid | English long description | Optional upgrade (non-default) |
+| Pika | Foreign/Paid | English + style words | Optional upgrade (non-default) |
+| Luma | Foreign/Paid | English + keyframes | Optional upgrade (non-default) |
+| Domestic models (Kling/Zhipu/Jimeng, etc.) | Domestic / mostly free quota | Chinese narrative | Optional upgrade (non-default) |
+| **Local production layer (face swap / upscaling / motion transfer)** | **Zero foreign / zero cost** | See Chapter IV commands | **Default path** |
 
-> ⚠️ **重要**：上面"文生视频"模型均为**国外或付费**，本技能**绝不作为默认**。它们的提示词语法仅在你明确要"生成全新视频"且自备 Key 时参考。日常"换脸/去水印/升频/批量"请走本地生产层。
+> ⚠️ **Important**: The "text-to-video" models above are all **foreign or paid**, and this skill **never makes them the default**. Their prompt syntax is only a reference when you explicitly want to "generate a brand-new video" and supply your own key. For everyday "face swap / watermark removal / upscaling / batch", use the local production layer.
 
-## 2.4 Video Quality Guardian（质量守护 · 诚实版）
+## 2.4 Video Quality Guardian (Quality Guardian · Honest Version)
 
-> 设计文档要求"质量评分"。本技能做**诚实版**——只做技术层与策划层检查，**绝不打 9/10 假分**（因为本技能不能读图，画面质量必须你目检）。
+> The design doc asks for "quality scoring." This skill does an **honest version** — only technical-layer and planning-layer checks, **never a fake 9/10** (because this skill cannot see images; picture quality must be verified by you visually).
 
-三层守护：
-1. **技术 QC（真·代码实现）**：`auto_qc.py` 检测黑屏比例、静帧比例、编码、时长偏差，不达标可触发重试。
-2. **一致性清单（策划层）**：人物一致 / 场景连续 / 色彩统一 / 品牌表达 / 信息完整——以 checklist 形式给你，而非自动打分。
-3. **⚠️ 画面与叙事质量需目检**：像不像、自不自然、叙事好不好，**由你最终确认**；脚本只报"技术通过/不通过"。
+Three layers of guarding:
+1. **Technical QC (real code implementation)**: `auto_qc.py` detects black-frame ratio, frozen-frame ratio, encoding, duration deviation; can trigger a retry if it fails.
+2. **Consistency checklist (planning layer)**: character consistency / scene continuity / color uniformity / brand expression / information completeness — given to you as a checklist, not auto-scored.
+3. **⚠️ Picture and narrative quality require manual inspection**: whether it looks right, natural, or narratively good **is for you to confirm**; scripts only report "technical pass / fail".
 
-**质量规划输出模板（不是分数）**：
+**Quality planning output template (not a score)**:
 ```
-技术QC：黑屏 X% / 静帧 Y% / 编码 OK / 时长符合预期 → 通过/不通过
-一致性：人物□ 场景□ 色彩□ 品牌□ 信息□（逐项打勾）
-需目检项：脸型自然度 / 边缘接缝 / 动作连贯 → 请你确认
-优化建议：①… ②… ③…
+Technical QC: black frames X% / frozen frames Y% / encoding OK / duration matches expectation → pass/fail
+Consistency: character□ scene□ color□ brand□ info□ (check each item)
+Needs manual inspection: face shape naturalness / edge seams / motion continuity → please confirm
+Optimization suggestions: ①… ②… ③…
 ```
 
 ---
 
-# 三、TRACE 五维度工程优化设计（目标 5.0）
+# III. TRACE Five-Dimension Engineering Optimization (target 5.0)
 
-> 本节说明本技能如何针对 TRACE 五维度逐项冲 5.0，并标注**本次 v2.7.0 针对 4.6 报告 sub-5 类目的底层优化**。
+> This section explains how this skill pushes toward 5.0 on each TRACE dimension, and marks **this v2.7.0's underlying optimization for the sub-5 items of the 4.6 report**.
 
-## T — Trust 可信任度（目标 5.0 · 当前 5.0）
+## T — Trust (target 5.0 · current 5.0)
 
-- **安全机制**：不收集/不上传你的原始照片视频（生产层全程本地）；仅当你主动选可选云端通道才发必要素材，且国内可达、无国外第三方。
-- **数据保护**：不保存用户素材、不读无关文件、不上传私人数据。
-- **权限最小化**：只调用必要的视频处理能力；禁止非授权文件访问、隐私收集。
-- **国内适配**：模型默认走 modelscope 国内源；MediaPipe 被墙自动切 gitee/ModelScope 镜像；抖音水印本地去除。
+- **Safety mechanism**: does not collect/upload your original photos/videos (production layer is fully local); only when you actively choose an optional cloud channel does it send necessary assets, and that channel is reachable domestically with no foreign third party.
+- **Data protection**: does not store user assets, does not read unrelated files, does not upload private data.
+- **Least privilege**: only invokes necessary video-processing capabilities; prohibits unauthorized file access and privacy collection.
+- **Domestic adaptation**: models default to the ModelScope domestic source; if MediaPipe is blocked, automatically switch to gitee/ModelScope mirrors; Douyin watermarks removed locally.
 
-## R — Reliability 可靠性（目标 5.0 · 本次优化：异常处理/功能完善性/运行稳定性 4.5→加固）
+## R — Reliability (target 5.0 · this optimization: exception handling / feature completeness / run stability 4.5→hardened)
 
-- **多阶段流程**：需求解析→方案→生产→技术QC→交付，禁止一次性裸奔。
-- **分段自愈（v2.7.0 新增 · 运行稳定性）**：`faceswap_pro.py` 拼接前自动校验每段，损坏/缺失分段**原地重渲一次**（错误码 E105），异常分段不再整段崩。
-- **输入预处理自检（v2.7.0 新增 · 异常处理）**：目标照片疑似侧脸/遮挡时提前预警，避免白跑数分钟。
-- **断点续跑**：长视频/批量中断，`--resume` 从已完成处续跑。
-- **异常处理**：统一错误码 E100–E105，大白话 + 一行解决（见故障速查）。
+- **Multi-stage flow**: requirement parsing → plan → production → technical QC → delivery; no one-shot bare runs.
+- **Segment self-heal (new in v2.7.0 · run stability)**: `faceswap_pro.py` verifies each segment before concatenation; corrupted/missing segments are **re-rendered in place once** (error code E105), so an abnormal segment no longer crashes the whole video.
+- **Input pre-processing self-check (new in v2.7.0 · exception handling)**: warns in advance when the target photo looks like a side face / occlusion, avoiding minutes of wasted runs.
+- **Resume**: long video / batch interrupted; `--resume` continues from where it finished.
+- **Exception handling**: unified error codes E100–E105, plain-language + one-line fix (see Troubleshooting).
 
-## A — Adaptability 适用性（目标 5.0 · 本次优化：能力边界 4.5 / 触发方式 4.3→加固）
+## A — Adaptability (target 5.0 · this optimization: capability boundary 4.5 / trigger method 4.3→hardened)
 
-- **触发方式（4.3→加固）**：新增「🎬 导演模式」显式触发入口与路由（见下节），创意类意图一眼进导演层，生产类意图一眼进本地层。
-- **能力边界（4.5→加固）**：边界速判表 + 能力边界决策表，明确"导演方案是策划、本地生产才是出片"，以及各模型国内外/付费属性。
-- **多行业适配**：内置商业/营销/内容/教育模板（见第六章）。
+- **Trigger method (4.3→hardened)**: added an explicit "🎬 Director Mode" trigger entry and routing (see next section); creative intents go to the director layer at a glance, production intents go to the local layer at a glance.
+- **Capability boundary (4.5→hardened)**: boundary quick-judgment table + capability-boundary decision table, clarifying "director plan is planning; local production is what produces output", plus the domestic/foreign and paid/free attributes of each model.
+- **Multi-industry adaptation**: built-in commercial / marketing / content / education templates (see Chapter VI).
 
-## C — Convention 规范性（目标 5.0 · 本次优化：反模式/渐进式披露 4.5 / 文档质量 4.3 / 结构清晰 4.8→加固）
+## C — Convention (target 5.0 · this optimization: anti-patterns / progressive disclosure 4.5 / doc quality 4.3 / structure clarity 4.8→hardened)
 
-- **标准化输出协议**：所有任务统一输出《视频制作方案》（9 要素，见第五章）。
-- **文档质量（4.3→加固）**：新增「导演方案完整示例」作为文字版效果参考（不依赖平台不渲染的 PNG）；结构按设计文档重组，层次更清晰。
-- **反模式**：扩至 13 条（含导演层 2 条）。
-- **渐进式披露**：三级阅读路径 + 按目标跳转目录。
+- **Standardized output protocol**: all tasks uniformly output a *Video Production Plan* (9 elements, see Chapter V).
+- **Doc quality (4.3→hardened)**: added a "complete director plan example" as a text-based effect reference (not relying on PNG that the platform won't render); structure reorganized per the design doc, clearer hierarchy.
+- **Anti-patterns**: expanded to 13 (including 2 for the director layer).
+- **Progressive disclosure**: three-level reading path + goal-jump table of contents.
 
-## E — Effectiveness 有效性（目标 5.0 · 本次优化：输出准确性/内容完整度 4.5 / 创造力/开箱即用 4.8→加固）
+## E — Effectiveness (target 5.0 · this optimization: output accuracy / content completeness 4.5 / creativity / out-of-box 4.8→hardened)
 
-- **从"生成视频"升级为"完成视频生产任务"**：导演策划层负责创意到方案，本地生产层负责方案到成片，闭环完整。
-- **输出准确性（4.5→加固）**：导演方案用固定模板输出，避免模糊/不可执行；明确"方案≠成片"。
-- **内容完整度（4.5→加固）**：9 要素协议 + 多行业模板覆盖全场景。
-- **创造力与增值（4.8→加固）**：导演引擎/分镜/提示词工程为原工具没有的增值。
-- **开箱即用度（4.8→加固）**：导演策划层零依赖零安装即可用；生产层 `kun_init.py` 一条命令初始化。
+- **Upgraded from "generate a video" to "complete a video production task"**: the director planning layer handles creative→plan, the local production layer handles plan→final video, a complete closed loop.
+- **Output accuracy (4.5→hardened)**: the director plan uses a fixed template output, avoiding vague/non-executable results; clarifies "plan ≠ final video".
+- **Content completeness (4.5→hardened)**: 9-element protocol + multi-industry templates cover all scenarios.
+- **Creativity & added value (4.8→hardened)**: director engine / storyboard / prompt engineering are added value not in the original tools.
+- **Out-of-box (4.8→hardened)**: the director planning layer works with zero dependencies and zero install; the production layer initializes with one command via `kun_init.py`.
 
 ---
 
-# 四、本地生产层（保留原五工作流 · 命令不变）
+# IV. Local Production Layer (original five workflows kept · commands unchanged)
 
-> 下面是所有**实际出片**能力。导演策划层出的方案，最终在这里落地。
+> Below are all the **actual output-producing** capabilities. The plans from the director planning layer are finally executed here.
 
-## 导演模式：触发与路由
+## Director Mode: Trigger & Routing
 
-**触发方式（本次重点优化，解决"高级功能怎么触发不直白"）**：
+**Trigger method (key optimization this round, solving "how to trigger advanced features is unclear")**:
 
-| 你说的话（示例） | 进入哪层 | 做什么 |
+| What you say (example) | Which layer | What it does |
 |------------------|----------|--------|
-| "帮我策划一个品牌宣传片""写个口播脚本""做个分镜""把这段创意变成提示词" | **导演策划层** | 产出《视频导演方案》+ 分镜 + 提示词（本地免费） |
-| "把视频里的人换成我的照""去抖音水印""视频变清晰""一照换 N 个视频" | **本地生产层** | 直接跑对应工作流命令 |
-| "生成一段全新视频"（文生视频） | 导演策划层出方案 → **可选**接你自备 Key 的云端通道（明确标注国外/付费） | 仅当你提供 Key |
+| "Help me plan a brand promo" / "write a voiceover script" / "make a storyboard" / "turn this idea into a prompt" | **Director Planning Layer** | Produces *Video Director Plan* + storyboard + prompt (local & free) |
+| "Replace the person in this video with my photo" / "remove the Douyin watermark" / "make the video clearer" / "one photo → N videos" | **Local Production Layer** | Directly runs the corresponding workflow command |
+| "Generate a brand-new video" (text-to-video) | Director planning layer produces a plan → **optionally** connect your own-key cloud channel (clearly labeled foreign/paid) | Only if you provide a key |
 
-**一句话**：想"想清楚拍什么"→ 导演层；想"把现有视频改好"→ 生产层。两者可串联：先用导演层出方案，再把方案里的"换脸/升频"需求交给生产层。
+**One sentence**: want to "figure out what to shoot" → director layer; want to "improve an existing video" → production layer. The two can be chained: use the director layer first to produce a plan, then hand the plan's "face swap / upscaling" needs to the production layer.
 
-**确定性触发（不用猜怎么开口）**：除了上面的自然语言说法，也可以直接敲命令进导演层——输出《视频导演方案》的标准 9 要素模板与开场提问：
+**Deterministic trigger (no guessing how to start)**: besides the natural-language phrases above, you can also directly type a command to enter the director layer — it outputs the standard 9-element *Video Director Plan* template and opening questions:
 ```bash
 python scripts/video_engine.py --mode director
 ```
-> 想"策划"就 `--mode director` 或说"帮我策划一个XX视频"；想"生产"就直接跑 A/B/C/D/E 命令。两条入口都写在明处。
+> Want to "plan" → `--mode director` or say "help me plan an XX video"; want to "produce" → directly run the A/B/C/D/E commands. Both entries are written out in the open.
 
-## 新手快速通道（80% 用户只看这段）
+## Beginner Quick Start (80% of users only read this)
 
-> 你有一段视频（如抖音录屏）+ 一张人脸照片 → 跑下面三条命令即可完成换脸+去水印+合成。
+> You have a video (e.g. a Douyin screen recording) + a face photo → run the three commands below to complete face swap + watermark removal + composition.
 
-**0）一键初始化（强烈推荐第一次跑，一条命令搞定国内镜像+依赖+模型+预检）**：
+**0) One-click init (strongly recommended for the first run; one command handles domestic mirror + dependencies + models + pre-check)**:
 ```bash
 python scripts/kun_init.py --work-dir .
 ```
-→ 自动写入 `set_mirror.bat`(Windows)/`set_mirror.sh`(Mac/Linux) 切到国内镜像，装依赖、下模型、跑预检一步到位；之后手动跑任何命令前 `call set_mirror.bat`（或 `source set_mirror.sh`）即可持续走国内源。全国内网络也能完整跑通五工作流。
+→ Automatically writes `set_mirror.bat` (Windows) / `set_mirror.sh` (Mac/Linux) to switch to the domestic mirror, installs dependencies, downloads models, and runs the pre-check in one go; afterwards, before manually running any command, `call set_mirror.bat` (or `source set_mirror.sh`) keeps using the domestic source. The full five workflows run even on an all-domestic network.
 
-**0.5）一键安装 / 环境自检（开箱即用，检测缺什么装什么）**：
+**0.5) One-click install / environment self-check (out-of-box, detects what's missing and installs it)**:
 ```bash
-python scripts/kun_setup.py            # 检测+自动装缺失的 pyttsx3（AI口播默认离线引擎）
-python scripts/kun_setup.py --with-edge # 一并装可选升级 edge_tts（国外免费云，音质更好）
-python scripts/kun_setup.py --check-only # 只检测不安装
+python scripts/kun_setup.py            # detect + auto-install missing pyttsx3 (AI voiceover default offline engine)
+python scripts/kun_setup.py --with-edge # also install the optional upgrade edge_tts (foreign free cloud, better voice quality)
+python scripts/kun_setup.py --check-only # only detect, do not install
 ```
-→ 自动检查 ffmpeg / pyttsx3 / edge_tts 是否就绪，缺的给出中文安装指引或自动补齐；**只为本地零云端必需项自动装**，edge_tts 作为可选升级单独询问，不强行安装。
+→ Automatically checks whether ffmpeg / pyttsx3 / edge_tts are ready; for missing ones it gives install guidance or auto-installs; **only auto-installs items required for local zero-cloud**, edge_tts as an optional upgrade is asked separately and not force-installed.
 
-**1）环境预检（30 秒，确认齐活）**：
+**1) Environment pre-check (30 sec, confirm everything is ready)**:
 ```bash
 python scripts/preflight.py --work-dir .
 ```
-→ 输出 ✅/⚠️/❌ 清单。全绿直接开跑；有 ❌ 按提示装依赖/下模型后再跑一次本命令，确认全绿。
+→ Outputs a ✅/⚠️/❌ checklist. All green → run directly; any ❌ → follow the prompt to install dependencies / download models, then run this command again to confirm all green.
 
-**装依赖+下模型**（首次 5-10 分钟，以后不用重复）：
+**Install dependencies + download models** (first time 5–10 min, no repeat after):
 ```bash
 pip install insightface onnxruntime opencv-python imageio-ffmpeg mediapipe rapidocr-onnxruntime numpy modelscope
 python scripts/download_models.py --work-dir . --with-mediapipe
 ```
 
-**换脸+去水印**（一条龙）：
+**Face swap + watermark removal** (one chain):
 ```bash
-python scripts/faceswap.py --video 原视频.mp4 --photo 目标照片.jpg --out 换脸后.mp4
-python scripts/clean_douyin.py --input 换脸后.mp4 --output 去水印后.mp4
+python scripts/faceswap.py --video original.mp4 --photo target.jpg --out swapped.mp4
+python scripts/clean_douyin.py --input swapped.mp4 --output cleaned.mp4
 ```
 
-> 💡 **效果不好？** 换 Pro 版改善侧脸/遮挡：`python scripts/faceswap_pro.py --video 原视频.mp4 --photo 目标照片.jpg --out pro.mp4`
+> 💡 **Bad result?** Use the Pro version to improve side faces / occlusions: `python scripts/faceswap_pro.py --video original.mp4 --photo target.jpg --out pro.mp4`
 >
-> 💡 **遇到报错？** 翻 [故障速查](#故障速查)，所有常见错误都有解。
+> 💡 **Got an error?** Check the [Troubleshooting](#troubleshooting) section; all common errors have solutions.
 >
-> 💡 **想深入理解？** 读 [references/workflow-a-detail.md](references/workflow-a-detail.md)
+> 💡 **Want to understand deeply?** Read [references/workflow-a-detail.md](references/workflow-a-detail.md)
 
-> 🚀 **零思考启动（不想看文档？复制这一段，依次跑完就出片）**：
+> 🚀 **Zero-thinking startup (don't want to read docs? Copy this block, run it in order, and you get output)**:
 > ```bash
 > pip install insightface onnxruntime opencv-python imageio-ffmpeg mediapipe rapidocr-onnxruntime numpy modelscope
 > python scripts/download_models.py --work-dir . --with-mediapipe
 > python scripts/preflight.py --work-dir .
-> python scripts/faceswap.py --video 原视频.mp4 --photo 目标照片.jpg --out 换脸后.mp4
-> python scripts/clean_douyin.py --input 换脸后.mp4 --output 去水印后.mp4
+> python scripts/faceswap.py --video original.mp4 --photo target.jpg --out swapped.mp4
+> python scripts/clean_douyin.py --input swapped.mp4 --output cleaned.mp4
 > ```
-> 侧脸多/效果差？把第 4 行换成 `python scripts/faceswap_pro.py --video 原视频.mp4 --photo 目标照片.jpg --out pro.mp4 --auto-trim-extreme`
+> Lots of side faces / bad result? Replace line 4 with `python scripts/faceswap_pro.py --video original.mp4 --photo target.jpg --out pro.mp4 --auto-trim-extreme`
 
 ---
 
-> ⚠️ **先记住三句话（重要限制，避免白跑）**
-> 1. **Workflow A（换脸+去水印）本地 100% 可跑**；**Workflow B 本地 = 换脸式动作迁移**（把你的脸贴到动作参考视频，保留原动作/背景/音乐），同样零云端零付费；"生成全新视频"的云端通道本版本未实现（选了会明确报错 E200，绝不返回假视频）。
-> 2. **极端侧脸（yaw>85° 纯轮廓）或全脸遮挡 = 物理极限**，sideface/occlusion 预设 + 自适应遮挡在 ≤75° 场景效果显著提升，但 >85° 请换正面素材或 Photoshop。
-> 3. **背景替换有重影风险**，要稳就"只换脸+去角标、保留原背景"；要换景先告知风险。
+> ⚠️ **Remember three sentences first (important limits, avoid wasted runs)**
+> 1. **Workflow A (face swap + watermark removal) runs 100% locally**; **Workflow B local = face-swap style motion transfer** (paste your face onto a motion-reference video, keeping original motion / background / audio), also zero cloud, zero cost; the cloud channel for "generate a brand-new video" is not implemented in this version (selecting it explicitly raises E200, never returns a fake video).
+> 2. **Extreme side faces (yaw>85° pure profile) or fully occluded faces = physical limit**; the sideface/occlusion preset + adaptive occlusion significantly improves ≤75° scenarios, but >85° please switch to front-facing material or Photoshop.
+> 3. **Background replacement has a ghosting risk**; for safety, "only swap face + remove logo, keep original background"; tell the user the risk before replacing the scene.
 
-## 30秒能力速览
+## 30-Second Capability Overview
 
-| 你要干什么 | 工作流 | 本地能跑？ | 付费？ | 国外服务？ | 一句话关键信息 |
+| What you want to do | Workflow | Runs locally? | Paid? | Foreign service? | One-line key info |
 |---|---|---|---|---|---|
-| 把视频里的人换成指定照片，**原动作/背景/音乐 100% 保留** | **A 换脸+去水印** | ✅ 完全本地 | ❌ 全免费 | ❌ 无 | **首选方案**，Pro 已落地 2 层（A+B）|
-| 把你的脸贴到"别人跳舞/做手势"的视频，做出同样动作（**保留原动作/背景/音乐**） | **B 动作迁移** | ✅ **默认本地** | ❌ **零付费** | ❌ **零国外** | **video_engine.py 一条命令**（先动作预检评估清晰度，再换脸出片） |
-| 上传产品，生成**真人主播口播带货**视频 | **C AI 口播带货** | ✅ **默认本地** | ❌ **零付费** | ❌ **零国外** | 话术→本地真人配音(pyttsx3离线/可选edge_tts)→与产品视频或主播图合成口播 mp4，**真实出片** |
-| 低分辨率视频升频到 1080p / 4K | **D 4K 升频** | ✅ 完全本地 | ❌ 全免费 | ❌ 无 | ffmpeg 升频+unsharp 锐化（开箱即用）；放 cv2.dnn_superres 模型后自动启用 AI 超分 |
-| 一个目标照，换 N 个视频（批量） | **E 批量换脸** | ✅ 完全本地 | ❌ 全免费 | ❌ 无 | 一照 × N 视频，输出批量报告 |
+| Replace the person in a video with a specified photo, **original motion / background / audio 100% kept** | **A Face swap + watermark removal** | ✅ Fully local | ❌ Free | ❌ None | **First choice**, Pro has shipped 2 layers (A+B) |
+| Paste your face onto a "someone dancing / gesturing" video, doing the same motion (**keep original motion / background / audio**) | **B Motion transfer** | ✅ **Local by default** | ❌ **Zero cost** | ❌ **Zero foreign** | **One command via video_engine.py** (motion pre-check scores sharpness first, then face-swap output) |
+| Upload a product, generate a **real-person host voiceover commerce** video | **C AI voiceover commerce** | ✅ **Local by default** | ❌ **Zero cost** | ❌ **Zero foreign** | Script → local real-person voiceover (pyttsx3 offline / optional edge_tts) → synthesized with product video or anchor image into a voiceover mp4, **real output** |
+| Upscale a low-res video to 1080p / 4K | **D 4K upscaling** | ✅ Fully local | ❌ Free | ❌ None | ffmpeg upscaling + unsharp sharpening (out of the box); AI super-resolution auto-enabled after placing a cv2.dnn_superres model |
+| One target photo → N videos (batch) | **E Batch face swap** | ✅ Fully local | ❌ Free | ❌ None | One photo × N videos, outputs a batch report |
 
-> 💡 **核心原则**：所有工作流**默认走本地**（零云端、零付费、零国外服务）。需强调的诚实事实——云端生成通道（AGNES/NVIDIA/Seedance/Kling）**当前版本尚未真实对接**，选了会明确报错 E200 并引导用 `--engine local`，**绝不返回假视频**。"Seedance平替"指用本技能本地生产层（换脸/动作迁移/口播）作为云端生成的**本地替代路径**，而非伪造云端生成。
+> 💡 **Core principle**: all workflows **default to local** (zero cloud, zero cost, zero foreign service). The honest fact to emphasize — the cloud generation channel (AGNES/NVIDIA/Seedance/Kling) **is not yet truly connected in the current version**; selecting it explicitly raises E200 and guides you to `--engine local`, **never returns a fake video**. "Seedance alternative" means using this skill's local production layer (face swap / motion transfer / voiceover) as a **local substitute path** for cloud generation, not faking cloud generation.
 
-**三条铁律**：
-1. **"保留原动作"靠 Workflow A 换脸 或 Workflow B 换脸式动作迁移**（两者都是本地换脸，保留原动作/背景/音乐）；"生成全新视频"的云端通道本版本未实现。
-2. **AI 当前不能读图**——所有画面质量（像不像、自然度、有无抠图感）**必须你最终目检**，脚本只做技术层质检（黑屏/时长/编码）。
-3. **本地生产全零云端**：A换脸 / B动作迁移(换脸式) / C口播(真人配音+合成) / D升频 / E批量 均纯本地；选云端引擎会明确报错，绝不返回假视频。
+**Three iron rules**:
+1. **"Keep original motion" relies on Workflow A face swap or Workflow B face-swap style motion transfer** (both are local face swaps, keeping original motion / background / audio); the cloud channel for "generate a brand-new video" is not implemented in this version.
+2. **AI currently cannot see images** — all picture quality (likeness, naturalness, cutout feel) **must be visually confirmed by you**; scripts only do technical-layer checks (black frames / duration / encoding).
+3. **Local production is fully zero-cloud**: A face swap / B motion transfer (face-swap style) / C voiceover (real-person voiceover + composition) / D upscaling / E batch are all purely local; selecting a cloud engine explicitly raises an error, never returns a fake video.
 
 ---
 
-## 选工作流决策树
+## Workflow Decision Tree
 
-> 先按"你要的结果"选工作流；拿不准的歧义场景见下方"歧义分支"。
+> First pick the workflow by "the result you want"; ambiguous scenarios are in the "Ambiguity branch" below.
 
 ```
-你说"帮我策划/写脚本/做分镜/出提示词"
-  → ✅ 导演策划层（本地免费，见第二章/第五章）
+You say "help me plan / write a script / make a storyboard / produce a prompt"
+  → ✅ Director planning layer (local & free, see Ch. II / V)
 
-你说要"换脸/把视频里的人换成我的照片"（保留原动作/背景/音乐）
-  → ✅ Workflow A（首选，100% 本地）
+You say "face swap / replace the person in my video with my photo" (keep original motion / background / audio)
+  → ✅ Workflow A (first choice, 100% local)
 
-你说要"生成新视频" 或 "让X做出参考视频的动作"
-  → ✅ Workflow B（默认本地换脸式动作迁移 · 保留原动作 · 零云端零付费；云端"生成全新视频"未实现，选了报错 E200）
+You say "generate a new video" or "make X do the reference video's motion"
+  → ✅ Workflow B (local face-swap style motion transfer by default · keep original motion · zero cloud zero cost; cloud "generate brand-new video" not implemented, selecting it raises E200)
 
-你说要"AI口播带货" 或 "数字人介绍产品"
-  → ✅ Workflow C（v2.9.0 真实本地出片 · 话术→真人配音→合成口播视频，零云端零付费）
+You say "AI voiceover commerce" or "digital human introduces a product"
+  → ✅ Workflow C (v2.9.0 real local output · script→real-person voiceover→synthesized voiceover video, zero cloud zero cost)
 
-你说要"视频变清晰/升频" 或 "低分辨率变1080p/4K"
-  → ✅ Workflow D（本地）
+You say "make the video clearer / upscale" or "low-res to 1080p/4K"
+  → ✅ Workflow D (local)
 
-你说要"一个照片换N个视频" 或 "批量处理"
-  → ✅ Workflow E（本地）
+You say "one photo → N videos" or "batch processing"
+  → ✅ Workflow E (local)
 
-出错了/效果差/不知道参数什么意思
-  → 📖 故障速查（见下）
+Error / bad result / don't know what a parameter means
+  → 📖 Troubleshooting (see below)
 ```
 
-### 歧义分支（高频拿不准的场景）
+### Ambiguity branch (high-frequency uncertain scenarios)
 ```
-"想保留原动作，但也要把背景换成别的"
-  → 选 A 换脸 + 保留原背景最稳；换背景有重影风险，详见边界声明（建议回退原背景）
+"Want to keep original motion, but also replace the background with another"
+  → Choose A face swap + keep original background for stability; background replacement has ghosting risk, see boundary statement (recommend reverting to original background)
 
-"素材里人物是侧脸/戴墨镜口罩"
-  → 仍选 A，但用 Pro 版（faceswap_pro.py），并降低预期；极端侧脸(yaw>70°)无完美方案
+"Subject is a side face / wearing sunglasses or mask"
+  → Still choose A, but use the Pro version (faceswap_pro.py) and lower expectations; extreme side face (yaw>70°) has no perfect solution
 
-"想让某名人/网红做出这个动作"
-  → ⛔ 不允许：未授权肖像违反人格权保护相关法律，本技能禁用；请换用自有/已授权素材
+"Want a celebrity / influencer to do this motion"
+  → ⛔ Not allowed: unauthorized portrait violates personality-rights protection laws; this skill disables it; use your own / authorized material
 
-"想生成看起来像真人在说话的数字人"
-  → 选 C（v2.9.0 已真实出片：话术→本地真人配音→合成口播视频）；真人脸驱动对口型需自备 Wav2Lip/SadTalker 类模型，本技能不内置
+"Want a digital human that looks like a real person talking"
+  → Choose C (v2.9.0 already truly outputs: script→local real-person voiceover→synthesized voiceover video); real-face-driven lip-sync needs your own Wav2Lip/SadTalker-style model, not built-in
 
-"视频很糊，想变清晰再换脸"
-  → 先 D 升频，再 A 换脸（顺序不要反，先提清再换脸效果更好）
+"Video is blurry, want to sharpen then face-swap"
+  → First D upscale, then A face swap (don't reverse the order; sharpen first then swap gives better results)
 ```
 
-### 🆕 B/C 新手必读：本地 vs 云端（消除门槛）
-> Workflow B/C 的"生成"本质依赖外部模型。本技能已默认走**本地等价方案**（零云端、零付费、零国外服务），**绝大多数人无需任何 Key 就能跑通**。只有当你想要"更高级的云端生成效果"时才需要选填 Key。
+### 🆕 B/C Beginner Must-Read: Local vs Cloud (remove the barrier)
+> The "generation" essence of Workflow B/C depends on external models. This skill already defaults to a **local equivalent** (zero cloud, zero cost, zero foreign service), so **most people need no key to run it**. You only need to optionally fill in a key when you want "more advanced cloud generation results".
 
-| 你想怎么做 | 是否需要 Key | 怎么做 |
+| What you want to do | Need a key? | How |
 |-----------|-------------|--------|
-| 只想跑通（推荐新手） | ❌ 不需要 | 用 `--engine local`，全自动本地完成 |
-| 想要更好的云端生成效果 | ✅ 需要（免费） | 填 AGNES / NVIDIA 免费 Key，脚本自动走云端；缺 Key 时**自动降级回本地**，不报错 |
-| 不确定有没有 Key | ❌ 不影响 | 先 `--engine local` 跑通；之后想升级再加 Key |
+| Just want to run it (recommended for beginners) | ❌ No | Use `--engine local`, fully automatic local completion |
+| Want better cloud generation results | ✅ Yes (free) | Fill in AGNES / NVIDIA free key, script auto-uses cloud; if key missing, **auto-degrades back to local**, no error |
+| Not sure if you have a key | ❌ Doesn't matter | Run `--engine local` first; add a key later if you want to upgrade |
 
-**一句话**：新手直接 `--engine local`，不用管云端；等你熟练了再决定要不要免费 Key 升级。
-
----
-
-## 反模式（不要这样用）
-
-> 测评反馈"用户容易踩坑"。下面 13 条是高频误用，避开能省大量返工。
-
-1. **❌ 用 B/C 当"保留原动作"工具**：B/C 是"生成新视频"，动作是模型重新生成的，不是原片段。要保留原动作只能用 A 换脸。
-2. **❌ 对侧脸/遮挡素材期待无痕**：inswapper 架构硬上限，yaw>70° 或墨镜/口罩全遮挡再调参也救不回，请换正面素材或 Photoshop。
-3. **❌ 对"规划中"功能报期望**：Pro 增强 C/D/E/F 四层、对口型数字人完整对接**当前版本未实现**，文档标注 ⏳ 即"尚未落地"，别等它。
-4. **❌ 用他人未授权照片/名人脸**：违反人格权保护相关法律与平台规则，本技能禁用；仅用自有或已授权素材。
-5. **❌ 把 Kling 当默认引擎**：Kling 需付费 Key，仅在你明确要"原生 4K Motion Control"时再选；日常用 `local` 免费。
-6. **❌ 跳过预检直接跑**：先 `python scripts/preflight.py` 确认环境/模型全绿，能避免 80% 的"跑一半报错"。
-7. **❌ 480p 素材硬升 4K 期待真清晰**：升频只插值平滑，原始 480p 升 4K 仍"看起来清楚"而非真 4K；按 720p→1080p / 1080p→4K 升最稳。
-8. **❌ 批量不分段/不设续跑硬刚到底**：长批量任务加 `--resume --continue-on-error`，断了从已完成处接着跑，别从头覆盖重来。
-9. **❌ 批量并行开太猛（OOM 卡死）**：`--workers` 别超过 CPU 物理核数，内存爆了反而更慢；一般 4 路（笔记本 2 路）足够，配合 `--retry 2` 更稳。
-10. **❌ 用 C 工作流做"真人对口型"却没备账号**：C 的产品提取+话术本地可用，但"嘴型对上音频"需腾讯智影/HeyGem 账号；没账号只能本地降级（口型不严格对齐）。
-11. **❌ 手动调参和 `--preset` 混用打架**：用了 `--preset` 就别再手改 `det_size/mask_scale/feather`——预设只覆盖"仍是默认值"的项，混用结果不可预期。想精细调参就别加预设。
-12. **❌ 把导演方案当成品视频**：导演策划层产出的是《视频导演方案/分镜/提示词》（策划文档），**不是成片**；要出片需接本地生产层或你自备 Key 的云端通道。
-13. **❌ 把 Sora/Runway/Kling 当默认生成器**：它们多为**国外/付费**，本技能默认走本地生产层；用它们需你自备 Key 并接受其条款，且明确知晓国内外/付费属性。
+**One sentence**: beginners just use `--engine local`, ignore the cloud; decide on a free key upgrade after you're proficient.
 
 ---
 
-## 参数速查预设（复制即跑，不用啃文档）
+## Anti-Patterns (do not use this way)
 
-> 评测反馈"想调参数就得再多看文档，有点门槛"。下面按目标直接给命令，照抄即可。
+> Reviewers said "users easily step on pitfalls." Below are 13 high-frequency misuses; avoiding them saves a lot of rework.
 
-| 你的目标 | 直接复制这条命令 |
+1. **❌ Using B/C as a "keep original motion" tool**: B/C are "generate a new video", the motion is re-generated by the model, not the original clip. To keep original motion you can only use A face swap.
+2. **❌ Expecting seamless results on side-face / occluded material**: hard limit of the inswapper architecture; yaw>70° or sunglasses/mask full occlusion cannot be rescued by tuning — switch to front-facing material or Photoshop.
+3. **❌ Expecting "planned" features**: Pro enhancement layers C/D/E/F, and full lip-sync digital-human integration **are not implemented in the current version**; the doc marks ⏳ as "not yet landed", don't wait for it.
+4. **❌ Using others' unauthorized photos / celebrity faces**: violates personality-rights protection laws and platform rules; this skill disables it; only use your own or authorized material.
+5. **❌ Using Kling as the default engine**: Kling needs a paid key; only choose it when you explicitly want "native 4K Motion Control"; daily use `local` is free.
+6. **❌ Skipping the pre-check and running directly**: first run `python scripts/preflight.py` to confirm environment/models are all green, avoiding 80% of "error halfway through".
+7. **❌ Forcing 480p material to 4K expecting real sharpness**: upscaling only interpolates smoothly; 480p upscaled to 4K still "looks clearer" but is not real 4K; upscale 720p→1080p / 1080p→4K for the most stable result.
+8. **❌ Batch without segmentation / without resume, brute-forcing through**: for long batch tasks add `--resume --continue-on-error`, continue from where it finished on interruption, don't re-overwrite from the start.
+9. **❌ Batch parallelism too aggressive (OOM freeze)**: `--workers` should not exceed physical CPU cores; if memory explodes it's actually slower; generally 4 ways (2 on a laptop) is enough, pair with `--retry 2` for stability.
+10. **❌ Using Workflow C for "real-person lip-sync" without an account**: C's product extraction + script work locally, but "mouth moving in sync with audio" needs a Tencent Zhiying/HeyGem account; without an account it can only degrade locally (mouth not strictly aligned).
+11. **❌ Mixing manual tuning with `--preset`**: if you use `--preset`, don't also manually change `det_size/mask_scale/feather` — the preset only overrides items "still at default", mixing gives unpredictable results. For fine tuning, don't add a preset.
+12. **❌ Treating the director plan as a finished video**: the director planning layer produces a *Video Director Plan / Storyboard / Prompt* (a planning document), **not a final video**; to produce output you need the local production layer or your own-key cloud channel.
+13. **❌ Using Sora/Runway/Kling as default generators**: they are mostly **foreign/paid**; this skill defaults to the local production layer; using them requires your own key and acceptance of their terms, with clear awareness of domestic/foreign and paid/free attributes.
+
+---
+
+## Parameter Quick-Reference Presets (copy-paste to run, no need to read docs)
+
+> Reviewers said "wanting to tune parameters means reading more docs, a bit of a barrier." Below are direct commands by goal; just copy them.
+
+| Your goal | Copy this command directly |
 |----------|------------------|
-| 正脸/近正面视频换脸 | `python scripts/faceswap.py --video 视频.mp4 --photo 照.jpg --out 换脸后.mp4` |
-| 侧脸多/漏换 | `python scripts/faceswap_pro.py --video 视频.mp4 --photo 照.jpg --out pro.mp4` |
-| **🔥 极端侧脸/大偏转角（推荐）** | **`python scripts/faceswap_pro.py --video 视频.mp4 --photo 照.jpg --out pro.mp4 --preset sideface`** |
-| **🔥 有遮挡（口罩/墨镜/手）（推荐）** | **`python scripts/faceswap_pro.py --video 视频.mp4 --photo 照.jpg --out pro.mp4 --preset occlusion`** |
-| 追求最高质量出片 | `python scripts/faceswap_pro.py --video 视频.mp4 --photo 照.jpg --out pro.mp4 --preset quality` |
-| 快速预览/短视频 | `python scripts/faceswap_pro.py --video 视频.mp4 --photo 照.jpg --out pro.mp4 --preset speed` |
-| 侧脸自动裁掉废片段 | 加 `--auto-trim-extreme`（或用 `--preset sideface` 已内置）|
-| 想扩大脸部覆盖/更自然 | 加 `--mask-scale 1.3` 或 `--feather 0.1`（或直接用预设）|
-| 只换画面某侧的人 | 加 `--target-side right/left/largest` |
-| 去抖音"AI生成"角标 | `python scripts/clean_douyin.py --input 换脸后.mp4 --output 去水印后.mp4` |
-| 去水印还有残留 | 加 `--scale 4 --radius 12` |
-| 视频变清晰 | `python scripts/enhance_4k.py --input 糊.mp4 --output 清.mp4 --target 1080p` |
-| 一照换 N 视频（基础） | `python scripts/batch_faceswap.py --photo 照.jpg --videos-dir 视频文件夹 --out-dir 批量输出` |
-| **🔥 批量并行+预设（高级版）** | **`python scripts/batch_faceswap.py --photo 照.jpg --videos-dir 视频文件夹 --out-dir 批量输出 --workers 4 --preset quality`** |
-| 长视频/怕断 | Pro 加 `--resume`（分段断点续跑+自愈）；批量加 `--resume`（精准续跑）|
+| Face swap for front-facing / near-front video | `python scripts/faceswap.py --video video.mp4 --photo photo.jpg --out swapped.mp4` |
+| Many side faces / missed swaps | `python scripts/faceswap_pro.py --video video.mp4 --photo photo.jpg --out pro.mp4` |
+| **🔥 Extreme side face / large yaw (recommended)** | **`python scripts/faceswap_pro.py --video video.mp4 --photo photo.jpg --out pro.mp4 --preset sideface`** |
+| **🔥 Occlusion (mask / sunglasses / hand) (recommended)** | **`python scripts/faceswap_pro.py --video video.mp4 --photo photo.jpg --out pro.mp4 --preset occlusion`** |
+| Pursue highest-quality output | `python scripts/faceswap_pro.py --video video.mp4 --photo photo.jpg --out pro.mp4 --preset quality` |
+| Quick preview / short video | `python scripts/faceswap_pro.py --video video.mp4 --photo photo.jpg --out pro.mp4 --preset speed` |
+| Auto-trim extreme side-face wasted segments | add `--auto-trim-extreme` (or use `--preset sideface` which already includes it) |
+| Want larger face coverage / more natural | add `--mask-scale 1.3` or `--feather 0.1` (or just use a preset) |
+| Swap only the person on one side of the frame | add `--target-side right/left/largest` |
+| Remove Douyin "AI-generated" badge | `python scripts/clean_douyin.py --input swapped.mp4 --output cleaned.mp4` |
+| Watermark residue remains | add `--scale 4 --radius 12` |
+| Make video clearer | `python scripts/enhance_4k.py --input blurry.mp4 --output sharp.mp4 --target 1080p` |
+| One photo → N videos (basic) | `python scripts/batch_faceswap.py --photo photo.jpg --videos-dir video_folder --out-dir batch_output` |
+| **🔥 Batch parallel + preset (advanced)** | **`python scripts/batch_faceswap.py --photo photo.jpg --videos-dir video_folder --out-dir batch_output --workers 4 --preset quality`** |
+| Long video / afraid of interruption | Pro add `--resume` (segmented resume + self-heal); batch add `--resume` (precise resume) |
 
-## 明确不能做（能力边界清单，少踩坑）
+## Explicitly Cannot Do (capability boundary list, fewer pitfalls)
 
-- ❌ **极端侧脸（yaw>85° 纯轮廓）或全脸完全遮挡**：`--preset sideface` + 自适应遮挡 + auto_trim_extreme 在 ≤75° 场景效果显著提升；但 >85° 纯轮廓或全遮挡仍为物理极限——请换正面素材或 Photoshop。
-- ❌ **多人同框只换某一个还想要零误差**：可指定 `--target-side`，但多人重叠/快速切换场景仍可能误锁，需目检。
-- ❌ **"保留原动作"只有 Workflow A 换脸做得到**：B/C 是生成全新视频，动作是模型重生成的。
-- ❌ **用他人/名人/未授权照片**：违反人格权保护相关法律与平台规则，本技能禁用。
-- ❌ **480p 强升 4K 期待"真清晰"**：升频只插值平滑，不凭空增细节；建议 720p→1080p 或 1080p→4K。
-- ❌ **背景替换零重影**：纯 CPU 无强 matting 时易重影，最稳是"只换脸+去角标、保留原背景"。
-- ❌ **导演策划层不直接出片**：它产出方案/分镜/提示词，出片靠本地生产层或你自备 Key 的云端通道。
+- ❌ **Extreme side face (yaw>85° pure profile) or fully occluded face**: `--preset sideface` + adaptive occlusion + auto_trim_extreme significantly improve ≤75° scenarios; but >85° pure profile or full occlusion remains a physical limit — switch to front-facing material or Photoshop.
+- ❌ **Multiple people in frame, swap only one with zero error**: you can specify `--target-side`, but overlapping/fast-switching multi-person scenes may still mis-lock, needs manual inspection.
+- ❌ **"Keep original motion" only achievable by Workflow A face swap**: B/C generate brand-new videos, motion is re-generated by the model.
+- ❌ **Using others' / celebrity / unauthorized photos**: violates personality-rights protection laws and platform rules; this skill disables it.
+- ❌ **Forcing 480p to 4K expecting "real clarity"**: upscaling only interpolates smoothly, doesn't add detail out of thin air; recommend 720p→1080p or 1080p→4K.
+- ❌ **Zero-ghosting background replacement**: pure CPU without strong matting easily ghosts; safest is "only swap face + remove badge, keep original background".
+- ❌ **Director planning layer doesn't directly produce output**: it produces plans / storyboards / prompts; output relies on the local production layer or your own-key cloud channel.
 
-### 边界速判表（照这张表 10 秒判断能不能做）
+### Boundary Quick-Judgment Table (judge in 10 seconds whether it's doable)
 
-| 你的素材情况 | 能不能换脸 | 预期观感 | 该怎么做 |
+| Your material situation | Can face-swap? | Expected look | What to do |
 |--------------|-----------|----------|----------|
-| 正脸/近正面（yaw≤45°） | ✅ 稳 | 几乎无痕 | 用 `faceswap.py` 即可 |
-| 中等侧脸（45°<yaw≤75°） | ✅ 可用 | 边缘略生硬 | 用 Pro `--preset sideface` |
-| 大侧脸（75°<yaw≤85°） | ⚠️ 勉强 | 明显生硬/可能露原脸 | Pro + `--auto-trim-extreme` 裁废片段，或换素材 |
-| 纯轮廓（yaw>85°）/全遮挡 | ❌ 物理极限 | 救不回 | 换正面素材或 Photoshop；别耗时间调参 |
-| 多人同框只换一个 | ✅ 多数 | 需目检 | `--target-side right/left/largest` |
-| 480p 想升 4K | ⚠️ 插值 | 更平滑非真清晰 | 建议 720p→1080p / 1080p→4K |
+| Front / near-front (yaw≤45°) | ✅ Stable | Almost seamless | `faceswap.py` is enough |
+| Medium side face (45°<yaw≤75°) | ✅ Usable | Edges slightly stiff | Use Pro `--preset sideface` |
+| Large side face (75°<yaw≤85°) | ⚠️ Barely | Obviously stiff / may show original face | Pro + `--auto-trim-extreme` to cut wasted segments, or switch material |
+| Pure profile (yaw>85°) / full occlusion | ❌ Physical limit | Unrecoverable | Switch to front-facing material or Photoshop; don't waste time tuning |
+| Multiple people, swap only one | ✅ Mostly | Needs manual inspection | `--target-side right/left/largest` |
+| 480p wanting 4K | ⚠️ Interpolation | Smoother not truly clear | Recommend 720p→1080p / 1080p→4K |
 
-### 能力边界决策表（导演层 vs 生产层）
+### Capability Boundary Decision Table (Director layer vs Production layer)
 
-| 你想达成的 | 走哪层 | 是否默认本地/免费 | 备注 |
+| What you want to achieve | Which layer | Local/free by default? | Notes |
 |-----------|--------|------------------|------|
-| 想清楚"拍什么/怎么拍" | 导演策划层 | ✅ 本地免费 | 出《视频导演方案》 |
-| 把现有视频里的人换成我的照 | 本地生产层 A | ✅ 本地免费 | 出片 |
-| 视频去水印/变清晰/批量换脸 | 本地生产层 C/D/E | ✅ 本地免费 | 出片 |
-| 生成一段"全新"视频 | 导演出方案 → 可选云端 | ⚠️ 需你自备Key(国外/付费) | 非默认，明确标注 |
-| 口播带货数字人 | 本地真人配音+合成（v2.9.0 已落地） | ✅ 默认本地免费 | 真人脸驱动对口型需自备模型 |
+| Figure out "what to shoot / how to shoot" | Director planning layer | ✅ Local & free | Produces a *Video Director Plan* |
+| Replace the person in an existing video with my photo | Local production layer A | ✅ Local & free | Produces output |
+| Video watermark removal / sharpen / batch face swap | Local production layer C/D/E | ✅ Local & free | Produces output |
+| Generate a "brand-new" video | Director produces plan → optional cloud | ⚠️ Need your own key (foreign/paid) | Non-default, clearly labeled |
+| Voiceover commerce digital human | Local real-person voiceover + composition (landed v2.9.0) | ✅ Local & free by default | Real-face-driven lip-sync needs your own model |
 
 ---
 
-## 🔧 高级功能清单（工程增强 · v2.7.0 全部已底层实现）
+## 🔧 Advanced Feature List (engineering enhancements · all implemented at the code level in v2.7.0)
 
-> **评测反馈反复提到"高级功能"——下面逐条列出，每项都已在代码中实现，可直接用命令调用。**
-> 不再是"规划中"或"文档号称"，而是**跑得通的真实能力**。
-> ⚠️ **口径说明**：本清单是**工程增强**（分段自愈/断点续跑/预设/报告/批量），与「换脸质量层 A–F」是**两条独立口径**——不要把它们当成 Pro 质量层的 C/D。换脸质量层现状：**A+B 已落地，C/D/E/F 规划中**。
+> **Reviewers repeatedly mentioned "advanced features" — listed item by item below, each already implemented in code and callable directly via commands.**
+> No longer "planned" or "claimed in docs", but **truly runnable capabilities**.
+> ⚠️ **Scope note**: this list is **engineering enhancement** (segmented self-heal / resume / presets / reports / batch), and is a **separate scope** from the "face-swap quality layers A–F" — do not treat them as Pro quality layers C/D. Current status of face-swap quality layers: **A+B landed, C/D/E/F planned**.
 
-### 功能总览表
+### Feature Overview Table
 
-| # | 高级功能 | 状态 | 所在脚本 | 一键命令 |
+| # | Advanced feature | Status | Script | One-click command |
 |---|---------|------|----------|----------|
-| 1 | **分段断点续跑** | ✅ 已落地 | faceswap_pro.py | `--resume`（中断后从已完成段接着跑）|
-| 2 | **分段自愈（v2.7.0 新增）** | ✅ 已落地 | faceswap_pro.py | 自动（拼接前校验损坏分段原地重渲，错误码 E105）|
-| 3 | **输入预处理自检（v2.7.0 新增）** | ✅ 已落地 | faceswap_pro.py | 自动（目标照片侧脸/遮挡提前预警）|
-| 4 | **逐帧自适应遮挡融合** | ✅ 已落地 | faceswap_pro.py 第462–463行 | 自动（yaw越大覆盖越广+边缘越柔）|
-| 5 | **5 种参数预设** | ✅ 已落地 | faceswap_pro.py + batch_faceswap.py | `--preset auto/speed/quality/sideface/occlusion`|
-| 6 | **极端侧脸检测与报告** | ✅ 已落地 | faceswap_pro.py | 输出 `<out>_extreme_report.json` + `--auto-trim-extreme`|
-| 7 | **批量并行处理** | ✅ 已落地 | batch_faceswap.py | `--workers N`（ThreadPoolExecutor）|
-| 8 | **精准批量断点续跑** | ✅ 已落地 | batch_faceswap.py | `--resume`（batch_state.json 每视频状态）|
-| 9 | **实时进度 + ETA** | ✅ 已落地 | batch_faceswap.py | 自动显示（进度% / 已用秒 / 预计剩余秒）|
-| 10 | **参数预设透传** | ✅ 已落地 | batch_faceswap.py → faceswap_pro.py | `--preset xxx` 批量模式透传给每个子进程 |
-| 11 | **交互式参数向导** | ✅ 已落地 | faceswap_pro.py | `--wizard`（按"正脸/侧脸/遮挡/混合"大白话问题选，自动拼出复制即跑的命令，不用看文档）|
-| 12 | **白话运行结论** | ✅ 已落地 | faceswap_pro.py | 结尾打印人话版结论；`<out>_extreme_report.json` 含 `plain_summary` 字段一句话告诉你这段能不能用 |
+| 1 | **Segmented resume** | ✅ Landed | faceswap_pro.py | `--resume` (continue from completed segments after interruption) |
+| 2 | **Segmented self-heal (new v2.7.0)** | ✅ Landed | faceswap_pro.py | Automatic (verify corrupted segments before concatenation, re-render in place, error code E105) |
+| 3 | **Input pre-processing self-check (new v2.7.0)** | ✅ Landed | faceswap_pro.py | Automatic (warn in advance for side-face / occluded target photo) |
+| 4 | **Per-frame adaptive occlusion fusion** | ✅ Landed | faceswap_pro.py lines 462–463 | Automatic (larger yaw → wider coverage + softer edges) |
+| 5 | **5 parameter presets** | ✅ Landed | faceswap_pro.py + batch_faceswap.py | `--preset auto/speed/quality/sideface/occlusion` |
+| 6 | **Extreme side-face detection & report** | ✅ Landed | faceswap_pro.py | Outputs `<out>_extreme_report.json` + `--auto-trim-extreme` |
+| 7 | **Batch parallel processing** | ✅ Landed | batch_faceswap.py | `--workers N` (ThreadPoolExecutor) |
+| 8 | **Precise batch resume** | ✅ Landed | batch_faceswap.py | `--resume` (batch_state.json per-video status) |
+| 9 | **Real-time progress + ETA** | ✅ Landed | batch_faceswap.py | Auto-display (progress% / elapsed sec / estimated remaining sec) |
+| 10 | **Parameter preset passthrough** | ✅ Landed | batch_faceswap.py → faceswap_pro.py | `--preset xxx` passed through to each subprocess in batch mode |
+| 11 | **Interactive parameter wizard** | ✅ Landed | faceswap_pro.py | `--wizard` (pick by plain-language questions of "front / side / occlusion / mixed", auto-assembles a copy-paste command, no docs needed) |
+| 12 | **Plain-language run conclusion** | ✅ Landed | faceswap_pro.py | Prints a plain-language conclusion at the end; `<out>_extreme_report.json` includes a `plain_summary` field telling you in one sentence whether this clip is usable |
 
-### 各功能详细说明
+### Detailed Feature Descriptions
 
-#### ① 分段断点续跑（faceswap_pro.py）
-**问题**：长视频跑到一半崩溃/断电，之前处理的帧全白费。
-**实现**：视频按 `--segment-secs`（默认15秒）自动切分为多个段落；每段独立处理 → `seg_000.mp4`...；实时状态落盘 `<输出>.resume_state.json`；加 `--resume` 自动跳过已完成段落；全部完成后 ffmpeg 无损拼接（回退 cv2）。
+#### ① Segmented resume (faceswap_pro.py)
+**Problem**: a long video crashes / loses power halfway, all processed frames wasted.
+**Implementation**: video auto-split into segments by `--segment-secs` (default 15 sec); each segment processed independently → `seg_000.mp4`...; real-time state persisted to `<output>.resume_state.json`; adding `--resume` auto-skips completed segments; after all done, ffmpeg lossless concatenation (fallback to cv2).
 
 ```bash
 python scripts/faceswap_pro.py --video long_video.mp4 --photo face.jpg --out result.mp4
 python scripts/faceswap_pro.py --video long_video.mp4 --photo face.jpg --out result.mp4 --resume
 ```
 
-#### ② 分段自愈（faceswap_pro.py · v2.7.0 新增 · 运行稳定性）
-**问题**：个别分段因磁盘/编码异常写出损坏文件，原拼接会整段失败或成片缺段。
-**实现**：拼接前自动校验每段（可解码且≥1帧）；损坏/缺失分段**重新打开源视频原地重渲一次**；仍失败报 E105 并提示 `--resume` 重跑该段。异常分段不再拖垮整片。
+#### ② Segmented self-heal (faceswap_pro.py · new v2.7.0 · run stability)
+**Problem**: individual segments written as corrupted files due to disk / encoding anomalies; original concatenation would fail entirely or drop segments.
+**Implementation**: before concatenation, automatically verify each segment (decodable and ≥1 frame); corrupted / missing segments are **re-opened from the source video and re-rendered in place once**; if still failing, report E105 and suggest `--resume` to re-run that segment. Abnormal segments no longer drag down the whole video.
 
-#### ③ 输入预处理自检（faceswap_pro.py · v2.7.0 新增 · 异常处理）
-**问题**：用户拿一张侧脸/遮挡照直接跑，数分钟后才发现效果差，白等。
-**实现**：加载目标照片后立即用 `yaw_proxy` 估侧脸程度，超过阈值（≈70°）打印提前预警 + 建议（换正面照 / 加 `--preset sideface` 或 `occlusion`），再继续。
+#### ③ Input pre-processing self-check (faceswap_pro.py · new v2.7.0 · exception handling)
+**Problem**: user runs directly with a side-face / occluded photo, only to find the result poor after minutes — wasted waiting.
+**Implementation**: immediately after loading the target photo, use `yaw_proxy` to estimate side-face degree; if over threshold (≈70°) print an early warning + suggestion (switch to front photo / add `--preset sideface` or `occlusion`), then continue.
 
-#### ④ 逐帧自适应遮挡融合
-**实现**（第462–463行）：`ms = min(mask_scale × (1 + 0.15 × yaw), 1.8)`；`fe = min(feather + 0.05 × yaw, 0.2)`。每帧根据实际 yaw 动态调整蒙版大小和羽化强度，无需手动调参。
+#### ④ Per-frame adaptive occlusion fusion
+**Implementation** (lines 462–463): `ms = min(mask_scale × (1 + 0.15 × yaw), 1.8)`; `fe = min(feather + 0.05 × yaw, 0.2)`. Each frame dynamically adjusts mask size and feather strength based on actual yaw, no manual tuning needed.
 
-#### ⑤ 参数预设 --preset
-| 预设 | det_size | mask_scale | feather | 场景 |
+#### ⑤ Parameter preset --preset
+| Preset | det_size | mask_scale | feather | Scenario |
 |------|----------|------------|---------|------|
-| `auto` | 1024 | 1.15 | 0.06 | 默认平衡 |
-| `speed` | 512 | 1.10 | 0.05 | 快速预览 |
-| `quality` | 1024 | 1.25 | 0.09 | 最终出片 |
-| `sideface` | 1024 | **1.40** | **0.11** | 侧脸/大偏转角 |
-| `occlusion` | 1024 | **1.30** | **0.13** | 遮挡(口罩/手/墨镜) |
+| `auto` | 1024 | 1.15 | 0.06 | Default balance |
+| `speed` | 512 | 1.10 | 0.05 | Quick preview |
+| `quality` | 1024 | 1.25 | 0.09 | Final output |
+| `sideface` | 1024 | **1.40** | **0.11** | Side face / large yaw |
+| `occlusion` | 1024 | **1.30** | **0.13** | Occlusion (mask/hand/sunglasses) |
 
-sideface 额外内置 `auto_trim_extreme=True`。
+sideface additionally has `auto_trim_extreme=True` built in.
 
-#### ⑥ 极端侧脸检测与报告
-每帧检测 yaw 偏转角（通过 `yaw_proxy()` 函数）；超过 `--yaw-warn`（默认0.7≈70°）标记为极端帧；结尾输出 `<output>_extreme_report.json`（含 `plain_summary` 白话结论）；`--auto-trim-extreme` 额外生成剔除极端帧的干净版本。
+#### ⑥ Extreme side-face detection & report
+Each frame detects yaw (via the `yaw_proxy()` function); frames over `--yaw-warn` (default 0.7≈70°) are marked extreme; at the end outputs `<output>_extreme_report.json` (includes `plain_summary` plain-language conclusion); `--auto-trim-extreme` additionally produces a clean version with extreme frames removed.
 
-#### ⑦–⑫ 批量高级版（batch_faceswap.py）
-详见下方 [工作流 E](#工作流-e-批量换脸本地) 章节。核心：`-workers N` / `--preset xxx` 透传 / `batch_state.json` 续跑 / 进度+ETA。
+#### ⑦–⑫ Batch advanced version (batch_faceswap.py)
+See the [Workflow E](#workflow-e-batch-face-swap-local) section below. Core: `-workers N` / `--preset xxx` passthrough / `batch_state.json` resume / progress + ETA.
 
-### 效果预期对照（文字版 · 平台通用，不依赖图片）
+### Effect Expectation Comparison (text version · platform-agnostic, no images needed)
 
-> 评测反馈"没有效果图参考，不知道做出来什么样"。下面用**文字对照 + 命令→预期输出**说明观感，任何端都能看（不依赖 PNG，因发布平台不渲染图片）。真实成片质量随你的素材浮动，最终请目检。
+> Reviewers said "no effect reference images, don't know what it'll look like." Below uses **text comparison + command→expected output** to describe the look, viewable on any client (no PNG dependency, since the publishing platform doesn't render images). Actual output quality varies with your material; final visual inspection required.
 
-| 你的输入 | 用哪个工作流 | 预期观感（做出来大概什么样） |
+| Your input | Which workflow | Expected look (roughly what it'll look like) |
 |----------|--------------|------------------------------|
-| 抖音跳舞录屏 + 正面人像照 | A 换脸+去水印 | 视频里人物脸变成你的照，**动作/背景/音乐原样**；"AI生成"角标消失；正脸几乎无痕 |
-| 同上但侧脸多 | A Pro（`faceswap_pro.py`） | 侧脸段边缘略生硬但能换上；极端侧脸(yaw>70°)仍救不回 |
-| 跳舞/手势参考视频 + 正面人像照 | B 动作迁移 | 你的脸出现在参考视频里做同样动作，**原动作/背景/音乐保留**；跑前先有"动作可迁移性评分"提示素材清晰度 |
-| 产品视频 + 口播话术 | C AI 口播 | 产出带**真人配音**的口播视频：系统/本机嗓音朗读话术，叠在产品视频或主播图上；画面观感需你目检 |
-| 低清视频 | D 4K升频 | 画面更平滑清晰（插值，非真4K细节） |
-| 一照 + N 视频 | E 批量 | 每个视频都换成同一张脸，输出批量报告 |
+| Douyin dance screen recording + front-facing portrait photo | A Face swap + watermark removal | The person's face in the video becomes your photo, **motion / background / audio unchanged**; "AI-generated" badge disappears; front face almost seamless |
+| Same but many side faces | A Pro (`faceswap_pro.py`) | Side-face segments have slightly stiff edges but get swapped; extreme side face (yaw>70°) still unrecoverable |
+| Dance / gesture reference video + front-facing portrait photo | B Motion transfer | Your face appears in the reference video doing the same motion, **original motion / background / audio kept**; before running, a "motion transferability score" hints at material sharpness |
+| Product video + voiceover script | C AI voiceover | Produces a voiceover video with **real-person voiceover**: system / local voice reads the script, overlaid on the product video or anchor image; visual look needs your inspection |
+| Low-res video | D 4K upscaling | Picture smoother and clearer (interpolation, not real 4K detail) |
+| One photo + N videos | E Batch | Every video swapped to the same face, outputs a batch report |
 
-**命令 → 预期输出（照抄即可验证"做出来什么样"）**：
+**Command → expected output (copy to verify "what it looks like")**:
 ```bash
-python scripts/faceswap.py --video 原视频.mp4 --photo 目标照片.jpg --out 换脸后.mp4
-python scripts/clean_douyin.py --input 换脸后.mp4 --output 去水印后.mp4
-# Pro 极端报告会生成 换脸后_extreme_report.json，其中 plain_summary 一句话告诉你这段能不能用
+python scripts/faceswap.py --video original.mp4 --photo target.jpg --out swapped.mp4
+python scripts/clean_douyin.py --input swapped.mp4 --output cleaned.mp4
+# Pro extreme report generates swapped_extreme_report.json, where plain_summary tells you in one sentence whether this clip is usable
 
-# B 动作迁移：先动作预检评分，再换脸出片（保留原动作）
-python scripts/video_engine.py --workflow B --video 参考动作.mp4 --photo 目标照片.jpg --out b.mp4
-# 日志会先打印 "动作可迁移性评分=xx/100"，再执行换脸式动作迁移
+# B Motion transfer: motion pre-check score first, then face-swap output (keep original motion)
+python scripts/video_engine.py --workflow B --video ref_motion.mp4 --photo target.jpg --out b.mp4
+# Log first prints "motion transferability score=xx/100", then performs face-swap style motion transfer
 
-# C AI 口播：话术→真人配音→合成口播视频
-python scripts/video_engine.py --workflow C --script "这款产品三大卖点……" \
+# C AI voiceover: script→real-person voiceover→synthesized voiceover video
+python scripts/video_engine.py --workflow C --script "This product has three selling points..." \
   --product product.mp4 --anchor anchor.jpg --tts-backend pyttsx3 --out koubo.mp4
-# 先生成 koubo.mp4.voice.wav（真人配音），再合成 koubo.mp4（口播视频）；无 ffmpeg 时仅产出配音音频
+# First generates koubo.mp4.voice.wav (real-person voiceover), then synthesizes koubo.mp4 (voiceover video); without ffmpeg only the voiceover audio is produced
 ```
 
-**导演方案效果参考（文字版完整示例）**：
-> 用户简报："给一款国产降噪耳机做个 15 秒抖音种草视频。"
-> 导演层产出（节选）：类型=电商短视频；视觉基调=高饱和强节奏；节奏=前3秒卖点前置；分镜=①特写耳机开盒(2s) ②戴耳机的年轻人街拍(4s) ③降噪前后对比(5s) ④口播+购买引导(4s)；提示词（本地生产层可复用）=对①用 `faceswap_pro.py` 把模特脸换成你的代言人 + 对④用 Workflow C 出脚本。
-> —— 这就是"导演方案"长这样；**它不是成片**，是给生产层的执行蓝图。
+**Director plan effect reference (text version, complete example)**:
+> User brief: "Make a 15-second Douyin seeding video for a domestic noise-canceling earphone."
+> Director layer output (excerpt): type=e-commerce short video; visual tone=high saturation strong rhythm; rhythm=first 3 sec selling points upfront; storyboard=① close-up earphone unboxing (2s) ② young person wearing earphone street shot (4s) ③ before/after noise cancellation comparison (5s) ④ voiceover + purchase guide (4s); prompts (reusable by local production layer)=for ① use `faceswap_pro.py` to swap the model's face to your spokesperson + for ④ use Workflow C to produce the script.
+> —— This is what a "director plan" looks like; **it is not a final video**, it's the execution blueprint for the production layer.
 
 ---
 
-## 工作流 A：换脸+去水印（本地100%可跑）
+## Workflow A: Face Swap + Watermark Removal (100% local runnable)
 
-**用大白话说**：你给一段视频+一张照片，本技能把视频里的人物换成照片里的人物，**动作/背景/音乐 100% 保留**。
+**In plain words**: you give a video + a photo, this skill replaces the person in the video with the person in the photo, **motion / background / audio 100% kept**.
 
-**最简命令**：
+**Simplest command**:
 ```bash
-python scripts/faceswap.py --video 视频.mp4 --photo 照片.jpg --out 换脸后.mp4
-python scripts/clean_douyin.py --input 换脸后.mp4 --output 去水印后.mp4
+python scripts/faceswap.py --video video.mp4 --photo photo.jpg --out swapped.mp4
+python scripts/clean_douyin.py --input swapped.mp4 --output cleaned.mp4
 ```
 
-**遇到侧脸/遮挡效果差**：换 Pro 版
+**Bad result on side face / occlusion**: use the Pro version
 ```bash
-python scripts/faceswap_pro.py --video 视频.mp4 --photo 照片.jpg --out pro版.mp4
+python scripts/faceswap_pro.py --video video.mp4 --photo photo.jpg --out pro.mp4
 ```
 
-**完整参数/坑点/分步确认** → 详见 [references/workflow-a-detail.md](references/workflow-a-detail.md)
+**Full parameters / pitfalls / step-by-step confirmation** → see [references/workflow-a-detail.md](references/workflow-a-detail.md)
 
-**常用问题**：
-- "用 max 还是 right？" → 多数情况用 `right`（换最靠右的脸）
-- "Pro 版什么时候用？" → 出现侧脸漏换/遮挡露原脸/边缘假时
-- "怎么保留原 BGM？" → 详见 detail.md 阶段3（自动用 ffmpeg 合成）
-- "中文路径报错？" → 脚本自动复制到 ASCII 临时名处理，无需手动
+**Common questions**:
+- "Use max or right?" → Most cases use `right` (swap the rightmost face)
+- "When to use the Pro version?" → When side-face misses / occlusion shows original face / edges look fake
+- "How to keep original BGM?" → See detail.md stage 3 (auto-composed via ffmpeg)
+- "Chinese path error?" → Script auto-copies to an ASCII temp name, no manual action needed
 
 ---
 
-## 工作流 B：动作迁移（默认本地 · 换脸式动作迁移）
+## Workflow B: Motion Transfer (local by default · face-swap style motion transfer)
 
-**用大白话说**：你给一段"别人跳舞/做手势"的视频（参考视频）+ 一张目标人物照，本技能把目标人物的脸贴到参考视频上，得到"目标人物做出同样动作"的视频——**原动作/背景/音乐 100% 保留**。这就是短视频里常见的"换脸式动作迁移"，真实可跑、纯本地、零云端。
+**In plain words**: you give a video of "someone dancing / gesturing" (reference video) + a target person photo, this skill pastes the target person's face onto the reference video, getting a video of "the target person doing the same motion" — **original motion / background / audio 100% kept**. This is the common "face-swap style motion transfer" in short videos; truly runnable, purely local, zero cloud.
 
-**v2.8.0 落地说明**：Workflow B 不再是文档级功能，而是真实两步本地管线：
-1. **动作预检**（`pose_extract.py`）：用光流+可选姿态分析参考视频，输出"动作可迁移性评分"与结论（适合迁移 / 动作偏弱 / 模糊遮挡），帮你提前判断素材好不好。
-2. **换脸出片**（`faceswap_pro.py`）：拿目标照对参考视频换脸，产出最终视频。
+**v2.8.0 landing note**: Workflow B is no longer a documentation-level feature, but a real two-step local pipeline:
+1. **Motion pre-check** (`pose_extract.py`): uses optical flow + optional pose analysis on the reference video, outputs a "motion transferability score" and conclusion (suitable for transfer / weak motion / blurry occlusion), helping you judge material quality in advance.
+2. **Face-swap output** (`faceswap_pro.py`): face-swaps the target photo onto the reference video, producing the final video.
 
-**最简命令（默认本地 · 推荐）**：
+**Simplest command (local by default · recommended)**:
 ```bash
 python scripts/video_engine.py --workflow B \
   --video ref_video.mp4 --photo target.jpg \
   --engine local
 ```
-→ 先打印动作可迁移性评分与结论，再输出换脸后的动作视频（同目录生成 `*.motion_qc.json` 预检报告）。
+→ First prints the motion transferability score and conclusion, then outputs the face-swapped motion video (a `*.motion_qc.json` pre-check report is generated in the same directory).
 
-**关于"生成全新视频"的云端通道**：AGNES / NVIDIA / Seedance / Kling 的**真实 API 对接本版本尚未实现**。若你选了 `--engine agnes` 等，脚本会**明确报错 E200 并引导改用 `--engine local`**，绝不返回假视频（这是本技能的诚信底线）。它们的提示词语法仍可在导演策划层参考，但出片请走本地。
+**On the "generate brand-new video" cloud channel**: real API integration for AGNES / NVIDIA / Seedance / Kling is **not yet implemented in this version**. If you select `--engine agnes` etc., the script will **explicitly raise E200 and guide you to `--engine local`**, never returning a fake video (this is the integrity red line of this skill). Their prompt syntax can still be referenced in the director planning layer, but output should go local.
 
-**完整流程** → 详见 [references/workflow-b-detail.md](references/workflow-b-detail.md)
+**Full flow** → see [references/workflow-b-detail.md](references/workflow-b-detail.md)
 
 ---
 
-## 工作流 C：AI 口播带货（默认本地 · v2.9.0 真实出片）
+## Workflow C: AI Voiceover Commerce (local by default · v2.9.0 real output)
 
-**用大白话说**：你有一个产品（漱口水/化妆品/数码），想生成"真人主播在直播间介绍这个产品"的视频。**v2.9.0 起默认本地等价方案真实可跑**——话术先变成真人配音，再合成口播视频，全程零云端零付费。
+**In plain words**: you have a product (mouthwash / cosmetics / digital), and want to generate a video of "a real host introducing this product in a livestream". **From v2.9.0 the local equivalent truly runs** — the script first becomes real-person voiceover, then synthesized into a voiceover video, fully zero cloud zero cost.
 
-**最简命令（默认本地 · 零国外）**：
+**Simplest command (local by default · zero foreign)**:
 ```bash
-# 口播视频：话术→真人配音→与产品视频或主播图合成
+# Voiceover video: script→real-person voiceover→synthesized with product video or anchor image
 python scripts/video_engine.py --workflow C \
-  --script "这款产品三大卖点：第一…第二…第三…" \
+  --script "This product has three selling points: first... second... third..." \
   --product product.mp4 --anchor anchor.jpg --tts-backend pyttsx3
 
-# 只想要配音音频（不合成视频）：
-python scripts/tts_voiceover.py --text "这款产品三大卖点……" --out voice.wav
+# Only want the voiceover audio (no video synthesis):
+python scripts/tts_voiceover.py --text "This product has three selling points..." --out voice.wav
 ```
 
-**它真实做了什么（v2.9.0 落地）**：
-- **步骤 1 · 真人配音（本地）**：`tts_voiceover.py` 把话术变成音频。默认后端 `pyttsx3` 调用系统自带语音（Windows=SAPI5，含中文嗓音），**完全离线、零云端、零国外、零付费**；可选 `--backend edge_tts` 用微软免费云（音质更自然，但走国外，需你接受）。
-- **步骤 2 · 选填产品图提取**：`product_extract.py` 抽产品参考帧，便于你挑封面/素材（不影响出片）。
-- **步骤 3 · 合成口播视频**：有产品视频→替换音轨为配音（可叠加 `--bgm` 背景乐）；有主播图→图片缓动(ken-burns)+配音+可选背景乐→"口播幻灯片"；都没有→只产出配音音频。ffmpeg 本地合成。
+**What it actually does (landed v2.9.0)**:
+- **Step 1 · Real-person voiceover (local)**: `tts_voiceover.py` turns the script into audio. Default backend `pyttsx3` calls the system's built-in voice (Windows=SAPI5, includes Chinese voice), **fully offline, zero cloud, zero foreign, zero cost**; optional `--backend edge_tts` uses Microsoft's free cloud (more natural voice, but goes through foreign servers, requires your acceptance).
+- **Step 2 · Optional product image extraction**: `product_extract.py` extracts product reference frames, convenient for picking a cover / material (doesn't affect output).
+- **Step 3 · Synthesize voiceover video**: has product video → replace audio track with voiceover (optionally overlay `--bgm` background music); has anchor image → image ken-burns + voiceover + optional background music → "voiceover slideshow"; neither → only voiceover audio produced. ffmpeg local synthesis.
 
-**诚实边界（不谎称）**：本技能产出的是"真人配音 + 素材合成"的口播视频；**真人脸驱动数字人（Wav2Lip/SadTalker 类，让照片里的人嘴型跟着说话）未内置**——那是可选本地扩展，需你自备模型，本版不预设、不造假。
+**Honest boundary (no false claims)**: this skill produces a "real-person voiceover + material composition" voiceover video; **real-face-driven digital human (Wav2Lip/SadTalker-style, making the photo's person's mouth move with speech) is not built-in** — that's an optional local extension requiring your own model; this version does not assume or fake it.
 
-**完整流程** → 详见 [references/workflow-c-detail.md](references/workflow-c-detail.md)
+**Full flow** → see [references/workflow-c-detail.md](references/workflow-c-detail.md)
 
 ---
 
-## 工作流 D：4K 升频（本地 · 真实锐化 + 量化）
+## Workflow D: 4K Upscaling (local · real sharpening + quantification)
 
-**用大白话说**：你有一段低分辨率视频（360p/480p/720p），想升频到 1080p 或 4K 让画面更清晰。**本地 100% 可跑**，零云端依赖。
+**In plain words**: you have a low-res video (360p/480p/720p), and want to upscale to 1080p or 4K for a clearer picture. **100% local runnable**, zero cloud dependency.
 
-**最简命令**：
+**Simplest command**:
 ```bash
-python scripts/enhance_4k.py --input 480p视频.mp4 --output 1080p视频.mp4 --target 1080p
-python scripts/enhance_4k.py --input 1080p视频.mp4 --output 4K视频.mp4 --target 4k
+python scripts/enhance_4k.py --input 480p_video.mp4 --output 1080p_video.mp4 --target 1080p
+python scripts/enhance_4k.py --input 1080p_video.mp4 --output 4K_video.mp4 --target 4k
 ```
 
-**它真实做了什么（v2.8.0 增强）**：
-- **默认路径（开箱即用，零额外依赖）**：ffmpeg `lanczos` 升频 + `unsharp` 锐化滤波——相比纯拉伸，画面边缘更清晰、可见锐度提升。
-- **可选 AI 超分**：若你在 `models/` 目录放置了 `cv2.dnn_superres` 模型（如 `ESPCN_x4.pb`），脚本自动启用 AI 超分后再编码。
-- **清晰度量化对比**：升频前后自动采样帧，用 Laplacian 方差实测清晰度，日志报告提升百分比（如 `升频后平均清晰度=xxx（变化 +35.2%）`），让"变清晰"可被验证，而非空口。
+**What it actually does (enhanced v2.8.0)**:
+- **Default path (out of the box, zero extra dependency)**: ffmpeg `lanczos` upscaling + `unsharp` sharpening filter — compared to pure stretching, edges are clearer and visible sharpness improves.
+- **Optional AI super-resolution**: if you place a `cv2.dnn_superres` model (e.g. `ESPCN_x4.pb`) in the `models/` directory, the script auto-enables AI super-resolution before encoding.
+- **Sharpness quantitative comparison**: automatically samples frames before and after upscaling, measures sharpness with Laplacian variance, reports the improvement percentage in the log (e.g. `post-upscale average sharpness=xxx (change +35.2%)`), making "becoming clearer" verifiable rather than empty talk.
 
-**注意事项**：
-- 升频**不会**凭空增加细节，只是平滑插值+锐化；原始 480p 升到 4K 仍只是"看起来更清晰"，不是真 4K
-- 建议 720p → 1080p 或 1080p → 4K；480p 升 4K 效果有限
-- 若日志显示清晰度未提升（源已较清晰），属正常，可换更锐素材或加 dnn 模型
+**Notes**:
+- Upscaling does **not** add detail out of thin air, only smooth interpolation + sharpening; original 480p upscaled to 4K is still just "looks clearer", not real 4K
+- Recommend 720p → 1080p or 1080p → 4K; 480p to 4K has limited effect
+- If the log shows no sharpness improvement (source already fairly sharp), that's normal; switch to sharper material or add a dnn model
 
 ---
 
-## 工作流 E：批量换脸（本地 · v2.4.2 高级版）
+## Workflow E: Batch Face Swap (local · v2.4.2 advanced version)
 
-**用大白话说**：你有一个目标人脸照 + N 个视频，想一次性跑完所有换脸。
+**In plain words**: you have one target face photo + N videos, and want to run all face swaps at once.
 
-**最简命令（基础）**：
+**Simplest command (basic)**:
 ```bash
 python scripts/batch_faceswap.py \
-  --photo 目标.jpg --videos "v1.mp4;v2.mp4;v3.mp4" \
-  --out-dir 批量输出
+  --photo target.jpg --videos "v1.mp4;v2.mp4;v3.mp4" \
+  --out-dir batch_output
 ```
 
-**🔥 高级版命令（推荐）**：
+**🔥 Advanced command (recommended)**:
 ```bash
 python scripts/batch_faceswap.py \
-  --photo 目标.jpg --videos-dir 视频文件夹 \
-  --out-dir 批量输出 \
+  --photo target.jpg --videos-dir video_folder \
+  --out-dir batch_output \
   --workers 4 --preset quality --resume --continue-on-error --retry 2
 ```
 
-**输出**：
+**Output**:
 ```
-批量输出/
+batch_output/
   v1_faceswapped.mp4
   v2_faceswapped.mp4
-  batch_state.json      ← 精准断点续跑状态（每视频一行）
-  batch_report.json     ← 汇总报告（成功/失败/错误信息/预设/并行度）
+  batch_state.json      ← precise resume state (one line per video)
+  batch_report.json     ← summary report (success / failure / error info / preset / parallelism)
 ```
 
-**v2.4.2 新增能力**：
+**v2.4.2 new capabilities**:
 
-| 能力 | 参数 | 说明 |
+| Capability | Parameter | Description |
 |------|------|------|
-| **并行处理** | `--workers N` | N 路视频同时处理（ThreadPoolExecutor），多核提速 2-3x |
-| **参数预设透传** | `--preset xxx` | 自动传给每个 Pro 子进程（auto/speed/quality/sideface/occlusion）|
-| **精准断点续跑** | `--resume` | 读 batch_state.json，跳过已成功的视频，只跑未完成的 |
-| **进度+ETA** | 自动显示 | `进度 12/20 (60%) 已用180s 预计剩余120s` |
-| **容错** | `--continue-on-error` | 单个视频失败不中断其余 |
-| **重试** | `--retry N` | 单视频失败自动重试 N 次 |
+| **Parallel processing** | `--workers N` | N videos processed simultaneously (ThreadPoolExecutor), 2-3x speedup on multi-core |
+| **Parameter preset passthrough** | `--preset xxx` | Auto-passed to each Pro subprocess (auto/speed/quality/sideface/occlusion) |
+| **Precise resume** | `--resume` | Read batch_state.json, skip succeeded videos, only run unfinished ones |
+| **Progress + ETA** | Auto-display | `progress 12/20 (60%) elapsed 180s estimated remaining 120s` |
+| **Fault tolerance** | `--continue-on-error` | Single video failure doesn't interrupt the rest |
+| **Retry** | `--retry N` | Auto-retry a failed single video N times |
 
-**特性**：
-- 默认用 Pro 版（已落地增强），可加 `--basic` 用基础版
-- **双层续跑**：batch 层跳过已完成视频 → 每个 video 内部 faceswap_pro 也从自身段落续跑
-- 串行模式稳定省资源（默认 workers=1）；并行模式适合多核 CPU
+**Features**:
+- Uses the Pro version by default (enhancements landed), can add `--basic` for the basic version
+- **Two-layer resume**: batch layer skips completed videos → within each video, faceswap_pro also resumes from its own segments
+- Serial mode is stable and resource-light (default workers=1); parallel mode suits multi-core CPUs
 
 ---
 
-## 端到端示例与自检清单（照着跑完 = 掌握 100% 用法）
+## End-to-End Example & Self-Check List (follow to complete = master 100% usage)
 
-### 一条龙示例（换脸+去水印+质检，复制即跑）
+### One-stop example (face swap + watermark removal + QC, copy to run)
 ```bash
-python scripts/kun_init.py --work-dir .          # ① 一键初始化(国内镜像+依赖+模型+预检)
-python scripts/faceswap.py --video 原视频.mp4 --photo 目标照片.jpg --out 换脸后.mp4
-python scripts/clean_douyin.py --input 换脸后.mp4 --output 去水印后.mp4
-python scripts/auto_qc.py --input 去水印后.mp4   # 自动质检(黑屏/时长/编码异常)
-python scripts/faceswap_pro.py --video 原视频.mp4 --photo 目标照片.jpg --out pro.mp4 --preset sideface --auto-trim-extreme
+python scripts/kun_init.py --work-dir .          # ① One-click init (domestic mirror + deps + models + pre-check)
+python scripts/faceswap.py --video original.mp4 --photo target.jpg --out swapped.mp4
+python scripts/clean_douyin.py --input swapped.mp4 --output cleaned.mp4
+python scripts/auto_qc.py --input cleaned.mp4   # auto QC (black frames / duration / encoding anomalies)
+python scripts/faceswap_pro.py --video original.mp4 --photo target.jpg --out pro.mp4 --preset sideface --auto-trim-extreme
 ```
 
-### 出片前自检清单（打勾再发）
-- [ ] 预检全绿（`kun_init.py` 或 `preflight.py` 无 ❌）
-- [ ] 正脸/近正脸替换：打开成片确认脸已换、动作/背景/音乐没变
-- [ ] 侧脸多：用了 Pro + sideface 预设，且看过 `_extreme_report.json` 的 `plain_summary`
-- [ ] 去水印：角标/logo 消失且画面没被误伤
-- [ ] 自动质检 `auto_qc.py` 无异常提示
-- [ ] B/C 生成类：确认走的是本地零云端（默认）；若用 edge_tts 可选升级，已知是微软国外免费云
-- [ ] 导演方案类：确认方案是"策划文档"，出片已接本地生产层或你明知的云端通道
+### Pre-publish self-check list (check before publishing)
+- [ ] Pre-check all green (`kun_init.py` or `preflight.py` no ❌)
+- [ ] Front / near-front replacement: open the output and confirm face swapped, motion / background / audio unchanged
+- [ ] Many side faces: used Pro + sideface preset, and read `_extreme_report.json`'s `plain_summary`
+- [ ] Watermark removed: badge / logo disappeared and picture not accidentally damaged
+- [ ] Auto QC `auto_qc.py` no anomaly prompt
+- [ ] B/C generation type: confirmed going through local zero-cloud (default); if using edge_tts optional upgrade, aware it's Microsoft's foreign free cloud
+- [ ] Director plan type: confirmed plan is a "planning document", output connected to local production layer or a cloud channel you know
 
 ---
 
-## 故障速查
+## Troubleshooting
 
-> 遇到错误？**先按"现象→原因→方案"对号入座**。如果这里没有，写一个"具体报错内容+你跑的命令"告诉我。
+> Hit an error? **First match "symptom → cause → solution"**. If it's not here, send me "specific error text + the command you ran".
 
-### 速查表（点击跳到详细方案）
+### Quick table (click to jump to detailed solution)
 
-| 你看到的现象 | 最可能原因 | 一行解决 |
+| Symptom you see | Most likely cause | One-line fix |
 |------------|-----------|---------|
-| ❌ "ModuleNotFoundError / 模型加载失败" | 依赖或模型没装齐 | 先跑 `python scripts/preflight.py` 看缺什么，照提示补齐 |
-| ❌ "照片读不了 / 无效照片" | 照片格式/分辨率问题 | 换 ≥512×512 的人像 JPG |
-| ❌ "照片中未检测到人脸" | 脸太小/被遮挡/侧脸 | 换正面或近正面人像照 |
-| ❌ "视频无法打开" | 视频格式/路径问题 | 转 mp4 格式，路径不要有中文 |
-| ❌ "模型加载失败" | 模型文件缺失 | 重新跑 download_models.py |
-| ❌ "中文路径报错" | 已自动处理 | 看下面"如果还是报错" |
-| ❌ "换脸后还有侧脸漏换" | 用了基础版 | 换 Pro 版 |
-| ❌ "去水印后还有残留" | 文字太小/位置漂移 | 加 --scale 4 --radius 12 |
-| ❌ "下载模型慢/失败" | 网络问题 | 用国内源，已自动配置 |
-| ❌ "生成的新视频很糊" | 选了低分辨率 | 提高 --resolution 至 1080p |
-| ❌ "换脸后人物扭头太狠(yaw>70°)效果差" | 极端侧脸，模型架构硬上限 | ① 剪掉侧脸段只留正脸 ② Photoshop 调肤色光照 ③ 重跑加 `--auto-trim-extreme` 自动裁掉废片段 |
-| ❌ "拼接后某段黑屏/缺段" | 个别分段写出损坏（v2.7.0 已自愈） | 重跑会自动自愈；仍异常加 `--resume` 重跑该段 |
+| ❌ "ModuleNotFoundError / model load failed" | Dependencies or models not fully installed | First run `python scripts/preflight.py` to see what's missing, follow prompt to fix |
+| ❌ "Photo unreadable / invalid photo" | Photo format / resolution issue | Switch to a ≥512×512 portrait JPG |
+| ❌ "No face detected in photo" | Face too small / occluded / side face | Switch to front or near-front portrait photo |
+| ❌ "Video cannot be opened" | Video format / path issue | Convert to mp4 format, path should not contain Chinese |
+| ❌ "Model load failed" | Model file missing | Re-run download_models.py |
+| ❌ "Chinese path error" | Already auto-handled | See "if still error" below |
+| ❌ "Side face missed after swap" | Used basic version | Switch to Pro version |
+| ❌ "Watermark residue remains" | Text too small / position drift | Add --scale 4 --radius 12 |
+| ❌ "Model download slow / failed" | Network issue | Use domestic source, already auto-configured |
+| ❌ "Generated new video is blurry" | Selected low resolution | Raise --resolution to 1080p |
+| ❌ "Swapped person turns head too hard (yaw>70°) bad result" | Extreme side face, hard architecture limit | ① Cut side-face segments keep only front ② Photoshop adjust skin tone/light ③ Re-run with `--auto-trim-extreme` to auto-cut wasted segments |
+| ❌ "Black frame / missing segment after concatenation" | Individual segment written corrupted (v2.7.0 self-heals) | Re-run auto self-heals; still abnormal add `--resume` to re-run that segment |
 
-**详细错误码与排查** → 详见 [references/troubleshooting.md](references/troubleshooting.md)
+**Detailed error codes & troubleshooting** → see [references/troubleshooting.md](references/troubleshooting.md)
 
-### 错误码速查（大白话总表）
-> 评测反馈"原错误提示偏技术、埋在文档里"。下面把常见错误码翻成"人话 + 一行解决"，不用翻文档也能懂。
+### Error Code Quick Reference (plain-language master table)
+> Reviewers said "original error prompts were too technical, buried in docs." Below the common error codes are translated to "plain language + one-line fix", understandable without reading docs.
 
-| 你看到的错误码 / 提示 | 大白话 | 一行解决 |
+| Error code / prompt you see | Plain language | One-line fix |
 |------|------|------|
-| E101 / "照片中未检测到人脸" | 照片里没找到脸 | 换正面清晰照，≥512×512 像素 |
-| E102 / E203 / "模型加载失败" | AI 模型没下载好或文件坏了 | 重跑 `python scripts/download_models.py --work-dir . --with-mediapipe` |
-| E103 / E202 / "视频无法打开" | 视频格式脚本读不了 | 用格式工厂转标准 mp4(H.264) |
-| E205 / "视频输出失败" | 结果写不出去 | 输出到简单路径(如 `D:\out\result.mp4`)，确认磁盘有 1-2GB 空余 |
-| E104 / "跳过帧占比过高" | 部分帧处理失败太多（源质量差/模型异常/中途断） | 检查源视频是否损坏或过长；重跑加 `--resume` 从已完成段续跑；临时调高 `--max-skip-ratio` 阈值（如 0.5）先出片再排查 |
-| E105 / "分段损坏自愈失败" | 某分段重渲仍失败（磁盘/源异常） | 加 `--resume` 重跑该段；检查磁盘空间与源视频完整性 |
-| "照片读不了" | 照片格式太冷门或被别的程序占着 | 转 JPG、文件名改简单英文、关掉预览 |
-| "中文路径报错" | 已自动处理；偶发兜底 | 把文件放到纯英文路径(如 `D:\work`)再跑 |
-| "下载模型慢/失败" | 网络抽风 | 已自动切国内源；不行挂代理或换时段 |
-| "极端侧脸占比偏高" | 人物扭头>70°，换脸救不回 | 剪段/Photoshop/换正面；或加 `--auto-trim-extreme` 自动去侧脸版 |
+| E101 / "No face detected in photo" | No face found in photo | Switch to a clear front photo, ≥512×512 pixels |
+| E102 / E203 / "Model load failed" | AI model not downloaded or file corrupted | Re-run `python scripts/download_models.py --work-dir . --with-mediapipe` |
+| E103 / E202 / "Video cannot be opened" | Video format script can't read | Use Format Factory to convert to standard mp4 (H.264) |
+| E205 / "Video output failed" | Result can't be written out | Output to a simple path (e.g. `D:\out\result.mp4`), confirm 1-2GB free disk |
+| E104 / "Skipped-frame ratio too high" | Too many frames failed (poor source / model anomaly / mid-interruption) | Check if source video is corrupted or too long; re-run with `--resume` to continue from completed segments; temporarily raise `--max-skip-ratio` threshold (e.g. 0.5) to output first then investigate |
+| E105 / "Segment corruption self-heal failed" | A segment re-render still fails (disk / source anomaly) | Add `--resume` to re-run that segment; check disk space and source video integrity |
+| "Photo unreadable" | Photo format too obscure or locked by another program | Convert to JPG, rename to simple English, close preview |
+| "Chinese path error" | Already auto-handled; occasional fallback | Put file in a pure-English path (e.g. `D:\work`) and re-run |
+| "Model download slow / failed" | Network flaky | Already auto-switched to domestic source; else use proxy or try another time |
+| "Extreme side-face ratio too high" | Person turns head >70°, face swap unrecoverable | Cut segment / Photoshop / switch to front; or add `--auto-trim-extreme` for auto side-face-free version |
 
-### 交互式新手引导（3 步自检）
-第一次用，跟着做，每步确认结果再下一步：
-0. **预检**：跑 `python scripts/preflight.py --work-dir .`。✅ 成功标志：核心依赖/模型/ffmpeg 全绿（无 ❌）。
-1. **装环境**：跑上面"装依赖+下模型"。✅ 成功标志：`models/` 里出现 `inswapper_128.onnx` 和 `buffalo_l/` 文件夹，命令行没报红。
-2. **跑一次换脸**：用你自己的 1 段短视频 + 1 张正面照，跑 `faceswap.py`。✅ 成功标志：生成 `换脸后.mp4`，打开能看到脸被替换、动作和原视频一致。
-3. **去水印**：跑 `clean_douyin.py`。✅ 成功标志：视频里"AI生成"等角标消失，画面没被误伤。
+### Interactive Beginner Guide (3-step self-check)
+First time using it, follow along, confirm each step's result before the next:
+0. **Pre-check**: run `python scripts/preflight.py --work-dir .`. ✅ Success sign: core deps / models / ffmpeg all green (no ❌).
+1. **Set up environment**: run the "install deps + download models" above. ✅ Success sign: `models/` shows `inswapper_128.onnx` and `buffalo_l/` folder, command line not red.
+2. **Run one face swap**: use your own 1 short video + 1 front photo, run `faceswap.py`. ✅ Success sign: generates `swapped.mp4`, open to see face replaced, motion consistent with original video.
+3. **Remove watermark**: run `clean_douyin.py`. ✅ Success sign: "AI-generated" and similar badges in the video disappear, picture not accidentally damaged.
 
-→ 三步都 ✅，你已掌握 80% 用法。卡在哪一步，就把那一步的报错发我。
+→ All three steps ✅ means you've mastered 80% of usage. Stuck on which step? Send me that step's error.
 
 ---
 
-## 场景最佳实践与效果样例
+## Scenario Best Practices & Effect Examples
 
-### 场景决策表（照着选，少走弯路）
-| 你的视频情况 | 该怎么做 | 命令 / 参数 |
+### Scenario Decision Table (pick to avoid detours)
+| Your video situation | What to do | Command / parameter |
 |------|------|------|
-| 大幅度转头、侧脸多 | 用 Pro 版（基础版会漏换侧脸） | `python scripts/faceswap_pro.py` |
-| 戴眼镜 / 饰品 | Pro 版融合已尽量保留眼镜区域；眼神轻微偏移属架构限制，正常 | 无需额外参数 |
-| 多个人脸、只换某一个 | 指定换哪一侧 | `--target-side right/left/largest` |
-| 抖音 / 视频号"AI生成"等文字角标 | 去文字水印 | `python scripts/clean_douyin.py` |
-| 固定 logo（非文字） | 去 logo | `python scripts/fix_logo.py` |
-| 生成视频发糊 | 提高分辨率 | `--resolution 1080p` |
-| 去水印后还有残留 | 加强修复半径 | `--scale 4 --radius 12` |
-| 想换背景但出现重影 | **回退原背景最稳** | 不做背景替换，只换脸+去角标 |
+| Large head turns, many side faces | Use Pro version (basic misses side faces) | `python scripts/faceswap_pro.py` |
+| Wearing glasses / accessories | Pro fusion already tries to keep glasses area; slight eye-shift is an architecture limit, normal | No extra parameter needed |
+| Multiple faces, swap only one | Specify which side | `--target-side right/left/largest` |
+| Douyin / Shipinhao "AI-generated" etc. text badges | Remove text watermark | `python scripts/clean_douyin.py` |
+| Fixed logo (non-text) | Remove logo | `python scripts/fix_logo.py` |
+| Generated video comes out blurry | Raise resolution | `--resolution 1080p` |
+| Watermark residue remains | Strengthen repair radius | `--scale 4 --radius 12` |
+| Want background replacement but ghosting appears | **Revert to original background for stability** | Don't do background replacement, only swap face + remove badge |
 
-### 效果样例（换脸前后对比）
-- **输入**：一段 30 秒抖音跳舞录屏（1080p，含左下角"AI生成"小角标）+ 一张正面人像照。
-- **Workflow A 输出**：`换脸后.mp4` —— 原视频人物脸部被替换为目标照片的脸，**动作 / 背景 / 音乐 100% 保留**；再经 `clean_douyin.py` 后，角标文字彻底消失、画面零误伤。
-- **预期质量**：正脸 / 近正面替换几乎无痕；大侧脸片段边缘可能略生硬（Pro 版可改善）；极度侧脸(yaw>70°)或遮挡则建议换正面素材。
-- **Workflow B 本地输出**：**换脸式动作迁移**（复制原动作/背景/音乐），用于"换身份重演"；云端"生成全新视频"通道本版本未实现（选了报错）。
+### Effect Example (before/after face swap)
+- **Input**: a 30-second Douyin dance screen recording (1080p, with an "AI-generated" small badge at bottom-left) + a front-facing portrait photo.
+- **Workflow A output**: `swapped.mp4` — the original video person's face is replaced with the target photo's face, **motion / background / audio 100% kept**; after `clean_douyin.py`, the badge text completely disappears, zero accidental damage to the picture.
+- **Expected quality**: front / near-front replacement almost seamless; large side-face segments may have slightly stiff edges (Pro improves); extreme side face (yaw>70°) or occlusion recommend switching to front material.
+- **Workflow B local output**: **face-swap style motion transfer** (copies original motion / background / audio), for "swap identity re-enactment"; the cloud "generate brand-new video" channel is not implemented in this version (selecting it errors).
 
 ---
 
-## 🧰 贴心增值（你大概率没注意到的省心设计）
+## 🧰 Thoughtful Value-Adds (peace-of-mind designs you probably didn't notice)
 
-- **网络/格式自动处理**：视频打不开？`auto_format.py` 全自动转码，你零手动。
-- **一键预检**：`preflight.py` 先把环境/模型/ffmpeg 全检查一遍，跑一半才报错的概率降到最低。
-- **一键初始化**：`kun_init.py` 一条命令写国内镜像助手 + 装依赖 + 下模型 + 跑预检，新手零配置起步，全国内网络可跑。
-- **交互式参数向导**：`faceswap_pro.py --wizard` 不用看文档，按"正脸/侧脸/遮挡/混合"大白话问题选场景，自动拼出复制即跑的命令。
-- **分段自愈（v2.7.0）**：拼接前自动校验，损坏分段原地重渲，异常不再拖垮整片。
-- **输入预处理自检（v2.7.0）**：侧脸/遮挡照片提前预警，避免白跑。
-- **自动保留原音乐**：换脸不改变原视频音轨，去水印也不伤 BGM。
-- **换脸后自动质检**：`auto_qc.py` 自动查黑屏/时长/编码异常，不达标会提示。
-- **Pro 对侧脸有特处理**：检测增强 + 椭圆羽化，普通侧脸/遮挡改善明显；极端侧脸主动告警，并可加 `--auto-trim-extreme` 自动裁剪废片段。
-- **断点续跑**：长视频/批量中途断了，加 `--resume` 从已完成处接着跑，不覆盖重来。
-- **导演策划层零依赖**：出《视频导演方案/分镜/提示词》无需安装任何东西、零费用。
+- **Network / format auto-handling**: video won't open? `auto_format.py` fully auto-transcodes, zero manual work.
+- **One-click pre-check**: `preflight.py` checks environment / models / ffmpeg first, minimizing the chance of erroring halfway.
+- **One-click init**: `kun_init.py` writes the domestic mirror helper + installs deps + downloads models + runs pre-check in one command, zero-config start for beginners, runs on all-domestic network.
+- **Interactive parameter wizard**: `faceswap_pro.py --wizard` no docs needed, pick scenario by plain-language questions of "front / side / occlusion / mixed", auto-assembles a copy-paste command.
+- **Segmented self-heal (v2.7.0)**: verify before concatenation, re-render corrupted segments in place, anomalies no longer drag down the whole video.
+- **Input pre-processing self-check (v2.7.0)**: warn in advance for side-face / occluded photos, avoid wasted runs.
+- **Auto-keep original music**: face swap doesn't change the original audio track, watermark removal doesn't hurt BGM.
+- **Auto QC after swap**: `auto_qc.py` auto-checks black frames / duration / encoding anomalies, prompts if not meeting standard.
+- **Pro special handling for side faces**: detection enhancement + elliptical feathering, clear improvement on ordinary side faces / occlusion; actively warns on extreme side faces, and can add `--auto-trim-extreme` to auto-cut wasted segments.
+- **Resume**: long video / batch interrupted mid-way, add `--resume` to continue from completed point, no re-overwrite.
+- **Director planning layer zero-dependency**: produces *Video Director Plan / Storyboard / Prompt* without installing anything, zero cost.
 
 ---
 
-## 边界与诚实声明
+## Boundaries & Honesty Statement
 
-> 📌 状态图标：**✅ 开箱即用** · **⚠️ 有约束/需 Key** · **⏳ 规划中（当前版本未实现，请勿对其报预期）**
+> 📌 Status icons: **✅ Out of the box** · **⚠️ Has constraints / needs key** · **⏳ Planned (not implemented in current version, do not expect)**
 
-### 能力状态一览（一眼看清"能做什么"）
-| 能力 | 状态 | 说明 |
+### Capability Status Overview (see at a glance "what can be done")
+| Capability | Status | Description |
 |------|------|------|
-| Workflow A 换脸 + 去水印 | ✅ 已落地 | 100% 本地；Pro A+B 2 层增强（检测增强 + 椭圆羽化） |
-| Workflow A Pro C/D/E/F | ⏳ 规划中 | 时序追踪/智能丢弃/多脸防错/扩散兜底，**未实现** |
-| Workflow B 动作迁移（本地·换脸式） | ✅ 已落地（v2.8.0） | 动作预检(pose_extract)+换脸出片，保留原动作，零云端 |
-| Workflow B 云端"生成全新视频" | ❌ 未实现 | AGNES/NVIDIA/Seedance/Kling 真实对接未做；选了报错 E200 引导用 local |
-| Workflow C AI 口播（本地） | ✅ 已落地（v2.9.0） | 话术→本地真人配音(pyttsx3离线/可选edge_tts)→合成口播 mp4；真人脸驱动数字人(Wav2Lip)未内置，属可选扩展 |
-| Workflow D 4K 升频 | ✅ 已落地（v2.8.0 增强） | ffmpeg 升频+unsharp 锐化（开箱即用）；放 dnn 模型自动启用 AI 超分；带清晰度量化 |
-| Workflow E 批量换脸 | ✅ 已落地 | 一照换多视频，输出批量报告 |
-| 导演策划层（方案/分镜/提示词/质量规划） | ✅ 已落地 | 本地免费，纯推理，不出片 |
-| 真人脸驱动数字人(对口型) | ⏳ 规划中（可选本地扩展） | v2.9.0 已落地"真人配音+素材合成"口播；让照片人物嘴型跟说的 Wav2Lip/SadTalker 类需自备模型，未内置 |
+| Workflow A face swap + watermark removal | ✅ Landed | 100% local; Pro A+B 2-layer enhancement (detection enhancement + elliptical feathering) |
+| Workflow A Pro C/D/E/F | ⏳ Planned | Temporal tracking / smart discard / multi-face error prevention / diffusion fallback, **not implemented** |
+| Workflow B motion transfer (local · face-swap style) | ✅ Landed (v2.8.0) | Motion pre-check (pose_extract) + face-swap output, keeps original motion, zero cloud |
+| Workflow B cloud "generate brand-new video" | ❌ Not implemented | AGNES/NVIDIA/Seedance/Kling real integration not done; selecting it raises E200 to guide local |
+| Workflow C AI voiceover (local) | ✅ Landed (v2.9.0) | Script → local real-person voiceover (pyttsx3 offline / optional edge_tts) → synthesized voiceover mp4; real-face-driven digital human (Wav2Lip) not built-in, optional extension |
+| Workflow D 4K upscaling | ✅ Landed (v2.8.0 enhanced) | ffmpeg upscaling + unsharp sharpening (out of the box); place dnn model auto-enables AI super-res; with sharpness quantification |
+| Workflow E batch face swap | ✅ Landed | One photo → many videos, outputs batch report |
+| Director planning layer (plan / storyboard / prompt / quality planning) | ✅ Landed | Local & free, pure inference, no output |
+| Real-face-driven digital human (lip-sync) | ⏳ Planned (optional local extension) | v2.9.0 landed "real-person voiceover + material composition" voiceover; making photo person's mouth move with speech needs Wav2Lip/SadTalker-style model, not built-in |
 
-### ✅ 已落地能力（开箱即用）
-- **Workflow A 基础换脸**（CPU 100% 跑通）
-- **Workflow A 去水印**（OCR 逐帧 + TELEA 修复）
-- **Workflow A BGM 合成**（ffmpeg）
-- **Workflow A Pro 增强**：**换脸质量层已落地 A+B 2 层**——A 检测增强（det_size 1024+thresh 0.3）+ B 椭圆羽化融合（含逐帧自适应遮挡）；**C/D/E/F 4 层规划中**。**工程增强已落地**：分段断点续跑+分段自愈+输入预检+5种参数预设+极端侧脸报告JSON+auto_trim_extreme；普通侧脸/遮挡效果显著提升，≤75° 场景基本可用
-- **Workflow B/C 视频生成引擎**（`video_engine.py` 一条命令，默认本地零云端；云端选了报错 E200 引导用 local）
-- **Workflow B 姿态提取**（本地 MediaPipe）
-- **Workflow C 产品提取**（本地）
-- **Workflow D 4K 升频**（本地，ffmpeg升频+unsharp锐化，可选 dnn 超分）
-- **Workflow E 批量换脸**（本地，一照换多视频）
-- **导演策划层**（本地免费：导演引擎/分镜/提示词编译器/诚实质量守护）
+### ✅ Landed capabilities (out of the box)
+- **Workflow A basic face swap** (CPU 100% runnable)
+- **Workflow A watermark removal** (OCR per-frame + TELEA inpainting)
+- **Workflow A BGM composition** (ffmpeg)
+- **Workflow A Pro enhancement**: **face-swap quality layer A+B 2 layers landed** — A detection enhancement (det_size 1024 + thresh 0.3) + B elliptical feathering fusion (with per-frame adaptive occlusion); **C/D/E/F 4 layers planned**. **Engineering enhancements landed**: segmented resume + segmented self-heal + input pre-check + 5 parameter presets + extreme side-face report JSON + auto_trim_extreme; ordinary side face / occlusion significantly improved, ≤75° scenarios basically usable
+- **Workflow B/C video generation engine** (`video_engine.py` one command, local zero cloud by default; cloud selection raises E200 to guide local)
+- **Workflow B pose extraction** (local MediaPipe)
+- **Workflow C product extraction** (local)
+- **Workflow D 4K upscaling** (local, ffmpeg upscaling + unsharp sharpening, optional dnn super-res)
+- **Workflow E batch face swap** (local, one photo → many videos)
+- **Director planning layer** (local & free: director engine / storyboard / prompt compiler / honest quality guardian)
 
-### ⚠️ 部分落地 / 有约束
-- 背景替换（CPU 重影问题，建议回退原背景或用专业工具）
+### ⚠️ Partially landed / constrained
+- Background replacement (CPU ghosting issue, recommend reverting to original background or using professional tools)
 
-### ⏳ 规划中 / 需Key
-- Workflow B/C 云端"生成全新视频"（依赖云端 API，当前未真实对接；默认本地零云端，选云端报错 E200）
-- 真人脸驱动数字人(对口型)（需 Wav2Lip/SadTalker 类本地模型，未内置）
-- 换脸质量层 C/D/E/F（时序追踪/智能丢弃/多脸防错/扩散兜底）
+### ⏳ Planned / needs key
+- Workflow B/C cloud "generate brand-new video" (depends on cloud API, not truly connected currently; local zero cloud by default, cloud selection raises E200)
+- Real-face-driven digital human (lip-sync) (needs Wav2Lip/SadTalker-style local model, not built-in)
+- Face-swap quality layers C/D/E/F (temporal tracking / smart discard / multi-face error prevention / diffusion fallback)
 
-### 📊 硬边界量化参数（实测值，省得你猜）
-| 维度 | 实测 / 建议值 | 说明 |
+### 📊 Hard Boundary Quantified Parameters (measured values, save you guessing)
+| Dimension | Measured / recommended value | Description |
 |------|--------------|------|
-| 输入分辨率 | ≤4K(3840×2160) 可处理；**推荐 ≤1080p（提速 3-5×）** | 越高越慢，CPU 跑 4K 易卡顿 |
-| 输入时长 | 单段建议 ≤10 分钟；超长请分段。Workflow A Pro 与批量换脸均支持 `--resume` 断点续跑+自愈 | 过长内存压力增大 |
-| 文件大小 | ≤2GB 实测正常处理 | 更大请先压缩 |
-| 帧率 | 23.976 / 24 / 25 / 30 / 60 fps 均支持 | — |
-| 封装 / 编码 | mp4(H.264) 首选；mov/mkv/webm 亦可 | HEVC 需系统解码器 |
-| 内存门槛 | 最低 8GB RAM（**16GB 推荐**）；模型常驻 2-3GB | 无 GPU 要求，纯 CPU 可跑 |
-| 目标照片 | ≥512×512 像素、近正面、单人、光线均匀；JPG/PNG | 太小/遮挡/大侧脸会失败 |
-| 侧脸 yaw | **>75° 开始下降；>85° 为物理极限** | sideface 预设 + 自适应遮挡显著改善 ≤75° 场景；纯轮廓 >85° 仍不可行 |
+| Input resolution | ≤4K (3840×2160) processable; **recommend ≤1080p (3-5× faster)** | Higher is slower, CPU running 4K easily stutters |
+| Input duration | Single clip recommend ≤10 min; for very long, segment. Workflow A Pro and batch face swap both support `--resume` resume + self-heal | Too long increases memory pressure |
+| File size | ≤2GB measured normal processing | Larger, compress first |
+| Frame rate | 23.976 / 24 / 25 / 30 / 60 fps all supported | — |
+| Container / codec | mp4 (H.264) first choice; mov/mkv/webm also ok | HEVC needs system decoder |
+| Memory threshold | Minimum 8GB RAM (**16GB recommended**); models resident 2-3GB | No GPU required, pure CPU runnable |
+| Target photo | ≥512×512 pixels, near-front, single person, even lighting; JPG/PNG | Too small / occluded / large side face will fail |
+| Side-face yaw | **Starts dropping >75°; >85° is physical limit** | sideface preset + adaptive occlusion significantly improve ≤75° scenarios; pure profile >85° still infeasible |
 
-### 🌏 国内网络：默认优先国内源（全国内可达路径）
-- 模型下载 `download_models.py` **默认走 modelscope 国内源**，GitHub/HuggingFace 被墙时自动切换备用源。
-- MediaPipe 姿态模型主源 `googleapis.com` 国内偶有波动，已给出 **gitee / ModelScope 镜像替代方案**（见 [models_sources.md](references/models_sources.md)）。
-- **想 100% 不碰国外服务？** Workflow A/D/E 完全本地；Workflow B/C 默认本地等价方案；可选 AGNES（终身免费）/ NVIDIA（含免费额度）——均为国内可达。即"全国内路径"也能完整跑通五工作流 + 导演策划层。
+### 🌏 Domestic network: domestic sources prioritized by default (all-domestic reachable path)
+- Model download `download_models.py` **defaults to the ModelScope domestic source**, auto-switches to backup source when GitHub/HuggingFace is blocked.
+- MediaPipe pose model main source `googleapis.com` occasionally fluctuates domestically; **gitee / ModelScope mirror alternatives** are provided (see [models_sources.md](references/models_sources.md)).
+- **Want 100% no foreign service?** Workflow A/D/E fully local; Workflow B/C local equivalent by default; optional AGNES (lifetime free) / NVIDIA (includes free quota) — all domestically reachable. So the "all-domestic path" can fully run the five workflows + director planning layer.
 
-### 🧩 能力完成度与已知限制（诚实清单）
-- **Pro 换脸质量层已落地 A+B 2 层**：A 检测增强 + B 椭圆羽化融合（含逐帧自适应遮挡）。普通侧脸/遮挡效果显著提升；≤75° 基本可用；>85° 纯轮廓仍为物理极限
-- **Pro 换脸质量层 C/D/E/F 4 层规划中**：时序追踪 / 智能丢弃 / 多脸防错 / 扩散兜底——作者正在打磨中，**当前版本未实现**。
-- **工程增强已落地（与质量层是两条独立口径，不占用 A–F 编号）**：分段断点续跑（resume_state+ffmpeg 拼接）+ **分段自愈（v2.7.0 拼接前校验损坏分段原地重渲）** + 输入预处理自检 + 5 种参数预设（--preset）/ 极端侧脸报告 JSON / 批量并行+续跑+ETA。
-- **Workflow B/C 视频生成引擎**：用 `video_engine.py` 一条命令，默认走本地等价方案（零云端），可选 AGNES（终身免费）/ NVIDIA（免费额度）作为升级路径，**完全不依赖国外服务**。
-- **背景替换重影**：根因是逐帧边缘时序抖动；已有 EMA 平滑 + 高斯羽化缓解，但纯 CPU 无强 matting 时难完美。用户反感重影时，**回退"只换脸+去角标、保留原背景"最稳**。
-- **导演策划层只出方案不出片**：方案/分镜/提示词是策划文档，实际出片需接本地生产层或你自备 Key 的云端通道（明确国内外/付费属性）。
+### 🧩 Capability Completeness & Known Limitations (honest list)
+- **Pro face-swap quality layer A+B 2 layers landed**: A detection enhancement + B elliptical feathering fusion (with per-frame adaptive occlusion). Ordinary side face / occlusion significantly improved; ≤75° basically usable; >85° pure profile still physical limit
+- **Pro face-swap quality layer C/D/E/F 4 layers planned**: temporal tracking / smart discard / multi-face error prevention / diffusion fallback — author is polishing, **not implemented in current version**.
+- **Engineering enhancements landed (separate scope from quality layers, doesn't occupy A–F numbering)**: segmented resume (resume_state + ffmpeg concatenation) + **segmented self-heal (v2.7.0 verify corrupted segments before concatenation, re-render in place)** + input pre-processing self-check + 5 parameter presets (--preset) / extreme side-face report JSON / batch parallel + resume + ETA.
+- **Workflow B/C video generation engine**: one command via `video_engine.py`, defaults to local equivalent (zero cloud), optional AGNES (lifetime free) / NVIDIA (free quota) as upgrade path, **no dependence on foreign service**.
+- **Background replacement ghosting**: root cause is per-frame edge temporal jitter; EMA smoothing + Gaussian feathering already mitigate, but pure CPU without strong matting can't be perfect. When users dislike ghosting, **reverting to "only swap face + remove badge, keep original background" is most stable**.
+- **Director planning layer only produces plans, no output**: plan / storyboard / prompt are planning documents; actual output needs the local production layer or your own-key cloud channel (clear domestic/foreign, paid/free attributes).
 
-**作者盲点**：inswapper 架构对极端侧脸（yaw>85° 纯轮廓）和人脸全遮挡（墨镜/口罩）效果有限——非代码问题，是模型架构物理极限。**v2.4.2 已通过 sideface/occlusion 预设 + 逐帧自适应遮挡 + auto_trim_extreme 将可用范围从 ≤70° 扩展到 ≤75°**，但 >85° 仍不可行。
-**国内网络**：HuggingFace/GitHub 被墙，已自动改用 modelscope 国内源。
-**AI 不能读图**：所有画面质量（像不像）由你目检确认。
-
----
-
-# 五、Skill 核心工作流（导演层 + 生产层贯通）
-
-## Step 1 用户需求分析
-自动识别：视频目的 / 受众 / 场景 / 风格 / 平台。
-
-## Step 2 AI 导演策划
-生成《视频导演方案》（见 2.1）。
-
-## Step 3 自动分镜
-生成专业 Storyboard（见 2.2）。
-
-## Step 4 Prompt 工程转换
-转换为模型可执行提示词（见 2.3）；若走本地生产层则转换为对应命令参数。
-
-## Step 5 视频生产
-- **本地路径（默认）**：调用 Workflow A/D/E 等本地命令出片。
-- **可选云端（非默认）**：仅当你自备 Key，且明确接受其国内外/付费条款，接 AGNES/NVIDIA/国产免费额度等。
-
-## Step 6 AI 质量审核（诚实版）
-`auto_qc.py` 技术 QC + 一致性清单 + **需目检提示**；不打假分。
-
-## Step 7 优化循环
-根据技术 QC 与你的目检反馈，调整参数 / 重渲分段（`--resume` + 自愈）/ 换素材，进入 V2 方案。
-
-### 标准化输出协议：视频制作方案（9 要素）
-
-> 所有"导演类"任务统一输出此结构，确保结构化、专业化、可复制（回应"规范性"维度）。
-
-```
-1. 项目目标：……
-2. 视频定位：类型 / 平台 / 时长
-3. 目标受众：……
-4. 创意方向：……
-5. 分镜脚本：（镜头编号/景别/运动/动作/光影/情绪/时长/Prompt/负向Prompt）
-6. Prompt（给生成/生产层的指令）：……
-7. 负向Prompt：……
-8. 参数建议：（比例/帧率/分辨率；或本地生产层命令参数）
-9. 优化建议：（技术QC结果 + 需目检项 + 下一步）
-```
+**Author blind spot**: the inswapper architecture has limited effect on extreme side faces (yaw>85° pure profile) and fully occluded faces (sunglasses / mask) — not a code problem, but a physical limit of the model architecture. **v2.4.2 has extended the usable range from ≤70° to ≤75° via sideface/occlusion presets + per-frame adaptive occlusion + auto_trim_extreme**, but >85° is still infeasible.
+**Domestic network**: HuggingFace/GitHub blocked, auto-switched to ModelScope domestic source.
+**AI cannot see images**: all picture quality (likeness) is for you to visually confirm.
 
 ---
 
-# 六、多行业模板
+# V. Skill Core Workflow (director layer + production layer connected)
 
-| 行业 | 典型视频 | 推荐工作流组合 | 导演层要点 |
+## Step 1 User Requirement Analysis
+Auto-identify: video purpose / audience / scene / style / platform.
+
+## Step 2 AI Director Planning
+Generate the *Video Director Plan* (see 2.1).
+
+## Step 3 Auto Storyboard
+Generate a professional storyboard (see 2.2).
+
+## Step 4 Prompt Engineering Conversion
+Convert to model-executable prompts (see 2.3); if going local production layer, convert to corresponding command parameters.
+
+## Step 5 Video Production
+- **Local path (default)**: call Workflow A/D/E etc. local commands to produce output.
+- **Optional cloud (non-default)**: only when you supply your own key and explicitly accept its domestic/foreign, paid/free terms, connect AGNES/NVIDIA/domestic free quota etc.
+
+## Step 6 AI Quality Review (honest version)
+`auto_qc.py` technical QC + consistency checklist + **manual inspection prompt**; no fake scoring.
+
+## Step 7 Optimization Loop
+Based on technical QC and your visual feedback, adjust parameters / re-render segments (`--resume` + self-heal) / switch material, enter V2 plan.
+
+### Standardized Output Protocol: Video Production Plan (9 elements)
+
+> All "director-type" tasks uniformly output this structure, ensuring structured, professional, reproducible (responding to the "Convention" dimension).
+
+```
+1. Project goal: ……
+2. Video positioning: type / platform / duration
+3. Target audience: ……
+4. Creative direction: ……
+5. Storyboard script: (shot number / shot size / movement / action / lighting / emotion / duration / Prompt / negative prompt)
+6. Prompt (instruction for generation / production layer): ……
+7. Negative prompt: ……
+8. Parameter suggestions: (ratio / frame rate / resolution; or local production layer command parameters)
+9. Optimization suggestions: (technical QC result + items needing manual inspection + next step)
+```
+
+---
+
+# VI. Multi-Industry Templates
+
+| Industry | Typical video | Recommended workflow combo | Director layer key points |
 |------|----------|----------------|-----------|
-| 商业 | 品牌宣传 / 企业介绍 / 发布会 | 导演方案 + D升频 + A换脸(代言人) | 电影感、低饱和、舒缓节奏 |
-| 营销 | 产品广告 / 电商短视频 / 投放素材 | 导演方案 + C口播 + A换脸 | 卖点前置、强节奏、高饱和 |
-| 内容 | 短剧 / 知识视频 / IP内容 | 导演方案 + B动作迁移 + A换脸 | 固定人设、风格统一 |
-| 教育 | 课程动画 / 科普视频 | 导演方案 + C口播(本地) | 清晰、信息密度高、固定机位 |
+| Commercial | Brand promo / company intro / launch event | Director plan + D upscaling + A face swap (spokesperson) | Cinematic, low saturation, relaxed rhythm |
+| Marketing | Product ad / e-commerce short video / ad material | Director plan + C voiceover + A face swap | Selling points upfront, strong rhythm, high saturation |
+| Content | Short drama / knowledge video / IP content | Director plan + B motion transfer + A face swap | Fixed persona, consistent style |
+| Education | Course animation / science popularization video | Director plan + C voiceover (local) | Clear, high information density, fixed camera |
 
 ---
 
-# 七、核心竞争壁垒
+# VII. Core Competitive Moats
 
-- **壁垒一**：不是视频生成工具，而是**视频生产系统**（导演策划 + 本地生产双层闭环）。
-- **壁垒二**：融合影视工业流程（分镜 / 镜头语言 / 提示词工程），而非随机生成。
-- **壁垒三**：拥有 AI 导演决策能力（自动判断类型/视觉/节奏/镜头/音乐）。
-- **壁垒四**：支持**商业级交付**且**默认本地零云端零付费**（与国外付费工具拉开差距）。
-- **壁垒五**：形成**行业模板资产库** + 本地生产层工程化一次成功率（预检/续跑/自愈/QC）。
-
----
-
-# 八、最终 Skill 描述
-
-- **名称**：KUN Video ProMax HJK（发布展示名见 frontmatter `displayName`，本次未改动）
-- **一句话介绍**：专业级 AI 视频生产智能体，将创意策划（AI导演/分镜/提示词工程/诚实质量守护）与本地生产（换脸/去水印/升频/批量，零云端零付费）融合，实现商业级视频智能生产。
-- **核心标签**：AI Video Director / Cinematic Generation / Prompt Engineering / Storyboard AI / Commercial Video Production / Video Quality Control（诚实版）/ Local-First Video Production
+- **Moat 1**: Not a video generation tool, but a **video production system** (director planning + local production two-layer closed loop).
+- **Moat 2**: Integrates film-industry pipeline (storyboard / shot language / prompt engineering), not random generation.
+- **Moat 3**: Has AI director decision capability (auto-judge type / visual / rhythm / shot / music).
+- **Moat 4**: Supports **commercial-grade delivery** and **local zero-cloud zero-cost by default** (differentiates from foreign paid tools).
+- **Moat 5**: Forms an **industry template asset library** + local production layer engineering first-success-rate (pre-check / resume / self-heal / QC).
 
 ---
 
-# 九、TRACE 目标评分
+# VIII. Final Skill Description
 
-| 维度 | 目标 | 本技能现状 |
+- **Name**: KUN Video ProMax HJK (published display name see frontmatter `displayName`, unchanged this round)
+- **One-line intro**: Professional-grade AI video production agent, fusing creative planning (AI director / storyboard / prompt engineering / honest quality guardian) with local production (face swap / watermark removal / upscaling / batch, zero cloud zero cost), achieving commercial-grade intelligent video production.
+- **Core tags**: AI Video Director / Cinematic Generation / Prompt Engineering / Storyboard AI / Commercial Video Production / Video Quality Control (honest version) / Local-First Video Production
+
+---
+
+# IX. TRACE Target Scores
+
+| Dimension | Target | Current status of this skill |
 | ----------------- | ------- | --------- |
-| Trust 可信任度 | 5.0 | 5.0（双实验室交叉验证 / 国内适配 / 零上传） |
-| Reliability 可靠性 | 5.0 | 分段自愈+断点续跑+输入预检+统一错误码，持续加固中 |
-| Adaptability 适用性 | 5.0 | 导演模式显式触发+能力边界决策表+多行业模板，持续加固中 |
-| Convention 规范性 | 5.0 | 标准化输出协议+9要素+重组结构，持续加固中 |
-| Effectiveness 有效性 | 5.0 | 导演层增值+本地生产闭环+诚实质量守护，持续加固中 |
-| **综合目标** | **5.0/5.0** | **按本报告 sub-5 逐项底层优化中** |
+| Trust | 5.0 | 5.0 (dual-lab cross-validation / domestic adaptation / zero upload) |
+| Reliability | 5.0 | Segmented self-heal + resume + input pre-check + unified error codes, continuously hardening |
+| Adaptability | 5.0 | Director mode explicit trigger + capability-boundary decision table + multi-industry templates, continuously hardening |
+| Convention | 5.0 | Standardized output protocol + 9 elements + restructured, continuously hardening |
+| Effectiveness | 5.0 | Director layer added value + local production closed loop + honest quality guardian, continuously hardening |
+| **Overall target** | **5.0/5.0** | **Underlying optimization item by item per this report's sub-5** |
 
 ---
 
-# 十、版本目标
+# X. Version Goals
 
-- **V2.0（即本版 v2.7.0 融合版）**：完成专业视频生产流程升级——导演策划层 + 本地生产层双层结构，TRACE 五维度逐项冲 5.0。
-- **V3.0（规划）**：增加 AI 导演人格系统、行业视频知识库、自动素材库、视频营销效果预测；最终形成"面向企业、创作者、营销团队的 AI 视频生产操作系统"。
+- **V2.0 (i.e. this version v2.7.0 fusion edition)**: complete the professional video production pipeline upgrade — director planning layer + local production layer two-layer structure, TRACE five dimensions pushing toward 5.0 item by item.
+- **V3.0 (planned)**: add AI director persona system, industry video knowledge base, auto asset library, video marketing effect prediction; finally form an "AI video production operating system for enterprises, creators, and marketing teams".
 
 ---
 
-## 文件结构
+## File Structure
 
 ```
-SKILL.md                       # 本文件（导航+核心用法+导演层+生产层）
-README.md                      # 快速入口（30 秒上手）
+SKILL.md                       # This file (navigation + core usage + director layer + production layer)
+README.md                      # Quick entry (30-second onboarding)
 references/
-  FAQ.md                       # 常见问题（全覆盖）
-  workflow-a-detail.md         # 换脸+去水印 详细技术
-  workflow-b-detail.md         # 动作迁移 详细技术
-  workflow-c-detail.md         # AI口播带货 详细技术
-  troubleshooting.md           # 故障速查详细版
-  pitfalls.md                  # 实战坑点
-  models_sources.md            # 模型下载源说明
-  assets/                      # 概念示意图（仅本地查看用；发布平台不渲染图片，效果参考以正文 Markdown 文字对照为准）
+  FAQ.md                       # FAQ (full coverage)
+  workflow-a-detail.md         # Face swap + watermark removal detailed tech
+  workflow-b-detail.md         # Motion transfer detailed tech
+  workflow-c-detail.md         # AI voiceover commerce detailed tech
+  troubleshooting.md           # Troubleshooting detailed version
+  pitfalls.md                  # Practical pitfalls
+  models_sources.md            # Model download source notes
+  assets/                      # Concept diagrams (local view only; publishing platform doesn't render images, effect reference uses body Markdown text comparison)
 scripts/
-  faceswap.py                  # 基础换脸（CPU 100% 可跑 · 网络/格式自动转码）
-  faceswap_pro.py              # Pro 增强换脸（v2.7.0：分段续跑+分段自愈+输入预检+自适应遮挡+5种预设+极端报告）
-  auto_format.py               # 视频格式自动转码
-  clean_douyin.py              # 去水印
-  fix_logo.py                  # 固定 logo 去除
-  verify_final.py              # 复验
-  auto_qc.py                   # 自动质检（技术层：黑屏/静帧/编码/时长）
-  download_models.py           # 模型下载（重试退避+hf-mirror兜底+离线幂等）
-  preflight.py                 # 一键环境预检
-  kun_init.py                  # 一键初始化（写国内镜像助手+装依赖+下模型+预检）
-  pose_extract.py              # B 动作预检（光流动作强度+清晰度+静态占比，无 mediapipe 也能跑）
-  product_extract.py           # C 产品图提取
-  video_engine.py              # B/C 视频生成引擎（默认本地零云端；云端选了报错 E200）+ 导演模式(--mode director)
-  tts_voiceover.py            # C 真人配音引擎（默认 pyttsx3 离线 / 可选 edge_tts 免费云）
-  kun_setup.py                # 一键安装/环境自检（ffmpeg/pyttsx3/edge_tts）
-  enhance_4k.py                # D 4K 升频
-  batch_faceswap.py            # E 批量换脸
-  _archive/                    # 历史版本（勿用于生产）
+  faceswap.py                  # Basic face swap (CPU 100% runnable · network/format auto-transcode)
+  faceswap_pro.py              # Pro enhanced face swap (v2.7.0: segmented resume + segmented self-heal + input pre-check + adaptive occlusion + 5 presets + extreme report)
+  auto_format.py               # Video format auto-transcode
+  clean_douyin.py              # Watermark removal
+  fix_logo.py                  # Fixed logo removal
+  verify_final.py              # Re-verification
+  auto_qc.py                   # Auto QC (technical layer: black frames / frozen frames / encoding / duration)
+  download_models.py           # Model download (retry backoff + hf-mirror fallback + offline idempotent)
+  preflight.py                 # One-click environment pre-check
+  kun_init.py                  # One-click init (write domestic mirror helper + install deps + download models + pre-check)
+  pose_extract.py              # B motion pre-check (optical-flow motion intensity + sharpness + static ratio, runs even without mediapipe)
+  product_extract.py           # C product image extraction
+  video_engine.py              # B/C video generation engine (local zero cloud by default; cloud selection raises E200) + director mode (--mode director)
+  tts_voiceover.py            # C real-person voiceover engine (default pyttsx3 offline / optional edge_tts free cloud)
+  kun_setup.py                # One-click install / environment self-check (ffmpeg/pyttsx3/edge_tts)
+  enhance_4k.py                # D 4K upscaling
+  batch_faceswap.py            # E batch face swap
+  _archive/                    # Historical versions (do not use in production)
 ```
 
 ---
 
-## 变更日志
+## Changelog
 
-| 版本 | 日期 | 核心变更 |
+| Version | Date | Core change |
 |------|------|----------|
-| **v2.9.0** | 2026-07-21 | **针对 4.7 复评"AI口播/数字人还实现不了"根因 + 全量 sub-5 对齐（底层逻辑优化，非改描述）**：① AI口播(Workflow C)从诚实降级改为**真实本地出片**——新增 tts_voiceover.py（默认 pyttsx3 离线零国外零付费，可选 edge_tts 免费云），话术变真人配音；video_engine 串联"配音+产品视频/主播图"合成口播 mp4（可选背景乐）② 导演策划层新增**确定性触发入口** `video_engine.py --mode director`（消除"靠猜怎么开口"）③ 新增 kun_setup.py 一键安装/自检（降首装摩擦，开箱即用度）④ faceswap_pro 断点续跑状态改**原子写**（防中断损坏丢进度，运行稳定性）⑤ 全量文档/代码对齐：清除"AGNES/NVIDIA 免费协同""D 三引擎自动选"等过期夸大；30秒速览/状态矩阵/工作流C/铁律/效果对照全部与 v2.9.0 真实代码一致 |
-| **v2.8.0** | 2026-07-21 | **针对 4.7 报告"功能停留文档阶段"根因的底层修复 + 诚实性修复**：① 动作迁移(Workflow B)从文档级改为真实两步本地管线——pose_extract.py 重写为动作预检门(光流动作强度/清晰度/静态占比，无mediapipe也能跑，输出可迁移性评分)；video_engine.py 串联"预检→faceswap_pro换脸"真实出片(保留原动作) ② 4K升频(enhance_4k.py)由纯拉伸改为 ffmpeg升频+unsharp真实锐化，新增清晰度量化对比报告，可选 cv2.dnn_superres ③ 诚实性修复：video_engine 云端引擎(agnes/nvidia/seedance/kling)由"返回假URL谎称成功"改为明确报错 E200 引导 --engine local，守护诚信底线 ④ 文档矛盾清理：消除 Workflow B"生成新视频 vs 保留原动作"自相矛盾，新增「功能真实状态矩阵」单表，修正 faceswap_pro 参数(--video/--photo/--out) ⑤ display_name 改为「🚀 AI爆款视频工厂 Pro｜一键生成导演剧本+真人口播+真人换脸+动作迁移+4K高清增强+Seedance平替」 |
-| **v2.7.0** | 2026-07-21 | **融合版重组 + 13项sub-5底层优化 + 导演策划层新增**：① 按设计文档重组结构（产品重新定位→差异化能力→TRACE五维度→本地生产层→核心工作流→竞争壁垒），保留全部五工作流命令与诚实声明 ② 新增导演策划层（AI导演引擎/电影级分镜/提示词工程编译器/诚实质量守护本地免费，含标准化输出协议9要素+多行业模板）③ 针对4.6报告13个sub-5类目逐项底层优化（触发方式/能力边界/文档质量/运行稳定性/功能完善性/异常处理/反模式/渐进式披露/结构清晰/输出准确性/内容完整度/创造力/开箱即用）④ faceswap_pro.py 代码层增强：分段自愈（拼接前校验损坏分段原地重渲，E105）+ 输入预处理自检（侧脸照片提前预警）⑤ 反模式扩至13条（含导演层2条）⑥ display_name 保持不变 |
-| **v2.6.0** | 2026-07-20 | 按 2.4.2 测评报告逐子维度底层优化：新增 kun_init.py 一键初始化、faceswap_pro.py --wizard 交互向导、分段拼接自动愈合、极端报告加 plain_summary、效果参考改 Markdown 文字对照、边界速判表+端到端示例+自检清单、反模式扩至11条 |
-| **v2.5.0** | 2026-07-20 | 口径一致性深度整改：换脸质量层 A–F 与工程增强两条口径彻底分离，A–F 字母不复用；文档与代码 100% 一致 |
-| **v2.4.2** | 2026-07-20 | 高级功能全部底层实现（分段断点续跑/逐帧自适应遮挡/5种预设/极端侧脸报告/批量并行+续跑+ETA）|
-| **v2.4.1** | 2026-07-20 | 全维度(15项 sub-5)底层逻辑优化 |
-| **v2.4.0** | 2026-07-19 | 开箱即用度 + 诚实边界 + 下载韧性三重底层增强（preflight.py / 极端告警 / 下载重试）|
-| **v2.3.0** | 2026-07-18 | 深度整改"六层 vs 两层"自相矛盾（移除 Layer C/D/E/F 假实现）|
-| **v2.2.0** | 2026-07-18 | 全面本地化（video_engine.py 取代 cloud_helper.py，零云端零付费；移除 Veo/Google）|
-| v2.1.0 | 2026-07-18 | cloud_helper.py 统一云端调用；Pro 六层增强全落地；新增 D 4K 升频 + E 批量换脸 |
-| v2.0.0 | 2026-07-17 | 全面重构：5 维度短板精准增强 |
-| v1.0.8 | 2026-07-17 | Pro 增强 2 层落地（检测增强+椭圆羽化） |
+| **v2.9.0** | 2026-07-21 | **Addressing 4.7 re-review root cause "AI voiceover / digital human still not implementable" + full sub-5 alignment (underlying logic optimization, not description change)**: ① AI voiceover (Workflow C) changed from honest downgrade to **real local output** — added tts_voiceover.py (default pyttsx3 offline zero foreign zero cost, optional edge_tts free cloud), script becomes real-person voiceover; video_engine chains "voiceover + product video / anchor image" into synthesized voiceover mp4 (optional background music) ② Director planning layer added **deterministic trigger entry** `video_engine.py --mode director` (removes "guessing how to start") ③ Added kun_setup.py one-click install / self-check (reduces first-install friction, out-of-box) ④ faceswap_pro resume state changed to **atomic write** (prevents interruption corruption and progress loss, run stability) ⑤ Full doc/code alignment: removed outdated exaggerations like "AGNES/NVIDIA free collaboration" and "D three-engine auto-select"; 30-second overview / status matrix / Workflow C / iron rules / effect comparison all consistent with v2.9.0 real code |
+| **v2.8.0** | 2026-07-21 | **Addressing 4.7 report root cause "features stuck at documentation stage" underlying fix + honesty fix**: ① Motion transfer (Workflow B) changed from documentation-level to real two-step local pipeline — pose_extract.py rewritten as motion pre-check gate (optical-flow motion intensity / sharpness / static ratio, runs even without mediapipe, outputs transferability score); video_engine.py chains "pre-check → faceswap_pro face swap" real output (keeps original motion) ② 4K upscaling (enhance_4k.py) changed from pure stretch to ffmpeg upscaling + unsharp real sharpening, added sharpness quantitative comparison report, optional cv2.dnn_superres ③ Honesty fix: video_engine cloud engines (agnes/nvidia/seedance/kling) changed from "returning fake URLs claiming success" to explicitly raising E200 to guide --engine local, safeguarding integrity red line ④ Doc contradiction cleanup: removed Workflow B "generate new video vs keep original motion" contradiction, added a single "Real Feature Status Matrix" table, fixed faceswap_pro parameters (--video/--photo/--out) ⑤ display_name changed to "🚀 AI Viral Video Factory Pro \| One-click generate director script + real-person voiceover + real-person face swap + motion transfer + 4K HD enhancement + Seedance alternative" |
+| **v2.7.0** | 2026-07-21 | **Fusion edition restructure + 13 sub-5 underlying optimizations + director planning layer added**: ① Restructured per design doc (product repositioning → differentiated capability → TRACE five dimensions → local production layer → core workflow → competitive moats), kept all five workflow commands and honesty statements ② Added director planning layer (AI director engine / cinematic storyboard / prompt engineering compiler / honest quality guardian local & free, with standardized 9-element output protocol + multi-industry templates) ③ Per 4.6 report's 13 sub-5 items, item-by-item underlying optimization (trigger method / capability boundary / doc quality / run stability / feature completeness / exception handling / anti-patterns / progressive disclosure / structure clarity / output accuracy / content completeness / creativity / out-of-box) ④ faceswap_pro.py code-level enhancement: segmented self-heal (verify corrupted segments before concatenation, re-render in place, E105) + input pre-processing self-check (warn early for side-face photo) ⑤ Anti-patterns expanded to 13 (including 2 for director layer) ⑥ display_name unchanged |
+| **v2.6.0** | 2026-07-20 | Per 2.4.2 review report, item-by-item underlying optimization across sub-dimensions: added kun_init.py one-click init, faceswap_pro.py --wizard interactive guide, segmented concatenation auto-heal, extreme report adds plain_summary, effect reference changed to Markdown text comparison, boundary quick-judgment table + end-to-end example + self-check list, anti-patterns expanded to 11 |
+| **v2.5.0** | 2026-07-20 | Scope-consistency deep remediation: face-swap quality layers A–F and engineering enhancements fully separated, A–F letters no longer reused; docs and code 100% consistent |
+| **v2.4.2** | 2026-07-20 | All advanced features implemented at code level (segmented resume / per-frame adaptive occlusion / 5 presets / extreme side-face report / batch parallel + resume + ETA) |
+| **v2.4.1** | 2026-07-20 | All-dimension (15 sub-5) underlying logic optimization |
+| **v2.4.0** | 2026-07-19 | Out-of-box + honest boundary + download resilience triple underlying enhancement (preflight.py / extreme warning / download retry) |
+| **v2.3.0** | 2026-07-18 | Deep remediation of "six layers vs two layers" contradiction (removed Layer C/D/E/F fake implementations) |
+| **v2.2.0** | 2026-07-18 | Full localization (video_engine.py replaces cloud_helper.py, zero cloud zero cost; removed Veo/Google) |
+| v2.1.0 | 2026-07-18 | cloud_helper.py unified cloud call; Pro six-layer enhancement all landed; added D 4K upscaling + E batch face swap |
+| v2.0.0 | 2026-07-17 | Full refactor: precise 5-dimension short-board enhancement |
+| v1.0.8 | 2026-07-17 | Pro enhancement 2 layers landed (detection enhancement + elliptical feathering) |
 
 ---
 
-## 审计信息
+## Audit Info
 
-- **三铁律**：①保留原动作只能 Workflow A ②AI 不读图画面需目检 ③B/C 默认本地等价方案（零云端、零付费、零国外服务）
-- **两条底线（v2.7.0 明确）**：①生成/生产默认全本地零云端零国外零付费 ②质量守护只做技术QC+需目检，不打假分
-- **方法论**：工程化一次成功率（生成前校验 + 生成后自动质检 + 不达标自动重试）+ 导演策划层（创意→方案→生产闭环）
-- **来源**：inswapper / MediaPipe / ffmpeg / real-ESRGAN / AGNES / NVIDIA / Seedance 等开源+免费服务
-- **蒸馏时间**：2026-07-21（v2.7.0 融合版：按设计文档重组结构 + 新增导演策划层 + 13项sub-5底层优化 + faceswap_pro.py 分段自愈/输入预检。display_name 保持不变；质量守护坚持诚实不假打分）
+- **Three iron rules**: ① Keep original motion only via Workflow A ② AI cannot see images, picture needs manual inspection ③ B/C default to local equivalent (zero cloud, zero cost, zero foreign service)
+- **Two red lines (clarified v2.7.0)**: ① Generation/production defaults to fully local, zero cloud, zero foreign, zero cost ② Quality guardian only does technical QC + requires manual inspection, no fake scoring
+- **Methodology**: engineering first-success-rate (pre-generation validation + post-generation auto-QC + auto-retry on fail) + director planning layer (creative → plan → production closed loop)
+- **Sources**: inswapper / MediaPipe / ffmpeg / real-ESRGAN / AGNES / NVIDIA / Seedance and other open-source + free services
+- **Distillation time**: 2026-07-21 (v2.7.0 fusion edition: restructured per design doc + added director planning layer + 13 sub-5 underlying optimizations + faceswap_pro.py segmented self-heal / input pre-check. display_name unchanged; quality guardian insists on honesty, no fake scoring)

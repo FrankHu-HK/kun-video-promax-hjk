@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  English | <a href="README.zh-CN.md">简体中文</a>
+  English
 </p>
 
 ---
@@ -114,4 +114,4 @@ If this factory saves you a cloud subscription and actually renders your video, 
 
 ## License
 
-[MIT](LICENSE) — Copyright 2026 Frank Hu (胡景堃).
+[MIT](LICENSE) — Copyright 2026 Frank Hu (Hu Jingkun).

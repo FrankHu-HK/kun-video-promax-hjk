@@ -1,366 +1,366 @@
 ---
 module: troubleshooting
-priority: 高（这是用户遇到错误时第一查的文档）
+priority: High (this is the first doc users check when hitting errors)
 last_verified: 2026-07-20
 version: 2.4.2
 ---
 
-# 故障速查详细版（Troubleshooting Guide）v2.4.2
+# Troubleshooting Guide (detailed) v2.4.2
 
-> **使用方式**：你看到的现象 → 直接对号入座 → 按"原因→方案"排查。
-> 本文档**不假设你有技术背景**——所有术语都在解释一遍。
-> **v2.4.2 更新**：极端侧脸/遮挡问题已有实际解决方案；新增高级功能故障排查章节。
+> **How to use**: the symptom you see → directly match it → troubleshoot by "cause → solution".
+> This document **does not assume you have a technical background** — all terms are explained once.
+> **v2.4.2 update**: extreme side-face / occlusion issues now have real solutions; added an advanced-feature troubleshooting section.
 >
-> 如果这里没有覆盖你的情况，把"具体报错文字+你跑的命令"发给我。
+> If your case isn't covered here, send me "the specific error text + the command you ran".
 
 ---
 
-## 📌 效果参考说明
+## 📌 Effect Reference Note
 
-> 本文件不再内嵌图片（发布平台不渲染 PNG）。各场景预期观感见 SKILL.md「效果预期对照（文字版）」。
+> This file no longer embeds images (publishing platforms don't render PNG). Expected look per scenario is in SKILL.md's "Effect Expectation Comparison (text version)".
 
-## 速查表（按现象分类）
-
----
-
-### ① 照片相关（E1xx 错误）
-
-#### 现象：❌ "照片读不了 / 无法读取照片"
-**白话翻译**：脚本打不开你的照片文件。
-
-**可能原因**：
-- 文件被其他程序占用（预览中打开）
-- 格式太冷门（HEIC、RAW）
-- 路径含特殊字符或太长
-
-**解决方案**：
-1. 关闭所有预览程序
-2. 用 Windows 画图或在线工具转成 JPG
-3. 重命名为简单英文数字名（`photo.jpg`），放简单路径（`D:\photo.jpg`）
-
-#### 现象：❌ "照片中未检测到人脸"（E101）
-**白话翻译**：没在照片里找到脸。
-
-**可能原因**：
-- 脸被头发/墨镜/口罩挡住
-- 脸太小（全身远景照）
-- 太模糊 / 强烈侧脸或仰拍俯拍
-
-**解决方案**：
-1. 换一张**正面或近正面**清晰人像照
-2. 尺寸 ≥512×512 像素
-3. 完整露出额头、眼睛、鼻子、嘴巴
-4. 光线均匀，不要逆光
+## Quick Table (by symptom category)
 
 ---
 
-### ② 视频相关（E2xx 错误）
+### ① Photo-related (E1xx errors)
 
-#### 现象：❌ "视频无法打开"（E202/E103）
-**白话翻译**：读不了视频文件。
+#### Symptom: ❌ "Photo unreadable / cannot read photo"
+**Plain translation**: the script can't open your photo file.
 
-**原因与解决**：
-1. **转码为 mp4**（格式工厂 / HandBrake，H.264 编码）—— 最常见解法
-2. 先用播放器确认能正常打开
-3. 文件名不含特殊字符
+**Possible causes**:
+- File locked by another program (open in preview)
+- Too obscure format (HEIC, RAW)
+- Path contains special characters or is too long
 
-#### 现象：❌ "视频输出失败"（E205）
+**Solutions**:
+1. Close all preview programs
+2. Use Windows Paint or an online tool to convert to JPG
+3. Rename to a simple English alphanumeric name (`photo.jpg`), put in a simple path (`D:\photo.jpg`)
 
-**原因与解决**：
-1. 输出目录有写权限？→ 别放 `C:\Program Files\`
-2. 磁盘空间 ≥1–2GB？
-3. 输出路径简化：`D:\output\result.mp4`
+#### Symptom: ❌ "No face detected in photo" (E101)
+**Plain translation**: no face found in the photo.
+
+**Possible causes**:
+- Face blocked by hair / sunglasses / mask
+- Face too small (full-body wide shot)
+- Too blurry / strong side face or low/high angle
+
+**Solutions**:
+1. Switch to a **front or near-front** clear portrait photo
+2. Size ≥512×512 pixels
+3. Fully expose forehead, eyes, nose, mouth
+4. Even lighting, no backlight
 
 ---
 
-### ③ 模型相关（E102 等）
+### ② Video-related (E2xx errors)
 
-#### 现象：❌ "模型加载失败"（E102）
+#### Symptom: ❌ "Video cannot be opened" (E202/E103)
+**Plain translation**: can't read the video file.
+
+**Cause & solution**:
+1. **Transcode to mp4** (Format Factory / HandBrake, H.264 codec) — the most common fix
+2. First confirm it opens normally in a player
+3. Filename contains no special characters
+
+#### Symptom: ❌ "Video output failed" (E205)
+
+**Cause & solution**:
+1. Write permission on output directory? → Don't put it in `C:\Program Files\`
+2. Disk space ≥1–2GB?
+3. Simplify output path: `D:\output\result.mp4`
+
+---
+
+### ③ Model-related (E102 etc.)
+
+#### Symptom: ❌ "Model load failed" (E102)
 
 ```bash
-# 重跑模型下载
+# Re-run model download
 python scripts/download_models.py --work-dir . --with-mediapipe
 ```
-检查 `models/inswapper_128.onnx` 和 `buffalo_l/` 是否存在。
+Check whether `models/inswapper_128.onnx` and `buffalo_l/` exist.
 
-#### 现象：❌ "下载很慢/失败"
-1. 能访问 modelscope.cn？
-2. 手动下载放 `models/`
-3. MediaPipe 自动切 gitee/ModelScope 镜像
+#### Symptom: ❌ "Download very slow / failed"
+1. Can you reach modelscope.cn?
+2. Manually download into `models/`
+3. MediaPipe auto-switches to gitee/ModelScope mirror
 
 ---
 
-### ④ 换脸效果问题（⚠️ v2.4.2 大更新）
+### ④ Face swap quality issues (⚠️ v2.4.2 major update)
 
-#### 现象：换脸后脸"假" / "贴图感强"
+#### Symptom: face looks "fake" / "strong cutout feel" after swap
 
-| 排序 | 原因 | 解决 |
+| Rank | Cause | Solution |
 |------|------|------|
-| ① | 照片角度差 | 选角度接近的照片 |
-| ② | 未用 Pro 版 | 改 faceswap_pro.py |
-| ③ | 参数未优化 | 加 `--preset quality` |
-| ④ | 视频画质低 | 先 enhance_4k.py 升频 |
+| ① | Bad photo angle | Pick a photo with a closer angle |
+| ② | Didn't use Pro version | Switch to faceswap_pro.py |
+| ③ | Parameters not optimized | Add `--preset quality` |
+| ④ | Low video quality | First upscale with enhance_4k.py |
 
 ```bash
 python scripts/faceswap_pro.py --video in.mp4 --photo face.jpg --out out.mp4 --preset quality
 ```
 
-#### 现象：普通侧脸漏换（≤70°偏转）
+#### Symptom: ordinary side face missed (≤70° yaw)
 
-**v2.4.2 方案**：
+**v2.4.2 solution**:
 
 ```bash
-# sideface 预设：加大覆盖 + 自适应蒙版 + 极端帧自动裁剪
+# sideface preset: wider coverage + adaptive mask + extreme-frame auto-trim
 python scripts/faceswap_pro.py --video in.mp4 --photo face.jpg --out out.mp4 --preset sideface
 ```
 
-底层机制（第 462–463 行）逐帧自适应：
-- yaw 越大 → mask_scale 越大（最大 1.8x）、feather 越柔和（最大 0.2）
-- 不再是固定参数，而是**每帧根据实际偏转角动态调整**
+Underlying mechanism (lines 462–463) per-frame adaptive:
+- larger yaw → larger mask_scale (max 1.8x), softer feather (max 0.2)
+- no longer fixed parameters, but **dynamically adjusted per frame based on actual yaw**
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-#### 现象：⭐ 极端侧脸（>70°）效果差 —— v2.4.2 已有实际方案
+#### Symptom: ⭐ Extreme side face (>70°) poor result — v2.4.2 already has a real solution
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-**旧答案（v2.4.0）："无完美方案"**
-**新答案（v2.4.2）：三层防护**
+**Old answer (v2.4.0): "no perfect solution"**
+**New answer (v2.4.2): three-layer protection**
 
-| 层级 | 机制 | 效果 |
+| Layer | Mechanism | Effect |
 |------|------|------|
-| L1 | `--preset sideface`（mask_scale=1.40, feather=0.11） | 覆盖范围 +50%，边缘更柔 |
-| L2 | 逐帧自适应 ms/feather 公式 | 动态跟随偏转角放大 |
-| L3 | `--auto-trim-extreme`（自动裁掉极端帧） | 输出干净版本不含极端帧段 |
+| L1 | `--preset sideface` (mask_scale=1.40, feather=0.11) | Coverage +50%, softer edges |
+| L2 | Per-frame adaptive ms/feather formula | Dynamically follows yaw to enlarge |
+| L3 | `--auto-trim-extreme` (auto-cut extreme frames) | Clean output without extreme-frame segments |
 
 ```bash
 python scripts/faceswap_pro.py --video extreme_video.mp4 --photo face.jpg \
     --out result.mp4 --preset sideface --segment-secs 10
 ```
 
-完成后查看 `<output>_extreme_report.json` 了解各时间段段的极端占比和位置。**如果某段极端帧占比 >15%**，考虑手动拆分该段单独处理或降低期望。
+After completion, view `<output>_extreme_report.json` to learn the extreme-frame ratio and positions of each time segment. **If a segment's extreme-frame ratio >15%**, consider manually splitting that segment for separate processing or lowering expectations.
 
-**诚实声明**：极端侧脸 >80° 或完全侧面轮廓的情况，inswapper 架构本身仍有物理限制。v2.4.2 的三层防护在 ≤75° 场景下效果显著提升，但 >85° 的纯轮廓场景仍建议人工介入。
+**Honesty statement**: for extreme side faces >80° or pure profile, the inswapper architecture itself still has physical limits. v2.4.2's three-layer protection significantly improves ≤75° scenarios, but >85° pure profile still recommends human intervention.
 
-#### 现象：⭐ 脸部被遮挡（口罩/墨镜/手）边缘有明显接缝/鬼影
+#### Symptom: ⭐ Face occluded (mask/sunglasses/hand) with obvious seams / ghosting at the edge
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-**v2.4.2 方案**：
+**v2.4.2 solution**:
 
 ```bash
 python scripts/faceswap_pro.py --video masked_video.mp4 --photo face.jpg \
     --out result.mp4 --preset occlusion
 ```
 
-occlusion 预设参数：mask_scale=1.30（穿透遮挡区）、feather=0.13（强羽化）。配合逐帧自适应公式，遮挡区域越大蒙版越宽越柔。
+occlusion preset params: mask_scale=1.30 (penetrate occlusion area), feather=0.13 (strong feathering). Combined with the per-frame adaptive formula, larger occlusion area → wider and softer mask.
 
-**组合策略**：同时有侧脸+遮挡 → 优先用 `sideface`（mask_scale 更大 = 1.40 vs 1.30）。
+**Combination strategy**: side face + occlusion together → prefer `sideface` (larger mask_scale = 1.40 vs 1.30).
 
-**诚实声明**：全脸完全被挡住（仅露出眼睛以下或更低）→ AI 物理无法推断面部结构，任何工具都无能为力。
+**Honesty statement**: fully blocked face (only eyes or lower visible) → AI physically cannot infer facial structure, no tool can help.
 
-#### 现象：换脸后背景边缘有痕迹
-1. Pro 版椭圆羽化融合已落地 → 改用 faceswap_pro.py
-2. 或保留原视频背景（推荐，零重影风险）
-
----
-
-### ⑤ 去水印问题
-
-#### 现象：去水印后还有残留
-
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
-
-1. 手动 ROI：`--roi x y w h`
-2. 提高参数：`--scale 4 --radius 12`
-3. 固定 logo 兜底：`fix_logo.py`
-4. 复验：`verify_final.py --video output.mp4 --bbox face_bboxes.json --step 1`
-
-#### 现象：去水印后画面变模糊
-→ 降低 `--radius` 到 5–8（inpaint 半径过大导致模糊）
+#### Symptom: traces at the background edge after swap
+1. Pro version elliptical feathering fusion already landed → switch to faceswap_pro.py
+2. Or keep the original video background (recommended, zero ghosting risk)
 
 ---
 
-### ⑥ 🔥 高级功能故障排查（v2.4.2 新增）
+### ⑤ Watermark removal issues
 
-#### 现象：`--resume` 后仍从头开始跑？
+#### Symptom: watermark residue remains after removal
 
-**检查点**：
-1. `.resume_state.json` 文件是否存在且可读？（应与输出文件同路径）
-2. 文件内容中 `"done"` 列表是否非空？
-3. 是否在同一次命令中加了 `--resume` 且输出路径一致？
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-**调试命令**：
+1. Manual ROI: `--roi x y w h`
+2. Raise parameters: `--scale 4 --radius 12`
+3. Fixed logo fallback: `fix_logo.py`
+4. Re-verify: `verify_final.py --video output.mp4 --bbox face_bboxes.json --step 1`
+
+#### Symptom: picture becomes blurry after watermark removal
+→ Lower `--radius` to 5–8 (too-large inpaint radius causes blur)
+
+---
+
+### ⑥ 🔥 Advanced Feature Troubleshooting (new in v2.4.2)
+
+#### Symptom: `--resume` still runs from the start?
+
+**Checkpoints**:
+1. Does the `.resume_state.json` file exist and is readable? (should be at the same path as the output file)
+2. Is the `"done"` list in the file non-empty?
+3. Did you add `--resume` in the same command with a consistent output path?
+
+**Debug command**:
 ```bash
-# 查看 resume state 内容
+# View resume state content
 cat output.mp4.resume_state.json
-# 应该看到 {"done": [0, 1], "segs": {...}, ...}
+# Should see {"done": [0, 1], "segs": {...}, ...}
 ```
 
-若 state 文件损坏或空 → 删除它重新跑（会从头开始但至少不会卡住）
+If the state file is corrupted or empty → delete it and re-run (will start from the beginning but at least won't get stuck)
 
-#### 现象：拼接阶段报错 "ffmpeg concat failed"
+#### Symptom: concat stage error "ffmpeg concat failed"
 
-**原因**：ffmpeg 不可用或输出路径含特殊字符
+**Cause**: ffmpeg unavailable or output path contains special characters
 
-**回退机制**：代码内置 cv2 回退（concat_videos 第 231 行）。若两者都失败：
-1. 确认 ffmpeg 已安装并在 PATH：`ffmpeg -version`
-2. 手动拼接 seg 文件：
+**Fallback**: code has built-in cv2 fallback (concat_videos line 231). If both fail:
+1. Confirm ffmpeg installed and in PATH: `ffmpeg -version`
+2. Manually concat seg files:
    ```bash
-   # 生成 concat list
+   # Generate concat list
    ls seg_*.mp4 | sort > concat_list.txt
-   # sed 在每行前加 "file '"
+   # add "file '" before each line with sed
    ffmpeg -f concat -safe 0 -i concat_list.txt -c copy output.mp4
    ```
 
-#### 现象：`--workers N` 并行时内存不足 / OOM
+#### Symptom: `--workers N` parallel runs out of memory / OOM
 
-**原因**：每个子进程占 ~1–2GB 内存，workers 过高超出物理内存。
+**Cause**: each subprocess takes ~1–2GB memory, too-high workers exceeds physical memory.
 
-**解决**：
-1. 降低 workers 数：`--workers 2` 或 `--workers 1`（串行）
-2. 减少并发：先 `--workers 2` 测试稳定再逐步加
-3. 监控内存：Windows 任务管理器看 Python 进程内存占用
+**Solution**:
+1. Lower workers count: `--workers 2` or `--workers 1` (serial)
+2. Reduce concurrency: first `--workers 2` to test stability then gradually increase
+3. Monitor memory: Windows Task Manager to see Python process memory usage
 
-#### 现象：batch_state.json 被锁定 / 写入失败
+#### Symptom: batch_state.json locked / write failed
 
-**原因**：两个并行 batch 进程写同一 state 文件冲突
+**Cause**: two parallel batch processes writing the same state file conflict
 
-**解决**：
-1. 确保只有一个 batch 进程运行
-2. 若上次异常退出锁残留 → 删除旧的 batch_state.json 重新跑
-3. `--resume` 时会读取旧 state，确保只有一个进程写入
+**Solution**:
+1. Ensure only one batch process is running
+2. If a lock remained from an abnormal exit last time → delete the old batch_state.json and re-run
+3. `--resume` reads the old state, ensure only one process writes
 
-#### 现象：`--preset xxx` 报错 "invalid choice"
+#### Symptom: `--preset xxx` error "invalid choice"
 
-**可用值**：auto / speed / quality / sideface / occlusion
+**Available values**: auto / speed / quality / sideface / occlusion
 
 ```bash
-# 正确示例
+# Correct examples
 --preset quality      ✅
 --preset sideface     ✅
---preset fast         ❌ （不存在）
+--preset fast         ❌ (doesn't exist)
 ```
 
-#### 现象：extreme_report.json 未生成
+#### Symptom: extreme_report.json not generated
 
-**条件**：仅在 faceswap_pro.py 运行完成（正常退出）后才生成。中断时不会生成。
+**Condition**: only generated after faceswap_pro.py finishes running (normal exit). Not generated on interruption.
 
-**解决**：正常完整跑完一次即可生成。如需中途查看进度，直接读 `.resume_state.json` 中各 seg 的 stats。
+**Solution**: run once completely and normally to generate it. To view progress mid-way, directly read the stats of each seg in `.resume_state.json`.
 
 ---
 
-### ⑦ 云端生成问题（Workflow B/C）
+### ⑦ Cloud generation issues (Workflow B/C)
 
-#### 现象：❌ "API Key 无效" / "鉴权失败"
-1. 确认环境配置了对应 Key
-2. 检查是否过期/禁用
-3. 默认通道 Seedance 无需 Key
+#### Symptom: ❌ "API Key invalid" / "auth failed"
+1. Confirm the corresponding key is configured in the environment
+2. Check if expired / disabled
+3. Default channel Seedance needs no key
 
-#### 现象：❌ "生成超时" / "任务失败"
-1. 重试 1–2 次（默认最多 2 次重试）
-2. 检查输入素材合规性
-3. 换引擎（local → AGNES → NVIDIA → Seedance → Kling）
+#### Symptom: ❌ "generation timeout" / "task failed"
+1. Retry 1–2 times (default max 2 retries)
+2. Check input material compliance
+3. Switch engine (local → AGNES → NVIDIA → Seedance → Kling)
 
-#### 现象：生成结果不自然 / 动作不对
-1. 参考视频动作清晰简单
-2. 目标照角度匹配
-3. 换不同模型重试（Kling 动作最像）
+#### Symptom: generation result unnatural / wrong motion
+1. Reference video motion clear and simple
+2. Target photo angle matches
+3. Retry with a different model (Kling motion most realistic)
 
 ---
 
-### ⑧ 通用排查流程
+### ⑧ General Troubleshooting Flow
 
 ```
-[步骤1] 看错误码（E1xx/E2xx/E102）
-  ↓ 查本速查表对应条目
-[步骤2] 读错误信息具体提示
-  - 路径问题?   → 改英文路径
-  - 文件问题?   → 检查文件存在/格式
-  - 模型问题?   → 重跑 download_models.py
-  - 高级功能?   → 见「⑥ 高级功能故障排查」
-[步骤3] 跑诊断命令
+[Step 1] Read the error code (E1xx/E2xx/E102)
+  ↓ Look up the corresponding item in this quick table
+[Step 2] Read the specific error message
+  - Path issue?   → Use English path
+  - File issue?   → Check file exists / format
+  - Model issue?   → Re-run download_models.py
+  - Advanced feature?   → See "⑥ Advanced Feature Troubleshooting"
+[Step 3] Run diagnostic commands
   python scripts/auto_qc.py --input your_output.mp4
   python scripts/verify_final.py --video your_output.mp4 --bbox face_bboxes.json
-[步骤4] 仍然不行?
-  → 收集：错误码 + 完整命令 + 截图 → 发我帮你查
+[Step 4] Still not working?
+  → Collect: error code + full command + screenshot → send me to help you check
 ```
 
 ---
 
-### ⑨ 画质提升问题
+### ⑨ Quality improvement issues
 
-#### 现象：4K 升频后还是模糊 / 有压缩伪影
+#### Symptom: still blurry / compression artifacts after 4K upscaling
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-1. 确认输入不是已损坏的低质量源（升频无法凭空创造细节）
-2. 推荐流程：**先升频 → 再换脸**（避免二次压缩损失）
-3. enhance_4k.py 使用 ffmpeg lanczos，对 1080p→4K 提升明显；720p 以下源效果有限
-4. 如需更强效果：先用 Topaz Video AI（付费）或 Real-ESRGAN（开源）预处理
+1. Confirm input is not already a corrupted low-quality source (upscaling can't create detail out of thin air)
+2. Recommended flow: **upscale first → then swap** (avoids secondary compression loss)
+3. enhance_4k.py uses ffmpeg lanczos, clear improvement for 1080p→4K; sources below 720p have limited effect
+4. For stronger effect: pre-process with Topaz Video AI (paid) or Real-ESRGAN (open source)
 
 ---
 
-### ⑩ 批量高级版问题
+### ⑩ Batch advanced version issues
 
-#### 现象：批量跑到一半某个视频失败导致全部停止
+#### Symptom: batch stops entirely when one video fails halfway
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-**原因**：默认行为——任一视频失败则中止全部。
+**Cause**: default behavior — any video failure aborts all.
 
-**解决**：加 `--continue-on-error`：
+**Solution**: add `--continue-on-error`:
 ```bash
 python scripts/batch_faceswap.py --photo face.jpg --videos-dir videos/ \
     --out-dir out/ --workers 4 --continue-on-error --retry 2
 ```
 
-#### 现象：批量续跑跳过了所有视频（全显示 skipped）
+#### Symptom: batch resume skipped all videos (all show skipped)
 
-**原因**：`batch_state.json` 记录上次的 success 状态，`--resume` 全部跳过。
+**Cause**: `batch_state.json` recorded last time's success status, `--resume` skips all.
 
-**解决**：
-- 确认产物确实已正确生成 → 说明上次其实成功了
-- 要重跑全部 → **不加 `--resume`**，或删掉 `out_dir/batch_state.json`
-- 只重跑失败的 → 编辑 batch_state.json 将对应视频状态从 "success" 改为 "fail"
+**Solution**:
+- Confirm product was indeed correctly generated → means last time actually succeeded
+- To re-run all → **don't add `--resume`**, or delete `out_dir/batch_state.json`
+- To re-run only failures → edit batch_state.json to change the corresponding video status from "success" to "fail"
 
-#### 现象：ETA 时间不准 / 进度卡住
+#### Symptom: ETA inaccurate / progress stuck
 
-**原因**：ETA 根据已完成任务的平均速率估算，前几个任务波动大时不准。
+**Cause**: ETA estimated from average rate of completed tasks; inaccurate when first few tasks fluctuate a lot.
 
-**正常现象**：完成 3–5 个任务后 ETA 会趋于准确。如果长时间卡住（>10分钟无日志）→ 可能子进程死锁，Ctrl+C 重启。
+**Normal phenomenon**: ETA converges to accurate after 3–5 tasks complete. If stuck for a long time (>10 min no log) → possible subprocess deadlock, Ctrl+C restart.
 
 ---
 
-### ⑪ 预防性检查清单（跑前必过）
+### ⑪ Preventive Check List (must pass before running)
 
-| 检查项 | 状态 | 备注 |
+| Check item | Status | Notes |
 |--------|------|------|
-| Python ≥3.10 | □ | mediapipe 需要 |
-| 依赖装全（8 个核心包） | □ | `download_models.py` 一键安装 |
-| 模型已下载（models/） | ⬜ | 首次必须跑 |
-| 输入 mp4 格式 | □ | mov/avi 先转码 |
-| 照片 ≥512×512 清晰正面 | ⬜ | 小/模糊/侧脸照效果差 |
-| 文件名英文数字 | ⬜ | 中文路径有兜底但显式更好 |
-| 输出目录可写 | □ | ≥2GB 磁盘空间 |
-| 长视频准备用 `--resume` | ⬜ | 防中断白费 |
+| Python ≥3.10 | □ | mediapipe needs it |
+| All dependencies installed (8 core packages) | □ | `download_models.py` one-click install |
+| Models downloaded (models/) | ⬜ | Must run first time |
+| Input mp4 format | □ | Transcode mov/avi first |
+| Photo ≥512×512 clear front | ⬜ | Small / blurry / side-face photos work poorly |
+| Filename English alphanumeric | ⬜ | Chinese path has fallback but explicit is better |
+| Output directory writable | □ | ≥2GB disk space |
+| Long video prepared to use `--resume` | ⬜ | Prevent wasted interruption |
 
-**全部勾选 ✓ → 大概率顺利。**
+**All checked ✓ → high chance of smooth run.**
 
 ---
 
-## 错误码速查
+## Error Code Quick Reference
 
-| 码 | 范围 | 含义 | 脚本 |
+| Code | Scope | Meaning | Script |
 |----|------|------|------|
-| E100–E105 | Pro 换脸 | faceswap_pro.py 详见 [workflow-a-detail.md](workflow-a-detail.md) |
-| E200–E205 | 基础换脸 | faceswap.py 详见 [workflow-a-detail.md](workflow-a-detail.md) |
-| E400–E402 | 批量换脸 | batch_faceswap.py（见 Q10 高级用法）|
-| E001–E010 | 输入验证 | 空/缺参/矛盾/超长等 |
+| E100–E105 | Pro face swap | faceswap_pro.py see [workflow-a-detail.md](workflow-a-detail.md) |
+| E200–E205 | Basic face swap | faceswap.py see [workflow-a-detail.md](workflow-a-detail.md) |
+| E400–E402 | Batch face swap | batch_faceswap.py (see Q10 advanced usage) |
+| E001–E010 | Input validation | empty / missing param / conflict / too long etc. |
 
-## 获取更多帮助
+## Get More Help
 
-- **常见问题** → [FAQ.md](FAQ.md)
-- **10 条实战坑点** → [pitfalls.md](pitfalls.md)
-- **模型下载源** → [models_sources.md](models_sources.md)
-- **核心命令速查** → [../SKILL.md](../SKILL.md)
+- **FAQ** → [FAQ.md](FAQ.md)
+- **10 practical pitfalls** → [pitfalls.md](pitfalls.md)
+- **Model download sources** → [models_sources.md](models_sources.md)
+- **Core command quick reference** → [../SKILL.md](../SKILL.md)

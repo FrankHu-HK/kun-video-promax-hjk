@@ -1,39 +1,39 @@
 ---
 module: workflow-a-detail
-priority: 中（Workflow A 核心用法已写入 SKILL.md，本文件是详细技术文档）
+priority: Medium (Workflow A core usage is already in SKILL.md; this file is the detailed technical doc)
 last_verified: 2026-07-17
 ---
 
-# Workflow A 详细技术文档（换脸+去水印）
+# Workflow A Detailed Technical Doc (Face Swap + Watermark Removal)
 
-> SKILL.md 已给"新手快速通道"和最简命令。本文件是**4 阶段完整管线**+ **Pro 增强6层设计蓝图**+ **所有参数详解**+ **分步确认协议**的详细技术参考。
-> 80% 用户**不需要读这个文件**——直接用 SKILL.md 的最简命令即可。
+> SKILL.md already gives the "Beginner Quick Start" and the simplest commands. This file is the detailed technical reference for the **4-stage complete pipeline** + **Pro enhanced 6-layer design blueprint** + **all parameter details** + **step-by-step confirmation protocol**.
+> 80% of users **don't need to read this file** — just use the simplest commands in SKILL.md.
 
 ---
 
-## 阶段 0：素材与模型就位
+## Stage 0: Material & Models Ready
 
-1. 把用户照片复制为 **ASCII 文件名**（如 `user_photo.jpg`）。
-   ⚠️ **坑点**：`cv2.imread` 读不了中文/含中文路径，必须复制成纯 ASCII 名再读。
-2. 确认源视频路径、模型路径。如缺模型，跑 `scripts/download_models.py`。
+1. Copy the user photo to an **ASCII filename** (e.g. `user_photo.jpg`).
+   ⚠️ **Pitfall**: `cv2.imread` can't read Chinese / paths containing Chinese; must copy to a pure ASCII name before reading.
+2. Confirm source video path and model path. If models are missing, run `scripts/download_models.py`.
 
-## 阶段 1：换脸（保留原背景/动作）
+## Stage 1: Face Swap (keep original background / motion)
 
-### 决策门 A-0（生成前必问）
+### Decision Gate A-0 (must ask before generation)
 
-收到目标照片后、运行换脸前，**必须先用结构化问题确认换脸范围**：
+After receiving the target photo and before running the swap, **must confirm the swap scope with structured questions**:
 
-- 选项1（**推荐**）：**只换脸**，保留原视频人物的身形/服装/鞋帽（最自然、最低返工风险，契合 Workflow A"100% 保留"定位）
-- 选项2：**换成照片整体造型**（脸+发型+服装+鞋帽）——需走扩散重绘（Workflow B 的 ID 锁定 / F 兜底 / 或 facefusion）
-- 选项3：**自定义**（如只换脸 + 用照片发型但保留原服装）
+- Option 1 (**recommended**): **Only swap face**, keep the original video person's body / clothing / shoes-hat (most natural, lowest rework risk, fits Workflow A's "100% kept" positioning)
+- Option 2: **Swap to the photo's full look** (face + hairstyle + clothing + shoes-hat) — needs diffusion repaint (Workflow B's ID lock / F fallback / or facefusion)
+- Option 3: **Custom** (e.g. only swap face + use photo hairstyle but keep original clothing)
 
-**不得默认**。确认后再执行。
+**Don't default.** Confirm before executing.
 
-### 基础换脸命令
+### Basic Face Swap Command
 
 ```bash
 python scripts/faceswap.py \
-  --video "源视频.mp4" \
+  --video "source.mp4" \
   --photo "user_photo.jpg" \
   --out "swapped_raw.mp4" \
   --bbox "face_bboxes.json" \
@@ -42,55 +42,55 @@ python scripts/faceswap.py \
   --target-side right
 ```
 
-### `--target-side` 参数详解
+### `--target-side` Parameter Detail
 
-| 值 | 行为 | 适用场景 |
+| Value | Behavior | Applicable scenario |
 |---|---|---|
-| `right`（推荐） | 双人同框时换**最靠右的脸**；单人镜头不换 | 90% 用户场景 |
-| `left` | 双人同框时换**最靠左的脸**；单人镜头不换 | 左侧人物场景 |
-| `largest` | 换**bbox 最宽**的人脸 | ⚠️ 高危：双人脸宽接近时会**逐帧误换**配角 |
+| `right` (recommended) | When two people in frame, swap **the rightmost face**; no swap in single-person shot | 90% of user scenarios |
+| `left` | When two people in frame, swap **the leftmost face**; no swap in single-person shot | Left-side person scenario |
+| `largest` | Swap the **widest bbox** face | ⚠️ High risk: when two faces are similar width, **per-frame mis-swap** of the supporting actor |
 
-> ⚠️ **何时禁用 `largest`**: 当双人脸宽接近（如右143–187px / 左≈149px）时，约 1/3 帧里较宽的是配角，`largest` 会**逐帧误换**。**只要用户要"换右侧/指定侧那个人"，一律用 `right`/`left` 按位置锁定**。
+> ⚠️ **When to disable `largest`**: when two faces are similar width (e.g. right 143–187px / left ≈149px), in about 1/3 of frames the wider one is the supporting actor, and `largest` will **mis-swap per frame**. **Whenever the user wants "swap the right / specified-side person", always use `right`/`left` to lock by position**.
 
-### 性能优化（已内置）
+### Performance Optimization (built-in)
 
-基础换脸脚本已自动 pop 掉用不上的模型（`landmark_3d_68 / landmark_2d_106 / genderage`），CPU 单帧 **8s → 1.4s**（约 5.7 倍提速）。无需额外配置。
+The basic face swap script already auto-pops unused models (`landmark_3d_68 / landmark_2d_106 / genderage`), CPU per-frame **8s → 1.4s** (about 5.7x speedup). No extra config needed.
 
-### 错误码（基础版）
+### Error Codes (basic version)
 
-| 码 | 触发 | 解决 |
+| Code | Trigger | Solution |
 |----|------|------|
-| E200 | 照片不存在或无法读取 | 检查文件路径/格式 |
-| E201 | 照片中未检测到人脸 | 换更清晰的正脸照 |
-| E202 | 视频无法打开 | 转 mp4 格式 |
-| E203 | 模型加载失败 | 重跑 download_models.py |
-| E204 | 单帧处理失败（保持原帧） | 跳过，E104 报告跳过比例 |
-| E205 | 输出视频写入失败 | 检查输出目录权限 |
+| E200 | Photo doesn't exist or can't be read | Check file path / format |
+| E201 | No face detected in photo | Switch to a clearer front-face photo |
+| E202 | Video cannot be opened | Convert to mp4 |
+| E203 | Model load failed | Re-run download_models.py |
+| E204 | Single-frame processing failed (keeps original frame) | Skip, E104 reports skip ratio |
+| E205 | Output video write failed | Check output directory permission |
 
-## 阶段 1-Pro：增强换脸（已落地 2 层 A+B，4 层规划中）
+## Stage 1-Pro: Enhanced Face Swap (2 layers A+B landed, 4 layers planned)
 
-> ⚠️ **何时用 Pro**：基础版出现以下任一穿帮时改用 Pro 通道：
-> ① **侧脸没换**——人物转侧脸时侧脸仍是原视频的脸
-> ② **遮挡露出瞬间闪原脸**——脸被物体挡住后重新露出的一瞬是原脸
-> ③ **戴眼镜/饰品换脸不自然**——镜框边缘错位、脸假
-> ④ **换脸边界衔接生硬**——能看出方形抠图边
+> ⚠️ **When to use Pro**: use the Pro channel when the basic version shows any of the following artifacts:
+> ① **Side face not swapped** — when the person turns sideways, the side face is still the original video's face
+> ② **Occlusion flash reveals original face** — the instant the face reappears after being blocked by an object is the original face
+> ③ **Unnatural swap with glasses / accessories** — frame edge misalignment, fake face
+> ④ **Stiff swap boundary seam** — visible square cutout edge
 
-### Pro 增强层设计蓝图（含落地状态）
+### Pro Enhancement Layer Design Blueprint (with landing status)
 
-| 层 | 措施 | 治哪个问题 | 落地状态 |
+| Layer | Measure | Fixes which problem | Landing status |
 |----|------|-----------|----------|
-| A 检测增强 | det_size 640→1024、det_thresh 0.5→0.3 | ①侧脸漏检 ②遮挡漏检 | ✅ **已落地**（Pro 默认启用） |
-| B 椭圆羽化 | 放大椭圆羽化融合蒙版，软化方形硬边 | ③衔接生硬 ②遮挡露出闪原脸 | ✅ **已落地**（enhanced_paste 椭圆羽化） |
-| C 时序追踪 | 检测失败帧→上一成功帧 ROI 二次低阈值检测→短间隙位移填充 | ②遮挡露出闪原脸 ①侧脸断续 | ⚙️ **规划中（未实现）** |
-| D 智能丢弃 | 过滤掉明显错误的检测（太小/严重超出边界/关键点异常） | ①侧脸断续 ④边界穿帮 | ⚙️ **规划中（未实现）** |
-| E 多脸防错 | 多人场景基于上一帧 bbox 的目标一致性选择 | ②遮挡露出 ①侧脸断续 | ⚙️ **规划中（未实现）** |
-| F 扩散兜底 | 输出帧自动质量评估 + 低质量帧软羽化混合 | ③④ 极端情况 | ⚙️ **规划中（未实现）** |
+| A Detection enhancement | det_size 640→1024, det_thresh 0.5→0.3 | ① side-face miss ② occlusion miss | ✅ **Landed** (Pro enabled by default) |
+| B Elliptical feathering | Enlarged elliptical feathering fusion mask, softens square hard edges | ③ stiff seam ② occlusion flash reveals original | ✅ **Landed** (enhanced_paste elliptical feathering) |
+| C Temporal tracking | Failed-detection frame → previous successful frame ROI second low-threshold detection → short-gap displacement fill | ② occlusion flash ① side-face discontinuity | ⚙️ **Planned (not implemented)** |
+| D Smart discard | Filter obviously wrong detections (too small / severely out of bounds / abnormal keypoints) | ① side-face discontinuity ④ boundary artifact | ⚙️ **Planned (not implemented)** |
+| E Multi-face error prevention | Multi-person scenario target-consistency selection based on previous frame bbox | ② occlusion flash ① side-face discontinuity | ⚙️ **Planned (not implemented)** |
+| F Diffusion fallback | Auto quality evaluation of output frames + low-quality frame soft-feather blending | ③④ extreme cases | ⚙️ **Planned (not implemented)** |
 
-### Pro 命令
+### Pro Command
 
 ```bash
 python scripts/faceswap_pro.py \
-  --video "源视频.mp4" \
+  --video "source.mp4" \
   --photo "user_photo.jpg" \
   --out "swapped_pro.mp4" \
   --bbox "face_bboxes.json" \
@@ -99,35 +99,35 @@ python scripts/faceswap_pro.py \
   --target-side right \
   --det-size 1024 --det-thresh 0.3 \
   --yaw-max 70 --gap-max 8
-  # 戴框架眼镜且要保留眼镜: 加 --keep-glasses
-  # 调试: --no-feather 关羽化 / --no-color 关肤色对齐
+  # To keep framed glasses: add --keep-glasses
+  # Debug: --no-feather disables feathering / --no-color disables skin-tone alignment
 ```
 
-### Pro 输出
+### Pro Output
 
-- `swapped_pro.mp4`：Pro 增强（已落地 2 层 A+B）后的换脸视频
-- `fallback_frames.json`：需扩散兜底重绘的帧区间（格式 `{"ranges":[[起始帧,结束帧],...]}`）
-- 控制台打印统计：`swapped`(正常换) / `roi_rescued`(ROI二次救回) / `filled`(位移填充) / `fallback`(交兜底) / `extreme_yaw`(极端侧脸)
+- `swapped_pro.mp4`: Pro-enhanced (2 layers A+B landed) face swap video
+- `fallback_frames.json`: frame ranges needing diffusion fallback repaint (format `{"ranges":[[start_frame,end_frame],...]}`)
+- Console prints stats: `swapped` (normal swap) / `roi_rescued` (ROI second rescue) / `filled` (displacement fill) / `fallback` (hand to fallback) / `extreme_yaw` (extreme side face)
 
-### 诚实边界
+### Honest Boundary
 
-- A/B/D/E 是本地框架内**可显著改善**的稳妥增强；**①大角度侧脸(yaw>70°) 是 inswapper_128 架构硬上限**——无法凭空重建看不见的半张脸。
-- `--keep-glasses` 因无专用镜框分割模型，会**连同原眼睛一起叠回**→眼神偏向原人物；仅适合"必须保留原框架眼镜"的场景。
-- Pro 版速度慢于基础版，属"质量优先"通道；无穿帮时用基础版 `faceswap.py` 更快。
-- 增强未在真实素材端到端验证画面（当前会话模型不能读图），仅保证逻辑自洽；请用真实视频抽检。
+- A/B/D/E are safe enhancements **significantly improvable** within the local framework; **① large-angle side face (yaw>70°) is a hard limit of the inswapper_128 architecture** — cannot reconstruct an invisible half-face out of thin air.
+- `--keep-glasses` has no dedicated frame-segmentation model, so it **overlays the original eyes together** → eye gaze leans toward the original person; only suitable for scenarios where "must keep the original framed glasses".
+- Pro version is slower than the basic version, a "quality-first" channel; use the basic `faceswap.py` when there are no artifacts for speed.
+- Enhancements are not verified end-to-end on real material visually (current session model can't read images), only logic self-consistency is guaranteed; please spot-check with real videos.
 
-### Pro 错误码（E100-E105）
+### Pro Error Codes (E100-E105)
 
-| 码 | 含义 | 触发 | 解决 |
+| Code | Meaning | Trigger | Solution |
 |----|------|------|------|
-| E100 | 照片读取失败 | 路径/格式/编码问题 | 检查照片 |
-| E101 | 无人脸 | 脸太小/遮挡/侧脸 | 换正脸照 |
-| E102 | 模型缺失 | inswapper/buffalo_l 未下载 | 重跑 download_models.py |
-| E103 | 视频无法打开 | 格式/编码问题 | 转 mp4 |
-| E104 | 异常帧过高（>20%） | 处理失败过多 | 换更清晰的视频或照片 |
-| E105 | 重试耗尽 | 模型/网络问题 | 检查环境后重试 |
+| E100 | Photo read failed | Path / format / encoding issue | Check photo |
+| E101 | No face | Face too small / occluded / side face | Switch to front-face photo |
+| E102 | Model missing | inswapper/buffalo_l not downloaded | Re-run download_models.py |
+| E103 | Video cannot be opened | Format / encoding issue | Convert to mp4 |
+| E104 | Abnormal frames too high (>20%) | Too many processing failures | Switch to clearer video or photo |
+| E105 | Retries exhausted | Model / network issue | Check environment then retry |
 
-## 阶段 2：去抖音全文字水印（OCR + inpaint）
+## Stage 2: Remove Douyin Full-Text Watermark (OCR + inpaint)
 
 ```bash
 python scripts/clean_douyin.py \
@@ -136,59 +136,59 @@ python scripts/clean_douyin.py \
   --scale 2 --radius 8
 ```
 
-**关键要点**：
-- **逐帧 OCR**（rapidocr，默认放大 2 倍提升小字召回）匹配抖音关键词
-- **仅对文字像素做 inpaint**（半径 8，TELEA），背景零误伤
-- ⚠️ **不要对整块区域做全 1 mask inpaint**——那会重建≈原图，文字淡而不消。必须"OCR 定位文字边界框 → 只填充文字像素"
-- ⚠️ **随画面移动的抖音文字**（如抖音号、作者昵称）：必须逐帧 OCR 定位，**不能用固定矩形区域**
+**Key points**:
+- **Per-frame OCR** (rapidocr, default 2x zoom to improve small-text recall) matches Douyin keywords
+- **Only inpaint text pixels** (radius 8, TELEA), zero accidental damage to background
+- ⚠️ **Don't do all-1 mask inpaint on the whole block** — that reconstructs ≈ original, text fades but doesn't disappear. Must "OCR locate text bounding box → only fill text pixels"
+- ⚠️ **Douyin text moving with the picture** (e.g. Douyin ID, author nickname): must OCR per-frame, **cannot use a fixed rectangular region**
 
-## 阶段 2.5：去右下角固定「抖音」logo
+## Stage 2.5: Remove Fixed "Douyin" Logo at Bottom-Right
 
-某些抖音视频右下角有**平台级固定 logo**（坐标恒定，如 x≈614–697 / y≈1122–1167），因字小阶段2的 OCR 偶发漏检。用固定区域 inpaint 兜底：
+Some Douyin videos have a **platform-level fixed logo** at bottom-right (constant coordinates, e.g. x≈614–697 / y≈1122–1167); because the text is small, stage 2's OCR occasionally misses it. Use fixed-region inpaint as fallback:
 
 ```bash
 python fix_logo.py \
   --input swapped_clean.mp4 --output swapped_clean_v2.mp4 \
-  --region 1100 1190 595 715 --radius 10      # y0 y1 x0 x1（含余量）
+  --region 1100 1190 595 715 --radius 10      # y0 y1 x0 x1 (with margin)
 ```
 
-## 阶段 3：合成原 BGM（ffmpeg）
+## Stage 3: Compose Original BGM (ffmpeg)
 
-用完整版 ffmpeg（CNTV 自带的 ffmpeg 是阉割版，不可用）：
+Use the full version of ffmpeg (the ffmpeg bundled with CNTV is a crippled version, unusable):
 
 ```bash
 FF=$(python -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())")
-"$FF" -y -i swapped_clean_v2.mp4 -i "源视频.mp4" \
+"$FF" -y -i swapped_clean_v2.mp4 -i "source.mp4" \
   -map 0:v:0 -map 1:a:0 -c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p \
   -c:a copy -movflags +faststart output_final.mp4
 ```
 
-- 音频用 `-c:a copy` 从源视频**无损保留原音**（AAC 48kbps 直接 copy）
-- 视频从 mp4v 转 libx264 提升兼容性与画质
-- `-pix_fmt yuv420p` 保证手机可播
+- Audio uses `-c:a copy` to **losslessly keep the original sound** from the source video (AAC 48kbps copied directly)
+- Video transcodes from mp4v to libx264 for better compatibility and quality
+- `-pix_fmt yuv420p` ensures phone playback
 
-## 阶段 4：全片复验
+## Stage 4: Full-Video Re-Verification
 
 ```bash
 python scripts/verify_final.py \
   --video output_final.mp4 \
   --bbox face_bboxes.json \
   --models-dir "models" --insight-root ".insightface" \
-  --step 1          # step=1 全片OCR(最严)；step=3 抽样约161帧(较快)
+  --step 1          # step=1 full-video OCR (strictest); step=3 samples ~161 frames (faster)
 ```
 
-判定：
-- **抖音水印残留率 ≤ 2%** 为可控；为"认真检查"交付应做到 **0 残留**（用阶段 2.5 兜底 logo）
-- 同时输出换脸覆盖统计（总帧/已换脸/右侧换脸/跳过帧）
-- 当前会话模型**不支持读图**，画面质量（像不像、自然度、有无抠图感）**必须用户目检**
+Judgment:
+- **Douyin watermark residue rate ≤ 2%** is controllable; for "carefully checked" delivery you should achieve **0 residue** (use stage 2.5 logo fallback)
+- Also outputs face-swap coverage stats (total frames / swapped / right-side swapped / skipped frames)
+- Current session model **cannot read images**; picture quality (likeness, naturalness, cutout feel) **must be visually inspected by the user**
 
-## 极端侧脸/遮挡处理实战技巧
+## Extreme Side Face / Occlusion Practical Tips
 
-| 情况 | 推荐方案 |
+| Situation | Recommended solution |
 |------|---------|
-| 普通侧脸（yaw≤70°） | Pro 增强 + 检测尺寸 1024 |
-| 极端侧脸（yaw>70°） | inswapper 架构硬限，**无完美方案**——拆帧 Photoshop 处理 |
-| 部分遮挡（眼镜/手挡） | Pro 增强（可改善） |
-| 全遮挡（墨镜+口罩） | 跳过该段或拆帧处理 |
-| 戴眼镜想保留 | `--keep-glasses`（有眼神偏移风险） |
-| 背景替换需求 | **回退原背景**（最稳）或转专业工具（剪映/Premiere 绿幕抠像） |
+| Ordinary side face (yaw≤70°) | Pro enhancement + detection size 1024 |
+| Extreme side face (yaw>70°) | inswapper architecture hard limit, **no perfect solution** — split frames and process with Photoshop |
+| Partial occlusion (glasses / hand block) | Pro enhancement (improvable) |
+| Full occlusion (sunglasses + mask) | Skip that segment or process split frames |
+| Want to keep glasses | `--keep-glasses` (has eye-gaze shift risk) |
+| Background replacement need | **Revert to original background** (most stable) or turn to professional tools (Jianying / Premiere green-screen keying) |

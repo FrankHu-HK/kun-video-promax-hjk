@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-对成品视频做 OCR 全片复核，确认无 AI/生成 字样残留。用法见 SKILL.md 阶段 4。
-返回 0 残留则合格。依赖: opencv-python, numpy, rapidocr-onnxruntime
+对成品video做 OCR 全片复核，confirm无 AI/generate 字样残留。用法见 SKILL.md stage 4。
+返回 0 残留则合格。dependency: opencv-python, numpy, rapidocr-onnxruntime
 """
 import cv2, argparse
 from rapidocr_onnxruntime import RapidOCR
 
-KEYWORDS = ("AI", "生成", "A1", "A I", "A.I")
+KEYWORDS = ("AI", "generate", "A1", "A I", "A.I")
 
 
 def main():
@@ -18,7 +18,7 @@ def main():
     ocr = RapidOCR()
     cap = cv2.VideoCapture(args.video)
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    print("成品总帧数", total)
+    print("成品总frame数", total)
     hits, fi = [], 0
     while True:
         ok, frame = cap.read()
@@ -33,14 +33,14 @@ def main():
                     t = text.upper()
                     if any(k.upper() in t for k in KEYWORDS):
                         hits.append((fi, text))
-                        print(f"残留 帧{fi:4d} \"{text}\"")
+                        print(f"残留 frame{fi:4d} \"{text}\"")
         fi += 1
     cap.release()
     print("=== 成品残留命中:", len(hits))
     if not hits:
-        print("✅ 成品已无 AI/生成 字样残留")
+        print("✅ 成品已无 AI/generate 字样残留")
     else:
-        print("❌ 仍有残留，需回到阶段 2 调整区域/关键字")
+        print("❌ 仍有残留，需回到stage 2 调整区域/关键字")
 
 
 if __name__ == "__main__":

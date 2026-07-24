@@ -1,169 +1,169 @@
-# 视频换脸/动作迁移/AI口播带货 · 常见问题（FAQ）v2.4.2
+# Video Face Swap / Motion Transfer / AI Voiceover Commerce · FAQ v2.4.2
 
-> 高频疑问集中解答。本技能仅用于合法合规的个人/职业内容创作，**严禁**用于任何侵犯他人肖像权、传播虚假信息或违法违规的视频制作。
+> Answers to high-frequency questions. This skill is only for legal and compliant personal / professional content creation, and is **strictly prohibited** from being used for any video production that infringes on others' portrait rights, spreads false information, or violates laws and regulations.
 >
-> **v2.4.2 更新**：新增「高级功能」专题问答（Q9–Q13），覆盖断点续跑、极端侧脸优化、遮挡处理、批量高级版、参数预设。每条配文字效果描述（发布平台不渲染图片，以 SKILL.md 文字对照为准）。
+> **v2.4.2 update**: added a "Advanced Features" Q&A section (Q9–Q13), covering resume, extreme side-face optimization, occlusion handling, batch advanced version, and parameter presets. Each comes with a text effect description (publishing platforms don't render images; refer to the SKILL.md text comparison).
 
 ---
 
-## 📌 效果参考说明
+## 📌 Effect Reference Note
 
-> 本文件不再内嵌图片（发布平台不渲染 PNG）。各场景的**预期观感**请见 SKILL.md 的「效果预期对照（文字版）」——用文字描述 + 命令→预期输出说明做出来什么样。
+> This file no longer embeds images (publishing platforms don't render PNG). The **expected look** for each scenario is in SKILL.md's "Effect Expectation Comparison (text version)" — described with text + command→expected-output.
 
-## 一、基础问题
+## I. Basic Questions
 
-### Q1 · 换脸后脸不自然 / 有抠图感怎么办？
+### Q1 · Face looks unnatural / has cutout feel after swap?
 
-最常见原因及优先级排序：
+Most common causes in priority order:
 
-| 排名 | 原因 | 解决方案 |
+| Rank | Cause | Solution |
 |------|------|----------|
-| ① | 目标照片分辨率不够或角度差 | 用 ≥512×512 的**正面或近正面**清晰人像照 |
-| ② | 未用 Pro 版增强融合 | 改用 `faceswap_pro.py` 并加 `--preset quality` |
-| ③ | 视频本身画质低 | 先用 enhance_4k.py 升频再换脸（预期观感见 SKILL.md「效果预期对照」文字版）|
-| ④ | 光照/肤色差异大 | Photoshop 预处理目标照片（对齐肤色和光照方向）|
+| ① | Target photo resolution insufficient or bad angle | Use a **front or near-front** clear portrait photo of ≥512×512 |
+| ② | Didn't use Pro version enhanced fusion | Switch to `faceswap_pro.py` and add `--preset quality` |
+| ③ | Video itself is low quality | First use enhance_4k.py to upscale then swap (expected look in SKILL.md "Effect Expectation Comparison" text version) |
+| ④ | Large lighting / skin-tone difference | Photoshop pre-process the target photo (align skin tone and lighting direction) |
 
-**推荐命令**（Pro + 质量预设）：
+**Recommended command** (Pro + quality preset):
 ```bash
 python scripts/faceswap_pro.py --video input.mp4 --photo target.jpg --out result.mp4 --preset quality
 ```
 
-### Q2 · 去水印后还有残留怎么处理？
+### Q2 · Watermark residue remains after removal?
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-clean_douyin.py 的 OCR 定位可能漏检小字或漂移文字：
+clean_douyin.py's OCR positioning may miss small or drifting text:
 
-1. **手动指定 ROI 区域**：
+1. **Manually specify ROI region**:
    ```bash
    python scripts/clean_douyin.py --input input.mp4 --output clean.mp4 --roi 1200 800 200 60
    ```
-2. **提高放大倍数**：`--scale 4 --radius 12`（默认值可能不够）
-3. **固定 logo 兜底**：`python scripts/fix_logo.py --video ...` 处理角标/logo
-4. **动态浮层文字**：逐帧拆帧 → Photoshop 批处理 → ffmpeg 重组
+2. **Increase zoom factor**: `--scale 4 --radius 12` (defaults may be insufficient)
+3. **Fixed logo fallback**: `python scripts/fix_logo.py --video ...` to handle badges / logos
+4. **Dynamic overlay text**: split frames per-frame → Photoshop batch → ffmpeg reassemble
 
-验证命令：
+Verify command:
 ```bash
 python scripts/verify_final.py --video output.mp4 --bbox face_bboxes.json --step 1
 ```
 
-### Q3 · 换脸速度太慢怎么办？
+### Q3 · Face swap too slow?
 
-Python + inswapper 在 CPU 上逐帧推理，1080p 默认较慢。按需选择策略：
+Python + inswapper does per-frame inference on CPU, 1080p is slow by default. Choose a strategy as needed:
 
-| 策略 | 命令 | 适用场景 |
+| Strategy | Command | Applicable scenario |
 |------|------|----------|
-| **极速模式** | `--preset speed` | 快速预览/短视频片段 |
-| **平衡模式** | `--preset auto`（默认） | 日常使用 |
-| **质量模式** | `--preset quality` | 最终出片 |
-| **降低分辨率** | 先用 ffmpeg 缩放到 720p 再换 | 超长视频省时 |
-| **分段测试** | 先取前 30 秒跑通确认 OK | 最省时的调试方式 |
+| **Turbo mode** | `--preset speed` | Quick preview / short clips |
+| **Balanced mode** | `--preset auto` (default) | Daily use |
+| **Quality mode** | `--preset quality` | Final output |
+| **Lower resolution** | First scale to 720p with ffmpeg then swap | Save time on very long videos |
+| **Segmented test** | First run first 30 sec to confirm OK | Most time-saving debugging |
 
-**speed 预设**内部自动设 det_size=512（比默认 1024 快约 40%），单帧从 ~1.4s 降到 ~0.8s。
+**speed preset** internally auto-sets det_size=512 (about 40% faster than default 1024), single frame drops from ~1.4s to ~0.8s.
 
-### Q4 · 中文路径报错怎么处理？
+### Q4 · Chinese path error?
 
-insightface/opencv 底层 C++ 不支持 Unicode 路径。所有脚本已内置 ASCII 临时目录兜底——将输入文件复制到临时目录处理后再移回原位。若仍报错：
+The insightface/opencv underlying C++ doesn't support Unicode paths. All scripts have a built-in ASCII temp-directory fallback — copy the input file to a temp directory for processing then move it back. If it still errors:
 
-1. 输入文件名含中文/空格/特殊字符 → 重命名为纯英文数字（如 `photo.jpg`）
-2. 输出路径含空格 → 改用简单路径（如 `D:\output\result.mp4`）
-3. 模型文件不完整 → 重新运行 `python scripts/download_models.py`
+1. Input filename contains Chinese / spaces / special chars → rename to pure English alphanumeric (e.g. `photo.jpg`)
+2. Output path contains spaces → use a simple path (e.g. `D:\output\result.mp4`)
+3. Model files incomplete → re-run `python scripts/download_models.py`
 
-### Q5 · 模型下载失败 / 连不上 ModelScope？
+### Q5 · Model download failed / can't connect to ModelScope?
 
-脚本已优先走国内 ModelScope 源。若下载失败：
+The script already prioritizes the domestic ModelScope source. If download fails:
 
-1. 检查网络能否访问 `modelscope.cn`
-2. 手动下载 `inswapper_128.onnx` 和 `buffalo_l` 放到 `models/` 目录
-3. MediaPipe 模型默认从 googleapis.com 下载 → 脚本自动切换 gitee/ModelScope 镜像
-4. HuggingFace/GitHub 目前不可达（被墙）
+1. Check whether the network can reach `modelscope.cn`
+2. Manually download `inswapper_128.onnx` and `buffalo_l` into the `models/` directory
+3. MediaPipe model downloads from googleapis.com by default → script auto-switches to gitee/ModelScope mirror
+4. HuggingFace/GitHub currently unreachable (blocked)
 
 ---
 
-## 二、🔥 高级功能使用（v2.4.2 新增）
+## II. 🔥 Advanced Feature Usage (new in v2.4.2)
 
-> 这部分回答测评报告中反复提到的「高级功能」如何使用。每个功能都已在底层代码中实现，可直接用命令调用。
+> This section answers how to use the "advanced features" repeatedly mentioned in the review report. Each feature is implemented in the underlying code and callable directly via commands.
 
-### Q6 · 如何便捷调参？`--preset` 参数预设怎么用？（★ 推荐）
+### Q6 · How to tune parameters conveniently? How to use the `--preset` parameter presets? (★ Recommended)
 
-v2.4.2 新增 **5 种参数预设**，一条 `--preset xxx` 自动配置 det_size / mask_scale / feather 等底层参数，不用手动逐个调。
+v2.4.2 added **5 parameter presets**; one `--preset xxx` auto-configures underlying parameters like det_size / mask_scale / feather, no need to tune each manually.
 
-| 预设 | det_size | mask_scale | feather | 适用场景 |
+| Preset | det_size | mask_scale | feather | Applicable scenario |
 |------|----------|------------|---------|----------|
-| `auto` | 1024 | 1.15 | 0.06 | 默认平衡（兼容旧命令）|
-| `speed` | **512** | 1.10 | 0.05 | 快速预览、短视频 |
-| `quality` | 1024 | 1.25 | 0.09 | 最终出片、高质量需求 |
-| **`sideface`** | 1024 | **1.40** | **0.11** | **侧脸视频、大偏转角** |
-| **`occlusion`** | 1024 | **1.30** | **0.13** | **有遮挡（口罩/手/墨镜）** |
+| `auto` | 1024 | 1.15 | 0.06 | Default balance (compatible with old commands) |
+| `speed` | **512** | 1.10 | 0.05 | Quick preview, short video |
+| `quality` | 1024 | 1.25 | 0.09 | Final output, high-quality needs |
+| **`sideface`** | 1024 | **1.40** | **0.11** | **Side-face video, large yaw** |
+| **`occlusion`** | 1024 | **1.30** | **0.13** | **With occlusion (mask/hand/sunglasses)** |
 
-**用法示例**：
+**Usage examples**:
 ```bash
-# 侧脸视频 → 自动加大覆盖范围 + 更柔和边缘 + 开启极端帧自动裁剪
+# Side-face video → auto widen coverage + softer edges + enable extreme-frame auto-trim
 python scripts/faceswap_pro.py --video sideface_video.mp4 --photo face.jpg --out out.mp4 --preset sideface
 
-# 有口罩遮挡 → 自适应遮挡融合
+# Masked occlusion → adaptive occlusion fusion
 python scripts/faceswap_pro.py --video masked_video.mp4 --photo face.jpg --out out.mp4 --preset occlusion
 
-# 追求最高质量
+# Pursue highest quality
 python scripts/faceswap_pro.py --video final.mp4 --photo face.jpg --out out.mp4 --preset quality
 
-# 批量换脸也支持透传预设
+# Batch face swap also supports preset passthrough
 python scripts/batch_faceswap.py --photo face.jpg --videos-dir videos/ --out-dir output/ --preset quality --workers 4
 ```
 
-**你下次用时会感受到**：不再需要记 det_size/mask_scale/feather 的具体数值，选一个预设名称就行；侧脸和遮挡场景的效果明显改善。
+**You'll feel it next time**: no need to remember det_size/mask_scale/feather values, just pick a preset name; side-face and occlusion scenarios improve noticeably.
 
-### Q7 · 极端侧脸（大偏转角）换脸效果差？→ 用 sideface 预设 + 自适应遮挡
+### Q7 · Extreme side face (large yaw) swap looks bad? → Use sideface preset + adaptive occlusion
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-**问题现象**：视频中人物经常转头到侧面（>70°），换脸后侧脸仍是原脸或有明显接缝。
+**Symptom**: person in video often turns to the side (>70°), after swap the side face is still the original or has obvious seams.
 
-**v2.4.2 解决方案**（三层防护）：
+**v2.4.2 solution** (three-layer protection):
 
-1. **`--preset sideface`**：自动设 mask_scale=1.40（更大覆盖）、feather=0.11（更柔和边缘），并开启 `--auto-trim-extreme`
-2. **逐帧自适应遮挡**（底层代码第 462–463 行）：每帧根据实际 yaw 偏转角动态放大蒙版
+1. **`--preset sideface`**: auto-sets mask_scale=1.40 (wider coverage), feather=0.11 (softer edges), and enables `--auto-trim-extreme`
+2. **Per-frame adaptive occlusion** (underlying code lines 462–463): each frame dynamically enlarges the mask based on actual yaw
    ```
-   ms = min(mask_scale × (1 + 0.15 × yaw), 1.8)   // 侧脸越大覆盖越广
-   fe = min(feather + 0.05 × yaw, 0.2)            // 边缘更柔和
+   ms = min(mask_scale × (1 + 0.15 × yaw), 1.8)   // larger side face → wider coverage
+   fe = min(feather + 0.05 × yaw, 0.2)            // softer edges
    ```
-3. **auto_trim_extreme**：自动检测极端侧脸帧（yaw > 70%阈值），生成一个「剔除极端帧的干净版本」（seg_XXX_trim.mp4），供用户在最终拼接时选用
+3. **auto_trim_extreme**: auto-detects extreme side-face frames (yaw > 70% threshold), generates a "clean version with extreme frames removed" (seg_XXX_trim.mp4) for you to pick when finalizing concatenation
 
-**推荐命令**：
+**Recommended command**:
 ```bash
 python scripts/faceswap_pro.py --video your_video.mp4 --photo target.jpg \
     --out result.mp4 --preset sideface --segment-secs 10
 ```
 
-完成后还会输出 `<out>_extreme_report.json`，列出每个时间段段的极端帧占比和具体位置，方便定位问题段。
+After completion it also outputs `<out>_extreme_report.json`, listing the extreme-frame ratio and specific positions of each time segment, convenient for locating problem segments.
 
-### Q8 · 脸部被遮挡（口罩/墨镜/手挡）怎么办？→ occlusion 预设
+### Q8 · Face occluded (mask/sunglasses/hand blocking)? → occlusion preset
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-**问题现象**：人物戴口罩、墨镜或手遮住半边脸，换脸后在遮挡边缘出现明显接缝/鬼影。
+**Symptom**: person wears a mask, sunglasses, or hand covering half the face; after swap obvious seams / ghosting appear at the occlusion edge.
 
-**v2.4.2 解决方案**：
+**v2.4.2 solution**:
 
-1. **`--preset occlusion`**：mask_scale=1.30（加大覆盖穿透遮挡区）、feather=0.13（强羽化柔化边缘）
-2. **自适应遮挡公式同上**（ms/feather 随 yaw 动态调整）：遮挡区域越大，蒙版越宽、边缘越柔和
-3. **组合建议**：如果视频同时有侧脸+遮挡，优先用 `sideface`（它的 mask_scale 更大）
+1. **`--preset occlusion`**: mask_scale=1.30 (wider coverage to penetrate occlusion area), feather=0.13 (strong feathering to soften edges)
+2. **Adaptive occlusion formula same as above** (ms/feather adjust dynamically with yaw): larger occlusion area → wider mask, softer edges
+3. **Combination advice**: if the video has both side face + occlusion, prefer `sideface` (its mask_scale is larger)
 
-**推荐命令**：
+**Recommended command**:
 ```bash
 python scripts/faceswap_pro.py --video masked_video.mp4 --photo target.jpg \
     --out result.mp4 --preset occlusion
 ```
 
-**注意**：全脸完全被挡住（只露出眼睛或更低）的情况，任何 AI 换脸都无能为力——这是物理限制，不是代码缺陷。
+**Note**: when the whole face is fully blocked (only eyes or less visible), no AI face swap can help — this is a physical limit, not a code defect.
 
-### Q9 · 换跑到一半断了/崩溃了怎么续跑？→ 分段断点续跑
+### Q9 · Swap interrupted / crashed halfway, how to resume? → Segmented resume
 
-**问题现象**：处理长视频时中途崩溃、断电、或手动 Ctrl+C 中断，之前处理的帧白费了。
+**Symptom**: processing a long video crashes midway, power loss, or manual Ctrl+C interruption, the previously processed frames wasted.
 
-**v2.4.2 解决方案 —— 分段断点续跑（底层实现）**：
+**v2.4.2 solution — segmented resume (underlying implementation)**:
 
-脚本自动将视频按 `--segment-secs`（默认 15 秒）切成多个段落。每段独立处理并保存为 `seg_000.mp4`, `seg_001.mp4` ... 同时维护状态文件 `<输出>.resume_state.json`：
+The script auto-splits the video by `--segment-secs` (default 15 sec) into multiple segments. Each segment is processed independently and saved as `seg_000.mp4`, `seg_001.mp4` ... while maintaining a state file `<output>.resume_state.json`:
 
 ```json
 {
@@ -173,150 +173,150 @@ python scripts/faceswap_pro.py --video masked_video.mp4 --photo target.jpg \
 }
 ```
 
-**再次运行加 `--resume`**：
+**Run again with `--resume`**:
 ```bash
-# 正常跑（第一次）
+# Normal run (first time)
 python scripts/faceswap_pro.py --video long_video.mp4 --photo face.jpg --out result.mp4
 
-# 中断后续跑（只需加 --resume，自动跳过已完成段）
+# Resume after interruption (just add --resume, auto-skips completed segments)
 python scripts/faceswap_pro.py --video long_video.mp4 --photo face.jpg --out result.mp4 --resume
 ```
 
-续跑逻辑：
-- 读取 `.resume_state.json`，跳过 `done` 列表中已完成的段落
-- 只处理未完成的段
-- 全部段完成后自动用 ffmpeg 无损拼接成完整输出（回退 cv2 方式）
-- **双层续跑**：如果用了 batch_faceswap.py 的 `--resume`，它会跳过已完成的**整个视频**；而每个视频内部的 faceswap_pro.py 也收到 `--resume`，从自身段落续跑
+Resume logic:
+- Read `.resume_state.json`, skip segments already in the `done` list
+- Only process unfinished segments
+- After all segments complete, auto-concatenate into full output with ffmpeg lossless (fallback to cv2)
+- **Two-layer resume**: if you use batch_faceswap.py's `--resume`, it skips completed **entire videos**; and each video's internal faceswap_pro.py also receives `--resume`, resuming from its own segments
 
-**你下次用时会感受到**：长视频再也不怕中途崩了。断电重启后加个 `--resume` 就接着跑，已处理的段不会重跑。
+**You'll feel it next time**: long videos no longer fear mid-crash. After a power restart just add `--resume` to continue; processed segments won't re-run.
 
-### Q10 · 批量处理怎么高效跑？→ 高级版（并行 + 预设 + 精准续跑）
+### Q10 · How to run batch processing efficiently? → Advanced version (parallel + preset + precise resume)
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-**v2.4.2 批量换脸新增 3 项高级能力**：
+**v2.4.2 batch face swap adds 3 advanced capabilities**:
 
-#### 10a. 并行处理 `--workers N`
+#### 10a. Parallel processing `--workers N`
 
 ```bash
-# 串行（默认，稳定省内存）
+# Serial (default, stable, memory-light)
 python scripts/batch_faceswap.py --photo face.jpg --videos "v1.mp4;v2.mp4;v3.mp4" --out-dir out/
 
-# 4 路并行（多核 CPU 推荐，提速约 2-3x）
+# 4-way parallel (recommended for multi-core CPU, ~2-3x faster)
 python scripts/batch_faceswap.py --photo face.jpg --videos-dir videos/ --out-dir out/ --workers 4 --preset quality
 ```
 
-- 使用 Python `ThreadPoolExecutor`，每个视频启动独立的 faceswap 子进程
-- 进度实时显示：`进度 12/20 (60%) 已用180s 预计剩余120s`
-- 注意：`--workers` 过高可能导致内存不足（每个子进程占 ~1-2GB），建议 ≤ CPU 核心数
+- Uses Python `ThreadPoolExecutor`, each video starts an independent faceswap subprocess
+- Progress displayed in real time: `progress 12/20 (60%) elapsed 180s estimated remaining 120s`
+- Note: too-high `--workers` may cause out-of-memory (each subprocess takes ~1-2GB), recommend ≤ CPU core count
 
-#### 10b. 参数预设透传 `--preset`
+#### 10b. Parameter preset passthrough `--preset`
 
-批量模式下直接传给每个 Pro 子进程（见 Q6 预设表）：
+In batch mode directly passed to each Pro subprocess (see Q6 preset table):
 ```bash
---preset quality   # 所有视频都用质量模式
---preset sideface  # 所有视频都用侧脸优化模式
+--preset quality   # all videos use quality mode
+--preset sideface  # all videos use side-face optimization mode
 ```
 
-#### 10c. 精准断点续跑 `--resume`（batch_state.json）
+#### 10c. Precise resume `--resume` (batch_state.json)
 
 ```bash
-# 第一次跑（正常）
+# First run (normal)
 python scripts/batch_faceswap.py --photo face.jpg --videos-dir videos/ --out-dir out/ --workers 4
 
-# 中断后续跑（读取 batch_state.json，跳过已完成视频）
+# Resume after interruption (read batch_state.json, skip completed videos)
 python scripts/batch_faceswap.py --photo face.jpg --videos-dir videos/ --out-dir out/ --workers 4 --resume
 ```
 
-- 状态文件 `out_dir/batch_state.json` 记录**每个视频的精确状态**（success/fail/pending）
-- 续跑时跳过 status="success" 且产物非空的条目
-- 配合 `--continue-on-error` 可容忍个别失败继续其余
+- State file `out_dir/batch_state.json` records **precise status of each video** (success/fail/pending)
+- On resume, skip entries with status="success" and non-empty product
+- Pair with `--continue-on-error` to tolerate individual failures and continue the rest
 
 ---
 
-## 三、工作流区别
+## III. Workflow Differences
 
-### Q11 · Workflow A/B/C/D/E 分别做什么？
+### Q11 · What do Workflow A/B/C/D/E each do?
 
-| 工作流 | 功能 | 技术路线 | 是否保留原动作 |
+| Workflow | Function | Technical route | Keeps original motion? |
 |--------|------|----------|--------------|
-| **A** 换脸 | 把原人脸换成目标照片 | inswapper 本地换脸 | ✅ 100% 保留 |
-| **B** 动作迁移 | 目标人物"表演"参考动作 | 生成式（本地等价/云端可选）| ❌ 全新生成 |
-| **C** AI 口播 | 产品→虚拟主播介绍 | 生成式（本地等价/云端可选）| ❌ 全新生成 |
-| **D** 4K 升频 | 低分辨率→高清晰 | ffmpeg lanczos / enhance_4k.py | ✅ 保留内容 |
-| **E** 批量换脸 | 一个照片×N 个视频 | A 的批量封装 | ✅ 每个 100% 保留 |
+| **A** Face swap | Replace original face with target photo | inswapper local face swap | ✅ 100% kept |
+| **B** Motion transfer | Target person "performs" reference motion | Generative (local equivalent / optional cloud) | ❌ Brand-new generation |
+| **C** AI voiceover | Product → virtual host intro | Generative (local equivalent / optional cloud) | ❌ Brand-new generation |
+| **D** 4K upscaling | Low-res → high clarity | ffmpeg lanczos / enhance_4k.py | ✅ Content kept |
+| **E** Batch face swap | One photo × N videos | A's batch wrapper | ✅ Each 100% kept |
 
-**铁律**：要保留原动作只能用 A/E，不能用 B/C。
+**Iron rule**: to keep original motion you can only use A/E, not B/C.
 
-### Q12 · Workflow B/C 需要外部服务吗？
+### Q12 · Does Workflow B/C need external services?
 
-B/C v2.2.0 **默认走本地等价方案**（零云端、零付费、零国外服务）。可选云端升级通道（AGNES/NVIDIA/Seedance/Kling）——全部国内可达。**绝大部分场景无需云端。**
+B/C v2.2.0 **defaults to local equivalent** (zero cloud, zero cost, zero foreign service). Optional cloud upgrade channel (AGNES/NVIDIA/Seedance/Kling) — all domestically reachable. **Most scenarios need no cloud.**
 
-### Q13 · 动作迁移后人物动作不自然 / 像"面条四肢"？
+### Q13 · After motion transfer the person's motion is unnatural / like "noodle limbs"?
 
-1. 检查参考视频：单人、全身、动作清晰、无遮挡
-2. 降低动作复杂度（大幅度跳跃/快速旋转效果差）
-3. 换用 Kling 3.0（Motion Control 标杆）
-4. 先跑 `pose_extract.py` 做运动质检（关节点 ≥80% 才进入生成）
+1. Check the reference video: single person, full body, clear motion, no occlusion
+2. Reduce motion complexity (large jumps / fast spins work poorly)
+3. Switch to Kling 3.0 (Motion Control benchmark)
+4. First run `pose_extract.py` for motion QC (joint points ≥80% before entering generation)
 
-### Q14 · 对口型数字人怎么用？
+### Q14 · How to use lip-sync digital human?
 
-Workflow C 的口型同步分两步：① 生成人物视频 ② 数字人工具对口型。推荐：腾讯智影（SaaS）或 HeyGem（可本地）。本技能仅提供素材准备。
+Workflow C's lip-sync is in two steps: ① generate the person video ② digital-human tool does lip-sync. Recommended: Tencent Zhiying (SaaS) or HeyGem (can be local). This skill only provides material preparation.
 
 ---
 
-## 四、安装与环境
+## IV. Installation & Environment
 
-### Q15 · 需要装哪些依赖？
+### Q15 · Which dependencies to install?
 
-核心包：opencv-python, insightface, onnxruntime, mediapipe, pillow, numpy, imageio[ffmpeg], tqdm。完整列表见 `download_models.py`。
+Core packages: opencv-python, insightface, onnxruntime, mediapipe, pillow, numpy, imageio[ffmpeg], tqdm. Full list in `download_models.py`.
 
-一键安装：
+One-click install:
 ```bash
 python scripts/download_models.py --work-dir . --with-mediapipe
 ```
 
-### Q16 · 可以在 CPU 上跑吗？
+### Q16 · Can it run on CPU?
 
-✅ 可以。inswapper 换脸纯 CPU 可跑（1080p 30fps 约 5–15 秒/帧），建议至少 8GB 内存。Pro 版 det_size=1024 需更多内存。GPU 加速：装 `onnxruntime-gpu` 替代 `onnxruntime`。
+✅ Yes. inswapper face swap runs purely on CPU (1080p 30fps about 5–15 sec/frame), recommend at least 8GB RAM. Pro version det_size=1024 needs more memory. GPU acceleration: install `onnxruntime-gpu` instead of `onnxruntime`.
 
-### Q17 · 支持哪些视频格式？
+### Q17 · Which video formats are supported?
 
-输入：mp4/mov/avi/mkv/webm（OpenCV VideoCapture 支持）。输出：统一 mp4（H.264）。特殊格式先转 mp4。
+Input: mp4/mov/avi/mkv/webm (OpenCV VideoCapture supported). Output: unified mp4 (H.264). Special formats convert to mp4 first.
 
 ---
 
-## 五、画质提升
+## V. Quality Improvement
 
-### Q18 · 4K 升频怎么做？效果如何？
+### Q18 · How to do 4K upscaling? How does it look?
 
-（文字对照见 SKILL.md「效果预期对照」，发布平台不渲染图片）
+(Text comparison in SKILL.md "Effect Expectation Comparison", publishing platform doesn't render images)
 
-两种方式：
+Two ways:
 
-1. **ffmpeg lanczos 内置升频**（Workflow D 默认）：
+1. **ffmpeg lanczos built-in upscaling** (Workflow D default):
    ```bash
    python scripts/enhance_4k.py --input 1080p.mp4 --output 4k.mp4
    ```
 
-2. **换脸前先升频**（推荐流程）：先升频到 4K → 再换脸 → 效果远好于先换脸再升频（避免二次压缩损失）
+2. **Upscale before face swap** (recommended flow): upscale to 4K first → then swap → effect far better than swap-then-upscale (avoids secondary compression loss)
 
 ---
 
-## 六、安全与合规
+## VI. Security & Compliance
 
-### Q19 · 这个技能可以商用吗？
+### Q19 · Can this skill be used commercially?
 
-MIT 许可，自由使用修改。但产出须遵守：① **不得侵犯肖像权** ② **不得制作虚假信息**（AI 合成须标注）③ **遵守平台规则**。创作者对输出负法律责任。
+MIT license, free to use and modify. But output must comply with: ① **Do not infringe portrait rights** ② **Do not produce false information** (AI synthesis must be labeled) ③ **Follow platform rules**. The creator is legally responsible for the output.
 
-### Q20 · 能不能换外国明星/政治人物的脸？
+### Q20 · Can I swap a foreign celebrity / politician's face?
 
-**绝对不能。** 未授权名人肖像违法，政治人物涉及国家安全红线。仅限自有或已授权照片。
+**Absolutely not.** Unauthorized celebrity portraits are illegal, and political figures involve national security red lines. Only your own or authorized photos are allowed.
 
-### Q21 · 会把我的照片/视频上传到云端吗？
+### Q21 · Will my photos / videos be uploaded to the cloud?
 
-Workflow A/D/E **100% 本地执行**，不上传数据。B/C 默认本地等价，不调用 API。选云端通道时仅向对应国内 API 发送必要参数/素材，**不发送原始数据到国外第三方**。
+Workflow A/D/E **execute 100% locally**, no data upload. B/C default to local equivalent, no API call. When choosing the cloud channel, only necessary parameters / material are sent to the corresponding domestic API, **no raw data sent to foreign third parties**.
 
-### Q22 · 输出的视频会被平台检测为 AI 生成吗？
+### Q22 · Will the output video be detected as AI-generated by platforms?
 
-去水印仅去除平台附加文字/角标。AI 生成内容（B/C）发布时应按平台规则标注"AI 生成"。本技能不是"逃检测"工具。
+Watermark removal only removes platform-added text / badges. AI-generated content (B/C) should be labeled "AI-generated" per platform rules when published. This skill is not an "evasion detection" tool.

@@ -1,32 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-pose_extract.py — 动作迁移 Workflow B 阶段 B1：参考视频「动作可迁移性」预检
+pose_extract.py — motion transfer Workflow B stage B1：参考video「动作可迁移性」预检
 ============================================================================
-真实可用（非死代码）：逐帧分析参考视频，输出可量化的「动作质量」评估，
-供 video_engine.py 在换脸前判断"这段参考视频适不适合做动作迁移"。
+realavailable（非死代码）：逐frame分析参考video，output可量化的「动作quality」评估，
+供 video_engine.py 在face swap前判断"这段参考video适不适合做motion transfer"。
 
 两种分析引擎（自动择一/并用）：
-  1. 光流动作强度（默认，零模型依赖）：
-     用 cv2 Farneback 光流估算帧间运动幅度 → 动作强度；
-     用 Laplacian 方差估算清晰度 → 模糊占比。
-  2. MediaPipe 姿态关键点（可选，--model 指定 .task 时启用）：
-     提取 BlazePose 33 点，补充"关节可见度/动作幅度"维度。
-     ※ 未装 mediapipe 或缺模型时自动降级为纯光流分析，不阻塞。
+  1. 光流动作强度（默认，零modeldependency）：
+     用 cv2 Farneback 光流估算frame间运动幅度 → 动作强度；
+     用 Laplacian 方差估算clear度 → blurry占比。
+  2. MediaPipe posekeypoint（可选，--model 指定 .task 时enable）：
+     extract BlazePose 33 点，补充"关节可见度/动作幅度"维度。
+     ※ 未装 mediapipe 或缺model时自动降级为纯光流分析，不阻塞。
 
-输出 motion_qc.json 字段：
-  motion_score     0-100 综合动作可迁移性评分
-  avg_motion       平均帧间运动幅度（像素，越大动作越明显）
-  static_ratio     静态帧占比（动作幅度低于阈值的帧比例，越小越好）
-  avg_sharpness    Laplacian 方差均值（越大越清晰）
-  blur_ratio       模糊帧占比（清晰度低于阈值的帧比例）
-  verdict          一句话结论（适合迁移 / 动作偏弱 / 存在模糊遮挡）
-  keypoints        可选：MediaPipe 逐帧骨骼点（--model 且 mediapipe 可用时）
+output motion_qc.json 字段：
+  motion_score     0-100 综合动作可迁移性score/rating
+  avg_motion       平均frame间运动幅度（像素，越大动作越明显）
+  static_ratio     静态frame占比（动作幅度低于阈值的frameaspect ratio，越小越好）
+  avg_sharpness    Laplacian 方差均值（越大越clear）
+  blur_ratio       blurryframe占比（clear度低于阈值的frameaspect ratio）
+  verdict          一句话结论（适合迁移 / 动作偏弱 / 存在blurryocclusion）
+  keypoints        可选：MediaPipe 逐frameskeleton/keypoints点（--model 且 mediapipe available时）
   fps / total_frames / sampled_frames
 
 用法：
   python pose_extract.py --video ref_video.mp4 --out motion_qc.json
   python pose_extract.py --video ref_video.mp4 --out motion_qc.json \
-      --model models/pose_landmarker_full.task   # 额外做姿态关键点分析
+      --model models/pose_landmarker_full.task   # 额外做posekeypoint分析
 """
 import argparse
 import json
@@ -39,9 +39,9 @@ import cv2
 import numpy as np
 
 
-# ---------- 工具 ----------
+# ---------- tool ----------
 def ascii_copy(path):
-    """复制中文路径文件到临时 ASCII 名，返回 (可用路径, 临时路径或None)。"""
+    """copy中文pathfile到临时 ASCII 名，返回 (availablepath, 临时path或None)。"""
     if all(ord(c) < 128 for c in path):
         return path, None
     fd, tmp = tempfile.mkstemp(suffix=os.path.splitext(path)[1])
@@ -51,19 +51,19 @@ def ascii_copy(path):
 
 
 def motion_via_optical_flow(video_path, step=2, motion_thresh=0.6, sharp_thresh=40.0):
-    """光流 + Laplacian：零模型依赖的动作/清晰度分析。
+    """光流 + Laplacian：零modeldependency的动作/clear度分析。
 
-    关键：动作信号用「运动像素占比」衡量（不被静止背景稀释），
-    而非整帧光流均值（小目标/细微动作会被误判为静止）。
+    关键：动作信号用「运动像素占比」衡量（不被静止background稀释），
+    而非整frame光流均值（小target/goal/细微动作会被误判为静止）。
     """
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        sys.exit("[错误] 无法打开视频: %s" % video_path)
+        sys.exit("[error] 无法openvideo: %s" % video_path)
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
 
     prev_gray = None
-    moving_ratios = []   # 每帧"运动像素占比"
-    mean_flows = []      # 每帧运动像素上的平均光流幅度（信息用）
+    moving_ratios = []   # 每frame"运动像素占比"
+    mean_flows = []      # 每frame运动像素上的平均光流幅度（information用）
     sharps = []
     idx = -1
     while True:
@@ -79,7 +79,7 @@ def motion_via_optical_flow(video_path, step=2, motion_thresh=0.6, sharp_thresh=
             flow = cv2.calcOpticalFlowFarneback(
                 prev_gray, gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
             mag = np.linalg.norm(flow, axis=2)
-            moving_mask = mag > 0.5           # 该像素是否明显移动
+            moving_mask = mag > 0.5           # 该像素是否明显move
             mr = float(np.mean(moving_mask))
             moving_ratios.append(mr)
             if mr > 0:
@@ -97,7 +97,7 @@ def motion_via_optical_flow(video_path, step=2, motion_thresh=0.6, sharp_thresh=
             "sampled": sampled,
         }
     avg_mr = float(np.mean(moving_ratios))
-    # 单帧运动像素占比 < 1.5% 视为"基本静止帧"
+    # 单frame运动像素占比 < 1.5% 视为"基本静止frame"
     static_ratio = float(np.mean([1 if mr < 0.015 else 0 for mr in moving_ratios]))
     avg_motion = float(np.mean(mean_flows)) if mean_flows else 0.0
     avg_sharp = float(np.mean(sharps))
@@ -113,10 +113,10 @@ def motion_via_optical_flow(video_path, step=2, motion_thresh=0.6, sharp_thresh=
 
 
 def motion_score_from_metrics(m):
-    """综合动作可迁移性评分 0-100（纯启发式，可解释）。
+    """综合动作可迁移性score/rating 0-100（纯启发式，可解释）。
 
-    以"运动像素占比"为核心信号（不被静止背景稀释）；
-    静态帧多 / 模糊帧多 分别扣分。
+    以"运动像素占比"为核心信号（不被静止background稀释）；
+    静态frame多 / blurryframe多 分别扣分。
     """
     avg_mr = m.get("avg_moving_ratio", 0.0)
     # 运动像素占比 0.15(15%)≈主体明显动作 → 拿满 55 分
@@ -129,18 +129,18 @@ def motion_score_from_metrics(m):
 
 def verdict_from(m, score):
     if m["blur_ratio"] > 0.5:
-        return "参考视频模糊/遮挡偏多，换脸后观感可能下降，建议换更清晰的素材"
+        return "参考videoblurry/occlusion偏多，face swap后观感可能下降，suggestion换更clear的素材"
     if m["static_ratio"] > 0.6:
-        return "参考视频动作偏弱（多为静态/慢动作），迁移后观感平淡，建议选动作明显的素材"
+        return "参考video动作偏弱（多为静态/慢动作），迁移后观感平淡，suggestion选动作明显的素材"
     if score >= 60:
-        return "适合迁移：动作清晰、画面清楚，换脸后能保留明显动作"
+        return "适合迁移：动作clear、画面清楚，face swap后能保留明显动作"
     if score >= 35:
-        return "基本可用：动作与清晰度中等，换脸可跑但建议挑选动作更明显的片段"
-    return "动作或清晰度偏弱，迁移效果有限，建议更换参考视频"
+        return "基本available：动作与clear度中等，face swap可跑但suggestion挑选动作更明显的片段"
+    return "动作或clear度偏弱，迁移效果有限，suggestion更换参考video"
 
 
 def extract_pose_keypoints(video_path, model_path, step=1):
-    """可选：MediaPipe 姿态关键点提取（需 mediapipe + .task 模型）。"""
+    """可选：MediaPipe posekeypointextract（需 mediapipe + .task model）。"""
     try:
         from mediapipe.tasks.python import vision
         from mediapipe.tasks.python.core import base_options as base_options_module
@@ -148,11 +148,11 @@ def extract_pose_keypoints(video_path, model_path, step=1):
             PoseLandmarker, PoseLandmarkerOptions, RunningMode,
         )
     except Exception as e:
-        print("[提示] 未启用姿态关键点分析（mediapipe 不可用: %s），改用纯光流分析。" % type(e).__name__)
+        print("[hint/tip] 未enableposekeypoint分析（mediapipe 不available: %s），改用纯光流分析。" % type(e).__name__)
         return None
 
     if not os.path.exists(model_path):
-        print("[提示] 姿态模型不存在: %s，跳过关键点分析，仅用光流。" % model_path)
+        print("[hint/tip] posemodeldoes not exist: %s，skipkeypoint分析，仅用光流。" % model_path)
         return None
 
     POSE_NAMES = ["nose", "left_eye_inner", "left_eye", "left_eye_outer",
@@ -203,13 +203,13 @@ def extract_pose_keypoints(video_path, model_path, step=1):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="参考视频动作可迁移性预检（光流+可选姿态）")
-    ap.add_argument("--video", required=True, help="参考视频路径")
-    ap.add_argument("--out", required=True, help="输出 JSON 路径")
-    ap.add_argument("--model", default="", help="pose_landmarker_full.task 路径（可选，启用姿态分析）")
-    ap.add_argument("--step", type=int, default=2, help="抽帧步长，越大越快")
+    ap = argparse.ArgumentParser(description="参考video动作可迁移性预检（光流+可选pose）")
+    ap.add_argument("--video", required=True, help="参考videopath")
+    ap.add_argument("--out", required=True, help="output JSON path")
+    ap.add_argument("--model", default="", help="pose_landmarker_full.task path（可选，enablepose分析）")
+    ap.add_argument("--step", type=int, default=2, help="抽frame步长，越大越快")
     ap.add_argument("--motion-thresh", type=float, default=0.6, help="静态判定阈值（光流幅度）")
-    ap.add_argument("--sharp-thresh", type=float, default=40.0, help="模糊判定阈值（Laplacian 方差）")
+    ap.add_argument("--sharp-thresh", type=float, default=40.0, help="blurry判定阈值（Laplacian 方差）")
     args = ap.parse_args()
 
     video_path, tmp_video = ascii_copy(args.video)
@@ -235,7 +235,7 @@ def main():
         "sampled_frames": metrics["sampled"],
     }
 
-    # 可选姿态分析
+    # 可选pose分析
     if args.model:
         pose = extract_pose_keypoints(video_path, args.model, step=max(1, args.step))
         if pose:
@@ -250,10 +250,10 @@ def main():
     if tmp_video:
         os.remove(tmp_video)
 
-    print("[完成] 动作可迁移性评分=%s/100  动作强度=%.2f  静态占比=%.1f%%  模糊占比=%.1f%%"
+    print("[done] 动作可迁移性score/rating=%s/100  动作强度=%.2f  静态占比=%.1f%%  blurry占比=%.1f%%"
           % (score, metrics["avg_motion"], metrics["static_ratio"] * 100, metrics["blur_ratio"] * 100))
     print("[结论] %s" % verdict)
-    print("[输出] %s" % args.out)
+    print("[output] %s" % args.out)
 
 
 if __name__ == "__main__":
