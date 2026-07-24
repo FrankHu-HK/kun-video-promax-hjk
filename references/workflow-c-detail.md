@@ -54,7 +54,7 @@ Automatically picks a product reference image set that is [clear + front-lit + v
 
 ## Stage C2: Scene Recommendation + Persona Matching
 
-- Scene recommendation: AI **actively recommends 2–3 candidates** based on product category and user / customer needs, user picks from them (decision gate C-2)
+- Scene recommendation: AI **actively recommends 2-3 candidates** based on product category and user / customer needs, user picks from them (decision gate C-2)
 - Persona library: match by gender / age / style / clothing
 
 ## Stage C3: Voiceover Script Generation
@@ -105,7 +105,7 @@ Output: four-part script (opening hook → pain-point intro → product intro �
 ## FAQ
 
 **Q: My logo is always deformed, what to do?**
-Plan 1's "overlay composition" is designed to solve this — the real product image is overlaid into the AI scene, logo undeformed. See Stage C4 Plan 1.
+Plan 1's "overlay composition" is designed to solve this - the real product image is overlaid into the AI scene, logo undeformed. See Stage C4 Plan 1.
 
 **Q: Do digital-human platforms cost money?**
 - Tencent Zhiying: SaaS, charged by usage

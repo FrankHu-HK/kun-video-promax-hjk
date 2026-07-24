@@ -7,7 +7,7 @@ last_verified: 2026-07-17
 # Workflow A Detailed Technical Doc (Face Swap + Watermark Removal)
 
 > SKILL.md already gives the "Beginner Quick Start" and the simplest commands. This file is the detailed technical reference for the **4-stage complete pipeline** + **Pro enhanced 6-layer design blueprint** + **all parameter details** + **step-by-step confirmation protocol**.
-> 80% of users **don't need to read this file** — just use the simplest commands in SKILL.md.
+> 80% of users **don't need to read this file** - just use the simplest commands in SKILL.md.
 
 ---
 
@@ -24,7 +24,7 @@ last_verified: 2026-07-17
 After receiving the target photo and before running the swap, **must confirm the swap scope with structured questions**:
 
 - Option 1 (**recommended**): **Only swap face**, keep the original video person's body / clothing / shoes-hat (most natural, lowest rework risk, fits Workflow A's "100% kept" positioning)
-- Option 2: **Swap to the photo's full look** (face + hairstyle + clothing + shoes-hat) — needs diffusion repaint (Workflow B's ID lock / F fallback / or facefusion)
+- Option 2: **Swap to the photo's full look** (face + hairstyle + clothing + shoes-hat) - needs diffusion repaint (Workflow B's ID lock / F fallback / or facefusion)
 - Option 3: **Custom** (e.g. only swap face + use photo hairstyle but keep original clothing)
 
 **Don't default.** Confirm before executing.
@@ -50,7 +50,7 @@ python scripts/faceswap.py \
 | `left` | When two people in frame, swap **the leftmost face**; no swap in single-person shot | Left-side person scenario |
 | `largest` | Swap the **widest bbox** face | ⚠️ High risk: when two faces are similar width, **per-frame mis-swap** of the supporting actor |
 
-> ⚠️ **When to disable `largest`**: when two faces are similar width (e.g. right 143–187px / left ≈149px), in about 1/3 of frames the wider one is the supporting actor, and `largest` will **mis-swap per frame**. **Whenever the user wants "swap the right / specified-side person", always use `right`/`left` to lock by position**.
+> ⚠️ **When to disable `largest`**: when two faces are similar width (e.g. right 143-187px / left ≈149px), in about 1/3 of frames the wider one is the supporting actor, and `largest` will **mis-swap per frame**. **Whenever the user wants "swap the right / specified-side person", always use `right`/`left` to lock by position**.
 
 ### Performance Optimization (built-in)
 
@@ -70,10 +70,10 @@ The basic face swap script already auto-pops unused models (`landmark_3d_68 / la
 ## Stage 1-Pro: Enhanced Face Swap (2 layers A+B landed, 4 layers planned)
 
 > ⚠️ **When to use Pro**: use the Pro channel when the basic version shows any of the following artifacts:
-> ① **Side face not swapped** — when the person turns sideways, the side face is still the original video's face
-> ② **Occlusion flash reveals original face** — the instant the face reappears after being blocked by an object is the original face
-> ③ **Unnatural swap with glasses / accessories** — frame edge misalignment, fake face
-> ④ **Stiff swap boundary seam** — visible square cutout edge
+> ① **Side face not swapped** - when the person turns sideways, the side face is still the original video's face
+> ② **Occlusion flash reveals original face** - the instant the face reappears after being blocked by an object is the original face
+> ③ **Unnatural swap with glasses / accessories** - frame edge misalignment, fake face
+> ④ **Stiff swap boundary seam** - visible square cutout edge
 
 ### Pro Enhancement Layer Design Blueprint (with landing status)
 
@@ -111,7 +111,7 @@ python scripts/faceswap_pro.py \
 
 ### Honest Boundary
 
-- A/B/D/E are safe enhancements **significantly improvable** within the local framework; **① large-angle side face (yaw>70°) is a hard limit of the inswapper_128 architecture** — cannot reconstruct an invisible half-face out of thin air.
+- A/B/D/E are safe enhancements **significantly improvable** within the local framework; **① large-angle side face (yaw>70°) is a hard limit of the inswapper_128 architecture** - cannot reconstruct an invisible half-face out of thin air.
 - `--keep-glasses` has no dedicated frame-segmentation model, so it **overlays the original eyes together** → eye gaze leans toward the original person; only suitable for scenarios where "must keep the original framed glasses".
 - Pro version is slower than the basic version, a "quality-first" channel; use the basic `faceswap.py` when there are no artifacts for speed.
 - Enhancements are not verified end-to-end on real material visually (current session model can't read images), only logic self-consistency is guaranteed; please spot-check with real videos.
@@ -139,12 +139,12 @@ python scripts/clean_douyin.py \
 **Key points**:
 - **Per-frame OCR** (rapidocr, default 2x zoom to improve small-text recall) matches Douyin keywords
 - **Only inpaint text pixels** (radius 8, TELEA), zero accidental damage to background
-- ⚠️ **Don't do all-1 mask inpaint on the whole block** — that reconstructs ≈ original, text fades but doesn't disappear. Must "OCR locate text bounding box → only fill text pixels"
+- ⚠️ **Don't do all-1 mask inpaint on the whole block** - that reconstructs ≈ original, text fades but doesn't disappear. Must "OCR locate text bounding box → only fill text pixels"
 - ⚠️ **Douyin text moving with the picture** (e.g. Douyin ID, author nickname): must OCR per-frame, **cannot use a fixed rectangular region**
 
 ## Stage 2.5: Remove Fixed "Douyin" Logo at Bottom-Right
 
-Some Douyin videos have a **platform-level fixed logo** at bottom-right (constant coordinates, e.g. x≈614–697 / y≈1122–1167); because the text is small, stage 2's OCR occasionally misses it. Use fixed-region inpaint as fallback:
+Some Douyin videos have a **platform-level fixed logo** at bottom-right (constant coordinates, e.g. x≈614-697 / y≈1122-1167); because the text is small, stage 2's OCR occasionally misses it. Use fixed-region inpaint as fallback:
 
 ```bash
 python fix_logo.py \
@@ -187,7 +187,7 @@ Judgment:
 | Situation | Recommended solution |
 |------|---------|
 | Ordinary side face (yaw≤70°) | Pro enhancement + detection size 1024 |
-| Extreme side face (yaw>70°) | inswapper architecture hard limit, **no perfect solution** — split frames and process with Photoshop |
+| Extreme side face (yaw>70°) | inswapper architecture hard limit, **no perfect solution** - split frames and process with Photoshop |
 | Partial occlusion (glasses / hand block) | Pro enhancement (improvable) |
 | Full occlusion (sunglasses + mask) | Skip that segment or process split frames |
 | Want to keep glasses | `--keep-glasses` (has eye-gaze shift risk) |

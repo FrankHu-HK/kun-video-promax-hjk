@@ -49,7 +49,7 @@ pip install insightface onnxruntime opencv-python imageio-ffmpeg \
 
 | Model | Purpose | Size | Download source |
 |------|------|------|--------|
-| `pose_landmarker_full.task` | Skeleton keypoint extraction (BlazePose 33 points, pose estimation) | ~5–12MB | `storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/latest/pose_landmarker_full.task` |
+| `pose_landmarker_full.task` | Skeleton keypoint extraction (BlazePose 33 points, pose estimation) | ~5-12MB | `storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/latest/pose_landmarker_full.task` |
 
 - After download place at `<work-dir>/models/pose_landmarker_full.task`.
 - `storage.googleapis.com` is **partially reachable** in this environment (MediaPipe official models downloadable); if it times out, use the gitee mirror or manually download then place it.

@@ -13,7 +13,7 @@ last_verified: 2026-07-18
 ## Essential Difference from Workflow A (must explain first)
 
 - **Workflow A (face swap)**: "swap face" on the original video, motion / background / music / duration **100% kept** (100% overlap)
-- **Workflow B (motion transfer)**: driven by the reference video's **motion**, generates a **brand-new video** — the target person (@Image1) "performs" the motion in the reference video (@Video1). The new video's background, quality, and motion details **won't be 1:1 identical to the original reference video**, which is an inherent property of the generative diffusion pipeline, not a defect
+- **Workflow B (motion transfer)**: driven by the reference video's **motion**, generates a **brand-new video** - the target person (@Image1) "performs" the motion in the reference video (@Video1). The new video's background, quality, and motion details **won't be 1:1 identical to the original reference video**, which is an inherent property of the generative diffusion pipeline, not a defect
 - **Selection principle**: want "exactly like the original video" → Workflow A; want "make the target person do the reference video's motion (background / quality can differ)" → Workflow B
 
 ## Stage B0: Material Ready & ASCII-ized
@@ -45,8 +45,8 @@ Key points:
 ### Decision Gate B-0 (must ask before generation)
 
 After receiving the target photo and before delegating generation, **must confirm handling of hairstyle / clothing / shoes-hat**:
-- Option 1 (**recommended**): **Use the photo's full look** — ID lock most stable, output most like the target person
-- Option 2: **Lock face only** — clothing / hairstyle / shoes-hat by prompt or separately specified
+- Option 1 (**recommended**): **Use the photo's full look** - ID lock most stable, output most like the target person
+- Option 2: **Lock face only** - clothing / hairstyle / shoes-hat by prompt or separately specified
 - Option 3: **Custom**
 
 ### v2.2.0 Major Change: Fully Localized
@@ -67,7 +67,7 @@ python scripts/video_engine.py --workflow B --video ref.mp4 --photo target.jpg -
 | seedance | ⚠️ Trial version (paid over quota) | ❌ Domestic | ByteDance Seedance | Needs VOLCENGINE_API_KEY |
 | kling | 💰 Paid | ❌ Domestic | Kuaishou Kling 3.0 | Needs KLING_API_KEY |
 
-> **v2.2.0 removed Veo 3.1** (Google Vertex AI, foreign service) — user feedback "occasionally needs foreign service" cost points.
+> **v2.2.0 removed Veo 3.1** (Google Vertex AI, foreign service) - user feedback "occasionally needs foreign service" cost points.
 
 ### Old Engine Detailed Comparison (historical reference only, v2.2.0 prefers local/agnes/nvidia)
 
@@ -132,7 +132,7 @@ python scripts/auto_qc.py \
 ```
 
 - **Technical-layer QC** (machine automatic): file complete / openable, not all-black, not frozen-frame, duration met, encoding readable → auto-retry on fail
-- **Picture quality** (user visual inspection): likeness, naturalness, distortion / ghosting — must be visually inspected by you finally
+- **Picture quality** (user visual inspection): likeness, naturalness, distortion / ghosting - must be visually inspected by you finally
 - Attach `pose_keypoints.json`'s "motion coverage / visibility stats" as objective motion-quality evidence
 
 ## First-Success-Rate Engineering (auto-retry on fail)
